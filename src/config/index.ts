@@ -1,0 +1,14 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+export type ConfigType = {
+  PORT: number;
+  DB_URL: string;
+  TOKEN: string;
+};
+
+export const config: ConfigType = {
+  PORT: Number(process.env.PORT) as number,
+  DB_URL: process.env.DB_NAME as string,
+  TOKEN: process.env.TOKEN,
+};
