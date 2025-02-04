@@ -9,6 +9,6 @@ export type ConfigType = {
 
 export const config: ConfigType = {
   PORT: Number(process.env.PORT) as number,
-  DB_URL: process.env.DB_NAME as string,
+  DB_URL: process.env.DB_URL as string,
   TOKEN: process.env.TOKEN,
 };

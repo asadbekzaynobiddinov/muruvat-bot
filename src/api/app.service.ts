@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { config } from 'src/config';
-import { AppModule } from './app.module';
 import * as express from 'express';
 import * as path from 'path';
+import { AppModule } from './app.module';
+import { config } from 'src/config';
 
 export class Application {
   static async main(): Promise<void> {
