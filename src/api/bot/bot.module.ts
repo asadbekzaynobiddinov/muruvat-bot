@@ -11,6 +11,7 @@ import {
 import { AdminModule } from './admin/admin.module';
 import { SahiyModule } from './sahiy/sahiy.module';
 import { SabrliModule } from './sabrli/sabrli.module';
+import { BotService } from './bot.service';
 
 @Module({
   imports: [
@@ -25,5 +26,6 @@ import { SabrliModule } from './sabrli/sabrli.module';
     SahiyModule,
     SabrliModule,
   ],
+  providers: [BotService],
 })
 export class BotModule {}
