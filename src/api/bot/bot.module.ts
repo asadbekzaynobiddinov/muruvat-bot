@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TelegrafModule } from 'nestjs-telegraf';
-import { CommandsModule } from './commands/commands.module';
 import { options } from 'src/config/telegram.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
@@ -9,6 +8,9 @@ import {
   PatientsEntity,
   UsersEntity,
 } from 'src/core';
+import { AdminModule } from './admin/admin.module';
+import { SahiyModule } from './sahiy/sahiy.module';
+import { SabrliModule } from './sabrli/sabrli.module';
 
 @Module({
   imports: [
@@ -19,7 +21,9 @@ import {
       GenerousEntity,
       PatientsEntity,
     ]),
-    CommandsModule,
+    AdminModule,
+    SahiyModule,
+    SabrliModule,
   ],
 })
 export class BotModule {}
