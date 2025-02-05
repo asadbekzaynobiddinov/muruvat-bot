@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { BaseEntity } from 'src/common';
+import { BaseEntity, Genders } from 'src/common';
 import { UsersEntity } from './users.entity';
 @Entity('patients_applications')
 export class PatientsEntity extends BaseEntity {
@@ -17,6 +17,9 @@ export class PatientsEntity extends BaseEntity {
 
   @Column({ type: 'varchar', name: 'stuff_size' })
   stuff_size: string;
+
+  @Column({ type: 'enum', enum: Genders })
+  gender: Genders;
 
   @Column({ type: 'varchar', name: 'media' })
   media: string;

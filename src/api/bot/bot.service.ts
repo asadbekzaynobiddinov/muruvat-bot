@@ -6,10 +6,8 @@ import {
   registerMessage,
   registerMenuKeys,
 } from 'src/common/constants/';
-import { ContextType } from 'src/common/types';
+import { ContextType } from 'src/common';
 import { UsersEntity, UsersRepository } from 'src/core';
-import { Context } from 'telegraf';
-import { SceneContext } from 'telegraf/typings/scenes';
 
 @Update()
 export class BotService {
@@ -18,7 +16,7 @@ export class BotService {
   ) {}
 
   @Command('start')
-  async start(@Ctx() ctx: Context) {
+  async start(@Ctx() ctx: ContextType) {
     const user = await this.userRepo.findOne({
       where: { telegram_id: `${ctx.from.id}` },
     });
@@ -55,7 +53,7 @@ export class BotService {
   }
 
   @Action('generous')
-  async registerGenerous(@Ctx() ctx: SceneContext) {
+  async registerGenerous(@Ctx() ctx: ContextType) {
     await ctx.scene.enter('registerAsGenerous');
   }
 

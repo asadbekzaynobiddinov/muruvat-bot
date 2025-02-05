@@ -26,3 +26,21 @@ export const generousAddressMessage = {
   ru: 'Введите ваш адрес: ',
   en: 'Enter your address: ',
 };
+
+export const mainMessage = {
+  uz: "Kerakli bo'limni tanlang: ",
+  ru: 'Выберите нужный раздел: ',
+  en: 'Choose the required section: ',
+};
+
+export const PhoneNumberMessages = {
+  uz: `<b>📞 Telefon raqamni yuborish</b> tugmasini bosing`,
+  ru: `Нажмите на кнопку <b>📞 Отправить номер телефона</b>`,
+  en: `Press the <b>📞 Send phone number</b> button`,
+};
+
+export const repairMessage = {
+  uz: 'Kimga muruvvat qilmoqchisiz?',
+  ru: 'Кому вы хотите помочь?',
+  en: 'Who do you want to help?',
+};
