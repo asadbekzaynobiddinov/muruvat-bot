@@ -9,6 +9,7 @@ import {
 import { ContextType } from 'src/common/types';
 import { UsersEntity, UsersRepository } from 'src/core';
 import { Context } from 'telegraf';
+import { SceneContext } from 'telegraf/typings/scenes';
 
 @Update()
 export class BotService {
@@ -23,6 +24,7 @@ export class BotService {
     });
     if (!user) {
       await ctx.reply(startMessage, { reply_markup: selectLangKeys });
+      return;
     }
     await ctx.reply('Start');
   }
@@ -53,8 +55,8 @@ export class BotService {
   }
 
   @Action('generous')
-  async registerGenerous(@Ctx() ctx: ContextType) {
-    await ctx.reply('Generous');
+  async registerGenerous(@Ctx() ctx: SceneContext) {
+    await ctx.scene.enter('registerAsGenerous');
   }
 
   @Action('patient')
