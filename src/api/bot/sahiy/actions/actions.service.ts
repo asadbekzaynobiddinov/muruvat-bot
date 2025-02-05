@@ -1,11 +1,16 @@
 import { Update, Action, Ctx } from 'nestjs-telegraf';
 import {
+  generousMenuKeys,
   mainMessage,
   repairKeys,
   repairMessage,
-  viewPatientsKeys,
+  generousSettingsKeys,
+  generousViewPatientsKeys,
+  regionMessage,
+  regionKeysforGenerous,
 } from 'src/common/constants';
 import { ContextType } from 'src/common';
+import { Markup } from 'telegraf';
 
 @Update()
 export class ActionsService {
@@ -16,20 +21,48 @@ export class ActionsService {
     });
   }
 
-  @Action('view_patients')
+  @Action('view_patients_for_generous')
   async viewPatients(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
-      reply_markup: viewPatientsKeys[ctx.session.lang],
+      reply_markup: generousViewPatientsKeys[ctx.session.lang],
     });
   }
 
   @Action('toAdminAsGenerous')
   async toAdmin(@Ctx() ctx: ContextType) {
-    await ctx.reply('To Admin As Generous');
+    await ctx.editMessageText('To Admin As Generous', {
+      reply_markup: {
+        inline_keyboard: [
+          [Markup.button.callback('🔙', 'back_to_generous_menu')],
+        ],
+      },
+    });
   }
 
-  @Action('settings')
+  @Action('settings_for_generous')
   async settings(@Ctx() ctx: ContextType) {
-    await ctx.reply('Settings');
+    await ctx.editMessageText(mainMessage[ctx.session.lang], {
+      reply_markup: generousSettingsKeys[ctx.session.lang],
+    });
+  }
+
+  @Action('back_to_generous_menu')
+  async backToMenu(@Ctx() ctx: ContextType) {
+    await ctx.editMessageText(mainMessage[ctx.session.lang], {
+      reply_markup: generousMenuKeys[ctx.session.lang],
+    });
+  }
+
+  @Action('patient_by_region_for_generous')
+  async patientByRegion(@Ctx() ctx: ContextType) {
+    await ctx.editMessageText(regionMessage[ctx.session.lang], {
+      reply_markup: regionKeysforGenerous[ctx.session.lang],
+    });
+  }
+
+  @Action(/region/)
+  async region(@Ctx() ctx) {
+    const [, region] = ctx.update.callback_query.data.split('_');
+    await ctx.reply(region);
   }
 }

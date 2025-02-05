@@ -3,7 +3,7 @@ import { Scene, SceneEnter, On } from 'nestjs-telegraf';
 import {
   generousNameMessage,
   generousAddressMessage,
-  mainMenuKeys,
+  generousMenuKeys,
   mainMessage,
   PhoneNumberMessages,
   phoneNumberKeys,
@@ -71,7 +71,7 @@ export class AskGenerousAddress {
       const text = ctx.message.text;
       console.log(text);
       await ctx.reply(mainMessage[ctx.session.lang], {
-        reply_markup: mainMenuKeys[ctx.session.lang],
+        reply_markup: generousMenuKeys[ctx.session.lang],
       });
       await ctx.scene.leave();
     }
