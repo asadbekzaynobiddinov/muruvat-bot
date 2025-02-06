@@ -7,11 +7,7 @@ import {
   PhoneNumberMessages,
   regionMessage,
 } from 'src/common/constants';
-import {
-  patientMenuKeys,
-  patientNameMessage,
-  regionKeysforPatients,
-} from 'src/common/constants/sabrli';
+import { patientMenuKeys, askNameMessage, regionKeys } from 'src/common';
 import { UsersEntity, UsersRepository } from 'src/core';
 
 @Scene('registerAsPatient')
@@ -21,7 +17,7 @@ export class RegisterScenes {
   ) {}
   @SceneEnter()
   async onEnter(ctx: ContextType) {
-    await ctx.editMessageText(patientNameMessage[ctx.session.lang]);
+    await ctx.editMessageText(askNameMessage[ctx.session.lang]);
   }
   @On('text')
   async textHandler(ctx: ContextType) {
@@ -57,7 +53,7 @@ export class AskPatientAddress {
   @SceneEnter()
   async onEnter(ctx: ContextType) {
     await ctx.reply(regionMessage[ctx.session.lang], {
-      reply_markup: regionKeysforPatients[ctx.session.lang],
+      reply_markup: regionKeys[ctx.session.lang],
       parse_mode: 'HTML',
     });
   }
