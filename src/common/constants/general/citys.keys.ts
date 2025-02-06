@@ -28,6 +28,96 @@ export const tashkentsKeys: Record<string, InlineKeyboardMarkup> = {
   },
 };
 
+export const regionKeys: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('Toshkent', 'region_tashkent'),
+        Markup.button.callback('Samarqand', 'region_samarkand'),
+      ],
+      [
+        Markup.button.callback('Buxoro', 'region_bukhara'),
+        Markup.button.callback('Andijon', 'region_andijan'),
+      ],
+      [
+        Markup.button.callback("Farg'ona", 'region_fergana'),
+        Markup.button.callback('Namangan', 'region_namangan'),
+      ],
+      [
+        Markup.button.callback('Qashqadaryo', 'region_qashqadarya'),
+        Markup.button.callback('Jizzax', 'region_jizzakh'),
+      ],
+      [
+        Markup.button.callback('Sirdaryo', 'region_syrdarya'),
+        Markup.button.callback('Xorazm', 'region_khorezm'),
+      ],
+      [
+        Markup.button.callback('Navoiy', 'region_navoiy'),
+        Markup.button.callback('Surxondaryo', 'region_surxondarya'),
+      ],
+      [Markup.button.callback("Qoraqalpog'iston", 'region_karakalpakstan')],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('Ташкент', 'region_tashkent'),
+        Markup.button.callback('Самарканд', 'region_samarkand'),
+      ],
+      [
+        Markup.button.callback('Бухара', 'region_bukhara'),
+        Markup.button.callback('Андижан', 'region_andijan'),
+      ],
+      [
+        Markup.button.callback('Фергана', 'region_fergana'),
+        Markup.button.callback('Наманган', 'region_namangan'),
+      ],
+      [
+        Markup.button.callback('Кашкадарья', 'region_qashqadarya'),
+        Markup.button.callback('Джизак', 'region_jizzakh'),
+      ],
+      [
+        Markup.button.callback('Сырдарья', 'region_syrdarya'),
+        Markup.button.callback('Хорезм', 'region_khorezm'),
+      ],
+      [
+        Markup.button.callback('Навои', 'region_navoiy'),
+        Markup.button.callback('Сурхандарья', 'region_surxondarya'),
+      ],
+      [Markup.button.callback('Каракалпакстан', 'region_karakalpakstan')],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('Tashkent', 'region_tashkent'),
+        Markup.button.callback('Samarkand', 'region_samarkand'),
+      ],
+      [
+        Markup.button.callback('Bukhara', 'region_bukhara'),
+        Markup.button.callback('Andijan', 'region_andijan'),
+      ],
+      [
+        Markup.button.callback('Fergana', 'region_fergana'),
+        Markup.button.callback('Namangan', 'region_namangan'),
+      ],
+      [
+        Markup.button.callback('Qashqadarya', 'region_qashqadarya'),
+        Markup.button.callback('Jizzakh', 'region_jizzakh'),
+      ],
+      [
+        Markup.button.callback('Syrdarya', 'region_syrdarya'),
+        Markup.button.callback('Khorezm', 'region_khorezm'),
+      ],
+      [
+        Markup.button.callback('Navoiy', 'region_navoiy'),
+        Markup.button.callback('Surxondarya', 'region_surxondarya'),
+      ],
+      [Markup.button.callback('Karakalpakstan', 'region_karakalpakstan')],
+    ],
+  },
+};
+
 export const tashkentCitysKeys = {
   uz: [
     ['Bektemir tumani', 'district_bektemir'],

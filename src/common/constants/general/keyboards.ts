@@ -54,7 +54,7 @@ export const phoneNumberKeys = {
   },
 };
 
-export const generousSettingsKeys = {
+export const SettingsKeys = {
   uz: {
     inline_keyboard: [
       [
