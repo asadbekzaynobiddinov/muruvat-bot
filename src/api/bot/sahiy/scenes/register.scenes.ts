@@ -1,15 +1,15 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Scene, SceneEnter, On, Action } from 'nestjs-telegraf';
 import {
+  ContextType,
   askNameMessage,
   generousMenuKeys,
   mainMessage,
   PhoneNumberMessages,
   phoneNumberKeys,
-  regionKeysforGenerous,
+  regionKeys,
   askRegionMessage,
-} from 'src/common/constants';
-import { ContextType } from 'src/common/';
+} from 'src/common/';
 import { UsersEntity, UsersRepository } from 'src/core';
 
 @Scene('registerAsGenerous')
@@ -64,7 +64,7 @@ export class AskGenerousAddress {
   @SceneEnter()
   async onEnter(ctx: ContextType) {
     await ctx.reply(askRegionMessage[ctx.session.lang], {
-      reply_markup: regionKeysforGenerous[ctx.session.lang],
+      reply_markup: regionKeys[ctx.session.lang],
     });
   }
 
