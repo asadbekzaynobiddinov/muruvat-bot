@@ -1,42 +1,7 @@
 import { Markup } from 'telegraf';
-import { InlineKeyboardMarkup } from 'telegraf/typings/core/types/typegram';
+import { InlineKeyboardMarkup } from '@telegraf/types';
 
-export const selectLangKeys: InlineKeyboardMarkup = {
-  inline_keyboard: [
-    [Markup.button.callback("🇺🇿 O'zbekcha", 'uz')],
-    [Markup.button.callback('🇷🇺 Русский', 'ru')],
-    [Markup.button.callback('🇺🇸 English', 'en')],
-  ],
-};
-
-export const registerMenuKeys = {
-  uz: {
-    inline_keyboard: [
-      [
-        Markup.button.callback('👨 Sahiy', 'generous'),
-        Markup.button.callback('👨 Sabrli', 'patient'),
-      ],
-    ],
-  },
-  en: {
-    inline_keyboard: [
-      [
-        Markup.button.callback('👨 Generous', 'generous'),
-        Markup.button.callback('👨 Patient', 'patient'),
-      ],
-    ],
-  },
-  ru: {
-    inline_keyboard: [
-      [
-        Markup.button.callback('👨 Щедрый', 'generous'),
-        Markup.button.callback('👨 Пациент', 'patient'),
-      ],
-    ],
-  },
-};
-
-export const generousMenuKeys = {
+export const generousMenuKeys: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
       [
@@ -88,25 +53,7 @@ export const generousMenuKeys = {
   },
 };
 
-export const phoneNumberKeys = {
-  uz: {
-    keyboard: [[Markup.button.contactRequest('📞 Telefon raqamni yuborish')]],
-    resize_keyboard: true,
-    one_time_keyboard: true,
-  },
-  ru: {
-    keyboard: [[Markup.button.contactRequest('📞 Отправить номер телефона')]],
-    resize_keyboard: true,
-    one_time_keyboard: true,
-  },
-  en: {
-    keyboard: [[Markup.button.contactRequest('📞 Send phone number')]],
-    resize_keyboard: true,
-    one_time_keyboard: true,
-  },
-};
-
-export const repairKeys = {
+export const repairKeys: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
       [Markup.button.callback('👤 Istalgan odamga', 'anyone')],
@@ -127,7 +74,7 @@ export const repairKeys = {
   },
 };
 
-export const generousViewPatientsKeys = {
+export const generousViewPatientsKeys: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
       [
@@ -197,37 +144,7 @@ export const generousViewPatientsKeys = {
   },
 };
 
-export const generousSettingsKeys = {
-  uz: {
-    inline_keyboard: [
-      [
-        Markup.button.callback(`📞 Raqamni o'zgartirish`, 'change_phone'),
-        Markup.button.callback(`🌐 Tilni o'zgartirish`, 'change_lang'),
-      ],
-      [Markup.button.callback(`🔙 Ortga qaytish`, 'back_to_generous_menu')],
-    ],
-  },
-  ru: {
-    inline_keyboard: [
-      [
-        Markup.button.callback(`📞 Изменить номер`, 'change_phone'),
-        Markup.button.callback(`🌐 Изменить язык`, 'change_lang'),
-      ],
-      [Markup.button.callback(`🔙 Назад`, 'back_to_generous_menu')],
-    ],
-  },
-  en: {
-    inline_keyboard: [
-      [
-        Markup.button.callback(`📞 Change phone`, 'change_phone'),
-        Markup.button.callback(`🌐 Change language`, 'change_lang'),
-      ],
-      [Markup.button.callback(`🔙 Back`, 'back_to_generous_menu')],
-    ],
-  },
-};
-
-export const regionKeysforGenerous = {
+export const regionKeysforGenerous: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
       [
@@ -255,12 +172,6 @@ export const regionKeysforGenerous = {
         Markup.button.callback('Surxondaryo', 'region_surxondarya'),
       ],
       [Markup.button.callback("Qoraqalpog'iston", 'region_karakalpakstan')],
-      [
-        Markup.button.callback(
-          '🔙 Ortga qaytish',
-          'view_patients_for_generous',
-        ),
-      ],
     ],
   },
   ru: {
@@ -290,7 +201,6 @@ export const regionKeysforGenerous = {
         Markup.button.callback('Сурхандарья', 'region_surxondarya'),
       ],
       [Markup.button.callback('Каракалпакстан', 'region_karakalpakstan')],
-      [Markup.button.callback('🔙 Назад', 'view_patients_for_generous')],
     ],
   },
   en: {
@@ -320,6 +230,31 @@ export const regionKeysforGenerous = {
         Markup.button.callback('Surxondarya', 'region_surxondarya'),
       ],
       [Markup.button.callback('Karakalpakstan', 'region_karakalpakstan')],
+    ],
+  },
+};
+
+export const backToViewPatientsForGenerous: Record<
+  string,
+  InlineKeyboardMarkup
+> = {
+  uz: {
+    inline_keyboard: [
+      [
+        Markup.button.callback(
+          '🔙 Ortga qaytish',
+          'view_patients_for_generous',
+        ),
+      ],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'view_patients_for_generous')],
+    ],
+  },
+  en: {
+    inline_keyboard: [
       [Markup.button.callback('🔙 Back', 'view_patients_for_generous')],
     ],
   },

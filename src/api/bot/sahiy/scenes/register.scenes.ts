@@ -1,12 +1,13 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Scene, SceneEnter, On } from 'nestjs-telegraf';
+import { Scene, SceneEnter, On, Action } from 'nestjs-telegraf';
 import {
-  generousNameMessage,
-  generousAddressMessage,
+  askNameMessage,
   generousMenuKeys,
   mainMessage,
   PhoneNumberMessages,
   phoneNumberKeys,
+  regionKeysforGenerous,
+  askRegionMessage,
 } from 'src/common/constants';
 import { ContextType } from 'src/common/';
 import { UsersEntity, UsersRepository } from 'src/core';
@@ -18,7 +19,7 @@ export class RegisterAsGenerous {
   ) {}
   @SceneEnter()
   async onEnter(ctx: ContextType) {
-    await ctx.editMessageText(generousNameMessage[ctx.session.lang]);
+    await ctx.editMessageText(askNameMessage[ctx.session.lang]);
   }
 
   @On('text')
@@ -62,18 +63,18 @@ export class AskGenerousAddress {
   ) {}
   @SceneEnter()
   async onEnter(ctx: ContextType) {
-    await ctx.reply(generousAddressMessage[ctx.session.lang]);
+    await ctx.reply(askRegionMessage[ctx.session.lang], {
+      reply_markup: regionKeysforGenerous[ctx.session.lang],
+    });
   }
 
-  @On('text')
+  @Action(/region/)
   async textHandler(ctx: ContextType) {
-    if ('text' in ctx.message) {
-      const text = ctx.message.text;
-      console.log(text);
-      await ctx.reply(mainMessage[ctx.session.lang], {
-        reply_markup: generousMenuKeys[ctx.session.lang],
-      });
-      await ctx.scene.leave();
-    }
+    const [, region] = (ctx.update as any).callback_query.data.split('_');
+    console.log(region);
+    await ctx.editMessageText(mainMessage[ctx.session.lang], {
+      reply_markup: generousMenuKeys[ctx.session.lang],
+    });
+    await ctx.scene.leave();
   }
 }
