@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Update } from 'nestjs-telegraf';
 
-@Injectable()
+@Update()
 export class ActionsService {}

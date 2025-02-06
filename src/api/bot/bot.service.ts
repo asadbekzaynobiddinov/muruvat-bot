@@ -59,6 +59,6 @@ export class BotService {
 
   @Action('patient')
   async registerPatient(@Ctx() ctx: ContextType) {
-    await ctx.reply('Patient');
+    await ctx.scene.enter('registerAsPatient');
   }
 }
