@@ -5,7 +5,7 @@ export const repairMessage = {
 };
 
 export const regionMessage = {
-  uz: 'Kerakli viloyatni tanlang: ',
+  uz: 'Viloyatingizni tanlang: ',
   ru: 'Выберите нужную область: ',
   en: 'Choose the required region: ',
 };
