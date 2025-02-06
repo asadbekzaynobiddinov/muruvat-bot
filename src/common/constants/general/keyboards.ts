@@ -54,7 +54,7 @@ export const phoneNumberKeys = {
   },
 };
 
-export const SettingsKeys = {
+export const settingsKeys = {
   uz: {
     inline_keyboard: [
       [
@@ -78,5 +78,35 @@ export const SettingsKeys = {
         Markup.button.callback(`🌐 Change language`, 'change_lang'),
       ],
     ],
+  },
+};
+
+export const backToRegions: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_regions')],
+    ],
+  },
+  ru: {
+    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_regions')]],
+  },
+  en: {
+    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_regions')]],
+  },
+};
+
+export const backToDistricts: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_districts')],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'back_to_districts')],
+    ],
+  },
+  en: {
+    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_districts')]],
   },
 };

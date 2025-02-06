@@ -1,16 +1,16 @@
 import { Update, Action, Ctx } from 'nestjs-telegraf';
 import {
+  backToViewPatients,
+  ContextType,
   generousMenuKeys,
   mainMessage,
+  regionKeys,
+  regionMessage,
   repairKeys,
   repairMessage,
-  generousSettingsKeys,
-  generousViewPatientsKeys,
-  regionMessage,
-  regionKeysforGenerous,
-  backToViewPatientsForGenerous,
-} from 'src/common/constants';
-import { ContextType } from 'src/common';
+  settingsKeys,
+  viewPatientsKeys,
+} from 'src/common';
 import { Markup } from 'telegraf';
 
 @Update()
@@ -25,7 +25,7 @@ export class ActionsService {
   @Action('view_patients_for_generous')
   async viewPatients(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
-      reply_markup: generousViewPatientsKeys[ctx.session.lang],
+      reply_markup: viewPatientsKeys[ctx.session.lang],
     });
   }
 
@@ -43,7 +43,7 @@ export class ActionsService {
   @Action('settings_for_generous')
   async settings(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
-      reply_markup: generousSettingsKeys[ctx.session.lang],
+      reply_markup: settingsKeys[ctx.session.lang],
     });
   }
 
@@ -59,8 +59,8 @@ export class ActionsService {
     await ctx.editMessageText(regionMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
-          ...regionKeysforGenerous[ctx.session.lang].inline_keyboard,
-          ...backToViewPatientsForGenerous[ctx.session.lang].inline_keyboard,
+          ...regionKeys[ctx.session.lang].inline_keyboard,
+          ...backToViewPatients[ctx.session.lang].inline_keyboard,
         ],
       },
     });
