@@ -5,24 +5,24 @@ export const tashkentsKeys: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
       [
-        Markup.button.callback('🏥 Toshkent shahar', 'tashkent_city'),
-        Markup.button.callback('🏥 Toshkent viloyati', 'tashkent_region'),
+        Markup.button.callback('Toshkent shahar', 'tashkent_city'),
+        Markup.button.callback('Toshkent viloyati', 'tashkent_region'),
       ],
     ],
   },
   ru: {
     inline_keyboard: [
       [
-        Markup.button.callback('🏥 Город Ташкент', 'tashkent_city'),
-        Markup.button.callback('🏥 Ташкентская область', 'tashkent_region'),
+        Markup.button.callback('Город Ташкент', 'tashkent_city'),
+        Markup.button.callback('Ташкентская область', 'tashkent_region'),
       ],
     ],
   },
   en: {
     inline_keyboard: [
       [
-        Markup.button.callback('🏥 Tashkent city', 'tashkent_city'),
-        Markup.button.callback('🏥 Tashkent region', 'tashkent_region'),
+        Markup.button.callback('Tashkent city', 'tashkent_city'),
+        Markup.button.callback('Tashkent region', 'tashkent_region'),
       ],
     ],
   },
@@ -32,88 +32,88 @@ export const regionKeys: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
       [
-        Markup.button.callback('Toshkent', 'region_tashkent'),
-        Markup.button.callback('Samarqand', 'region_samarkand'),
+        Markup.button.callback('Toshkent', 'region_toshkent'),
+        Markup.button.callback('Samarqand', 'region_samarqand'),
       ],
       [
-        Markup.button.callback('Buxoro', 'region_bukhara'),
-        Markup.button.callback('Andijon', 'region_andijan'),
+        Markup.button.callback('Buxoro', 'region_buxoro'),
+        Markup.button.callback('Andijon', 'region_andijon'),
       ],
       [
-        Markup.button.callback("Farg'ona", 'region_fergana'),
+        Markup.button.callback("Farg'ona", 'region_fargona'),
         Markup.button.callback('Namangan', 'region_namangan'),
       ],
       [
-        Markup.button.callback('Qashqadaryo', 'region_qashqadarya'),
-        Markup.button.callback('Jizzax', 'region_jizzakh'),
+        Markup.button.callback('Qashqadaryo', 'region_qashqadaryo'),
+        Markup.button.callback('Jizzax', 'region_jizzax'),
       ],
       [
-        Markup.button.callback('Sirdaryo', 'region_syrdarya'),
-        Markup.button.callback('Xorazm', 'region_khorezm'),
+        Markup.button.callback('Sirdaryo', 'region_sirdaryo'),
+        Markup.button.callback('Xorazm', 'region_xorazm'),
       ],
       [
         Markup.button.callback('Navoiy', 'region_navoiy'),
-        Markup.button.callback('Surxondaryo', 'region_surxondarya'),
+        Markup.button.callback('Surxondaryo', 'region_surxondaryo'),
       ],
-      [Markup.button.callback("Qoraqalpog'iston", 'region_karakalpakstan')],
+      [Markup.button.callback("Qoraqalpog'iston", 'region_qoraqalpogiston')],
     ],
   },
   ru: {
     inline_keyboard: [
       [
-        Markup.button.callback('Ташкент', 'region_tashkent'),
-        Markup.button.callback('Самарканд', 'region_samarkand'),
+        Markup.button.callback('Ташкент', 'region_toshkent'),
+        Markup.button.callback('Самарканд', 'region_samarqand'),
       ],
       [
-        Markup.button.callback('Бухара', 'region_bukhara'),
-        Markup.button.callback('Андижан', 'region_andijan'),
+        Markup.button.callback('Бухара', 'region_buxoro'),
+        Markup.button.callback('Андижан', 'region_andijon'),
       ],
       [
-        Markup.button.callback('Фергана', 'region_fergana'),
+        Markup.button.callback('Фергана', 'region_fargona'),
         Markup.button.callback('Наманган', 'region_namangan'),
       ],
       [
-        Markup.button.callback('Кашкадарья', 'region_qashqadarya'),
-        Markup.button.callback('Джизак', 'region_jizzakh'),
+        Markup.button.callback('Кашкадарья', 'region_qashqadaryo'),
+        Markup.button.callback('Джизак', 'region_jizzax'),
       ],
       [
-        Markup.button.callback('Сырдарья', 'region_syrdarya'),
-        Markup.button.callback('Хорезм', 'region_khorezm'),
+        Markup.button.callback('Сырдарья', 'region_sirdaryo'),
+        Markup.button.callback('Хорезм', 'region_xorazm'),
       ],
       [
         Markup.button.callback('Навои', 'region_navoiy'),
-        Markup.button.callback('Сурхандарья', 'region_surxondarya'),
+        Markup.button.callback('Сурхандарья', 'region_surxondaryo'),
       ],
-      [Markup.button.callback('Каракалпакстан', 'region_karakalpakstan')],
+      [Markup.button.callback('Каракалпакстан', 'region_qoraqalpogiston')],
     ],
   },
   en: {
     inline_keyboard: [
       [
-        Markup.button.callback('Tashkent', 'region_tashkent'),
-        Markup.button.callback('Samarkand', 'region_samarkand'),
+        Markup.button.callback('Tashkent', 'region_toshkent'),
+        Markup.button.callback('Samarkand', 'region_samarqand'),
       ],
       [
-        Markup.button.callback('Bukhara', 'region_bukhara'),
-        Markup.button.callback('Andijan', 'region_andijan'),
+        Markup.button.callback('Bukhara', 'region_buxoro'),
+        Markup.button.callback('Andijan', 'region_andijon'),
       ],
       [
-        Markup.button.callback('Fergana', 'region_fergana'),
+        Markup.button.callback('Fergana', 'region_fargona'),
         Markup.button.callback('Namangan', 'region_namangan'),
       ],
       [
-        Markup.button.callback('Qashqadarya', 'region_qashqadarya'),
-        Markup.button.callback('Jizzakh', 'region_jizzakh'),
+        Markup.button.callback('Qashqadarya', 'region_qashqadaryo'),
+        Markup.button.callback('Jizzakh', 'region_jizzax'),
       ],
       [
-        Markup.button.callback('Syrdarya', 'region_syrdarya'),
-        Markup.button.callback('Khorezm', 'region_khorezm'),
+        Markup.button.callback('Syrdarya', 'region_sirdaryo'),
+        Markup.button.callback('Khorezm', 'region_xorazm'),
       ],
       [
         Markup.button.callback('Navoiy', 'region_navoiy'),
-        Markup.button.callback('Surxondarya', 'region_surxondarya'),
+        Markup.button.callback('Surxondarya', 'region_surxondaryo'),
       ],
-      [Markup.button.callback('Karakalpakstan', 'region_karakalpakstan')],
+      [Markup.button.callback('Karakalpakstan', 'region_qoraqalpogiston')],
     ],
   },
 };
