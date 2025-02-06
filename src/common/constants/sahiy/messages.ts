@@ -10,7 +10,7 @@ export const registerMessage = {
 };
 
 export const generousNameMessage = {
-  uz: 'Imingizni kiriting: ',
+  uz: 'Ismingizni kiriting: ',
   ru: 'Введите ваше имя: ',
   en: 'Enter your name: ',
 };
@@ -46,7 +46,7 @@ export const repairMessage = {
 };
 
 export const regionMessage = {
-  uz: 'Kerakli viloyatni tanlang: ',
+  uz: 'Viloyatingizni tanlang: ',
   ru: 'Выберите нужную область: ',
   en: 'Choose the required region: ',
 };
