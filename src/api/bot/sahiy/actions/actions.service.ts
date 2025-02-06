@@ -8,6 +8,7 @@ import {
   generousViewPatientsKeys,
   regionMessage,
   regionKeysforGenerous,
+  backToViewPatientsForGenerous,
 } from 'src/common/constants';
 import { ContextType } from 'src/common';
 import { Markup } from 'telegraf';
@@ -56,7 +57,12 @@ export class ActionsService {
   @Action('patient_by_region_for_generous')
   async patientByRegion(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(regionMessage[ctx.session.lang], {
-      reply_markup: regionKeysforGenerous[ctx.session.lang],
+      reply_markup: {
+        inline_keyboard: [
+          ...regionKeysforGenerous[ctx.session.lang].inline_keyboard,
+          ...backToViewPatientsForGenerous[ctx.session.lang].inline_keyboard,
+        ],
+      },
     });
   }
 
