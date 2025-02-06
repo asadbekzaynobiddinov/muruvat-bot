@@ -41,11 +41,11 @@ export class AskPatientPhone {
   @On('contact')
   async textHandler(ctx: ContextType) {
     if ('contact' in ctx.message) {
-      await ctx.scene.enter('askPatientAddress');
+      await ctx.scene.enter('askPatientRegion');
     }
   }
 }
-@Scene('askPatientAddress')
+@Scene('askPatientRegion')
 export class AskPatientAddress {
   constructor(
     @InjectRepository(UsersEntity) private readonly userRepo: UsersRepository,
@@ -65,7 +65,17 @@ export class AskPatientAddress {
       await ctx.reply(mainMessage[ctx.session.lang], {
         reply_markup: patientMenuKeys[ctx.session.lang],
       });
-      await ctx.scene.leave();
+      await ctx.scene.enter('');
     }
+  }
+}
+@Scene('askPatientDistrict')
+export class AskPatientDistrict {
+  constructor(
+    @InjectRepository(UsersEntity) private readonly userRepo: UsersRepository,
+  ) {}
+  @SceneEnter()
+  async onEnter(ctx: ContextType) {
+    // if()
   }
 }
