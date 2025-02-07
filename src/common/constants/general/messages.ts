@@ -44,3 +44,9 @@ export const PhoneNumberMessages = {
   ru: `Нажмите на кнопку <b>📞 Отправить номер телефона</b>`,
   en: `Press the <b>📞 Send phone number</b> button`,
 };
+
+export const acceptAddresMessage = {
+  uz: [`Manzilingiz to'g'rimi?`, 'Viloyat: ', 'Tuman: '],
+  ru: [`Ваш адрес верный?`, 'Область: ', 'Район: '],
+  en: [`Is your address correct?`, 'Region: ', 'District: '],
+};
