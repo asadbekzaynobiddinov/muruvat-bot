@@ -6,9 +6,15 @@ import {
   AskGenerousPhone,
   RegisterAsGenerous,
 } from './register.scenes';
+import { ButtonsService } from '../../button/button.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UsersEntity])],
-  providers: [RegisterAsGenerous, AskGenerousPhone, AskGenerousAddress],
+  providers: [
+    RegisterAsGenerous,
+    AskGenerousPhone,
+    AskGenerousAddress,
+    ButtonsService,
+  ],
 })
 export class ScenesModule {}
