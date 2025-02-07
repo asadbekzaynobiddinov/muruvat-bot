@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersEntity } from 'src/core';
 import {
-  AskGenerousAddress,
+  AskGenerousProvince,
   AskGenerousPhone,
   RegisterAsGenerous,
+  AskGenerousDistrict,
 } from './register.scenes';
 import { ButtonsService } from '../../button/button.service';
 
@@ -13,8 +14,9 @@ import { ButtonsService } from '../../button/button.service';
   providers: [
     RegisterAsGenerous,
     AskGenerousPhone,
-    AskGenerousAddress,
+    AskGenerousProvince,
     ButtonsService,
+    AskGenerousDistrict,
   ],
 })
 export class ScenesModule {}

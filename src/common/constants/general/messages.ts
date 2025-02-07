@@ -27,6 +27,12 @@ export const askRegionMessage = {
   en: 'Choose your region: ',
 };
 
+export const districtMessage = {
+  uz: 'Tumanni tanlang: ',
+  ru: 'Выберите район: ',
+  en: 'Select a district: ',
+};
+
 export const mainMessage = {
   uz: "Kerakli bo'limni tanlang: ",
   ru: 'Выберите нужный раздел: ',

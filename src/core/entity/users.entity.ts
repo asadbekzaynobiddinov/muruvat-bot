@@ -5,14 +5,11 @@ import { PatientsEntity } from './patients_applications.entity';
 import { Languages } from 'src/common/enum/language';
 @Entity('users')
 export class UsersEntity extends BaseEntity {
-  @Column({ type: 'varchar', name: 'telegram_id', nullable: true })
+  @Column({ type: 'varchar', name: 'telegram_id', unique: true })
   telegram_id: string;
 
-  @Column({ type: 'varchar', name: 'first_name', nullable: true })
-  first_name: string;
-
-  @Column({ type: 'varchar', name: 'last_name', nullable: true })
-  last_name: string;
+  @Column({ type: 'varchar', name: 'name', nullable: true })
+  name: string;
 
   @Column({ type: 'enum', enum: Role, name: 'role', nullable: true })
   role: Role;
@@ -20,8 +17,11 @@ export class UsersEntity extends BaseEntity {
   @Column({ type: 'varchar', name: 'phone_number', nullable: true })
   phone_number: string;
 
-  @Column({ type: 'text', name: 'location', nullable: true })
-  location: string;
+  @Column({ type: 'varchar', name: 'region', nullable: true })
+  region: string;
+
+  @Column({ type: 'varchar', name: 'districet', nullable: true })
+  district: string;
 
   @Column({ type: 'enum', enum: Languages })
   lang: Languages;

@@ -9,10 +9,25 @@ import {
   phoneNumberKeys,
   regionKeys,
   // regionKeys,
-  // askRegionMessage,
+  askRegionMessage,
+  tashkentRegionCitysKeys,
+  tashkentCitysKeys,
+  ferganaCitysKeys,
+  samarkandCityKeys,
+  bukharaCityKeys,
+  namanganCityKeys,
+  andijanCityKeys,
+  qashqadaryaCityKeys,
+  jizzaxCityKeys,
+  sirdaryoCityKeys,
+  xorazmCityKeys,
+  navoiCityKeys,
+  surxandaryaCityKeys,
+  districtMessage,
 } from 'src/common/';
 import { UsersEntity, UsersRepository } from 'src/core';
 import { ButtonsService } from '../../button/button.service';
+import { InlineKeyboardMarkup } from '@telegraf/types';
 
 @Scene('registerAsGenerous')
 export class RegisterAsGenerous {
@@ -53,29 +68,27 @@ export class AskGenerousPhone {
       const contact = ctx.message.contact as { phone_number: string };
       const text = contact.phone_number;
       console.log(text);
-      await ctx.scene.enter('askGenerousAddress');
+      await ctx.scene.enter('askGenerousProvince');
     }
   }
 }
 
-@Scene('askGenerousAddress')
-export class AskGenerousAddress {
+@Scene('askGenerousProvince')
+export class AskGenerousProvince {
   constructor(
     @InjectRepository(UsersEntity) private readonly userRepo: UsersRepository,
     private readonly buttonService: ButtonsService,
   ) {}
   @SceneEnter()
   async onEnter(ctx: ContextType) {
-    // const keys = [];
     const buttons = this.buttonService.generateButtons(
       regionKeys[ctx.session.lang],
       0,
       ctx.session.lang,
     );
-    await ctx.reply('Bu yerda tugmalar chiqadi', { reply_markup: buttons });
-    // await ctx.reply(askRegionMessage[ctx.session.lang], {
-    //   reply_markup: regionKeys[ctx.session.lang],
-    // });
+    await ctx.reply(askRegionMessage[ctx.session.lang], {
+      reply_markup: buttons,
+    });
   }
 
   @Action(/page/)
@@ -86,59 +99,170 @@ export class AskGenerousAddress {
       +page,
       ctx.session.lang,
     );
-    await ctx.editMessageText('isfddsf', { reply_markup: buttons });
+    await ctx.editMessageText(askRegionMessage[ctx.session.lang], {
+      reply_markup: buttons,
+    });
   }
 
   @Action(/region/)
-  async textHandler(ctx: ContextType) {
+  async callbackHandler(ctx: ContextType) {
+    await ctx.scene.enter('askGenerousDistrict');
+  }
+}
+
+@Scene('askGenerousDistrict')
+export class AskGenerousDistrict {
+  constructor(
+    @InjectRepository(UsersEntity) private readonly userRepo: UsersRepository,
+    private readonly buttonService: ButtonsService,
+  ) {}
+  @SceneEnter()
+  async onEnter(ctx: ContextType) {
     const [, region] = (ctx.update as any).callback_query.data.split('_');
-    console.log(region);
+    let buttons: InlineKeyboardMarkup;
     switch (region) {
       case 'toshken shahar':
-        console.log(region);
+        buttons = this.buttonService.generateButtons(
+          tashkentCitysKeys[ctx.session.lang],
+          0,
+          ctx.session.lang,
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
       case 'toshkent viloyat':
-        console.log(region);
+        buttons = this.buttonService.generateButtons(
+          tashkentRegionCitysKeys[ctx.session.lang],
+          0,
+          ctx.session.lang,
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
       case 'samarqand':
-        console.log(region);
+        buttons = this.buttonService.generateButtons(
+          samarkandCityKeys[ctx.session.lang],
+          0,
+          ctx.session.lang,
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
       case 'buxoro':
-        console.log(region);
+        buttons = this.buttonService.generateButtons(
+          bukharaCityKeys[ctx.session.lang],
+          0,
+          ctx.session.lang,
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
       case 'andijon':
-        console.log(region);
+        buttons = this.buttonService.generateButtons(
+          andijanCityKeys[ctx.session.lang],
+          0,
+          ctx.session.lang,
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
-      case 'fargon':
-        console.log(region);
+      case 'fargona':
+        buttons = this.buttonService.generateButtons(
+          ferganaCitysKeys[ctx.session.lang],
+          0,
+          ctx.session.lang,
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
       case 'namangan':
-        console.log(region);
+        buttons = this.buttonService.generateButtons(
+          namanganCityKeys[ctx.session.lang],
+          0,
+          ctx.session.lang,
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
       case 'qashqadaryo':
-        console.log(region);
+        buttons = this.buttonService.generateButtons(
+          qashqadaryaCityKeys[ctx.session.lang],
+          0,
+          ctx.session.lang,
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
       case 'jizzax':
-        console.log(region);
+        buttons = this.buttonService.generateButtons(
+          jizzaxCityKeys[ctx.session.lang],
+          0,
+          ctx.session.lang,
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
       case 'sirdaryo':
-        console.log(region);
+        buttons = this.buttonService.generateButtons(
+          sirdaryoCityKeys[ctx.session.lang],
+          0,
+          ctx.session.lang,
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
       case 'xorazm':
-        console.log(region);
+        buttons = this.buttonService.generateButtons(
+          xorazmCityKeys[ctx.session.lang],
+          0,
+          ctx.session.lang,
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
       case 'navoiy':
-        console.log(region);
+        buttons = this.buttonService.generateButtons(
+          navoiCityKeys[ctx.session.lang],
+          0,
+          ctx.session.lang,
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
       case 'surxondaryo':
-        console.log(region);
+        buttons = this.buttonService.generateButtons(
+          surxandaryaCityKeys[ctx.session.lang],
+          0,
+          ctx.session.lang,
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
       case 'qoraqalpogiston':
-        console.log(region);
+        buttons = this.buttonService.generateButtons(
+          qashqadaryaCityKeys[ctx.session.lang],
+          0,
+          ctx.session.lang[ctx.session.lang],
+        );
+        await ctx.editMessageText(districtMessage[ctx.session.lang], {
+          reply_markup: buttons,
+        });
         break;
       default:
         break;
     }
-    await ctx.scene.leave();
   }
 }
