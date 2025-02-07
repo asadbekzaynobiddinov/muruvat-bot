@@ -1,14 +1,15 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { On, Scene, SceneEnter } from 'nestjs-telegraf';
+import { Action, Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 import { ContextType } from 'src/common';
 import {
-  mainMessage,
+  askRegionMessage,
   phoneNumberKeys,
   PhoneNumberMessages,
   regionMessage,
 } from 'src/common/constants';
-import { patientMenuKeys, askNameMessage, regionKeys } from 'src/common';
+import { askNameMessage, regionKeys } from 'src/common';
 import { UsersEntity, UsersRepository } from 'src/core';
+import { ButtonsService } from '../../button/button.service';
 
 @Scene('registerAsPatient')
 export class RegisterScenes {
@@ -49,33 +50,41 @@ export class AskPatientPhone {
 export class AskPatientAddress {
   constructor(
     @InjectRepository(UsersEntity) private readonly userRepo: UsersRepository,
+    private readonly buttonService: ButtonsService,
   ) {}
   @SceneEnter()
   async onEnter(ctx: ContextType) {
-    await ctx.reply(regionMessage[ctx.session.lang], {
-      reply_markup: regionKeys[ctx.session.lang],
-      parse_mode: 'HTML',
+    const buttons = this.buttonService.generateButtons(
+      regionKeys[ctx.session.lang],
+      0,
+      ctx.session.lang,
+    );
+    await ctx.reply(askRegionMessage[ctx.session.lang], {
+      reply_markup: buttons,
     });
   }
-  @On('text')
-  async textHandler(ctx: ContextType) {
-    if ('text' in ctx.message) {
-      const text = ctx.message.text;
-      console.log(text);
-      await ctx.reply(mainMessage[ctx.session.lang], {
-        reply_markup: patientMenuKeys[ctx.session.lang],
-      });
-      await ctx.scene.enter('');
-    }
+  @Action(/page/)
+  async page(@Ctx() ctx: ContextType) {
+    const [, page] = (ctx.update as any).callback_query.data.split('_');
+    const buttons = this.buttonService.generateButtons(
+      regionKeys[ctx.session.lang],
+      +page,
+      ctx.session.lang,
+    );
+    await ctx.editMessageText(regionMessage[ctx.session.lang], {
+      reply_markup: buttons,
+    });
+  }
+  @Action(/region/)
+  async callbackHandler(@Ctx() ctx: ContextType) {
+    await ctx.scene.enter('askPatientDistrict');
   }
 }
+
 @Scene('askPatientDistrict')
 export class AskPatientDistrict {
   constructor(
     @InjectRepository(UsersEntity) private readonly userRepo: UsersRepository,
+    private readonly buttonService: ButtonsService,
   ) {}
-  @SceneEnter()
-  async onEnter(ctx: ContextType) {
-    // if()
-  }
 }
