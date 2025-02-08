@@ -8,9 +8,10 @@ import {
   AskGenerousDistrict,
 } from './register.scenes';
 import { ButtonsService } from '../../button/button.service';
+import { ButtonModule } from '../../button/button.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UsersEntity])],
+  imports: [TypeOrmModule.forFeature([UsersEntity]), ButtonModule],
   providers: [
     RegisterAsGenerous,
     AskGenerousPhone,

@@ -1,9 +1,6 @@
-// import { InlineKeyboardMarkup } from '@telegraf/types';
-// import { Markup } from 'telegraf';
-
 export const regionKeys = {
   uz: [
-    ['Toshkent shahar', 'region_toshken shahar'],
+    ['Toshkent shahar', 'region_toshkent shahar'],
     ['Toshkent viloyai', 'region_region_toshkent viloyat'],
     ['Samarqand', 'region_samarqand'],
     ['Buxoro', 'region_buxoro'],
@@ -157,7 +154,7 @@ export const ferganaCitysKeys = {
     ['Beshariq tumani', 'district_beshariq'],
     ['Buvayda tumani', 'district_buvayda'],
     ['Dangʻara tumani', 'district_dangara'],
-    ['Fargʻona tumani', 'district_fergana'],
+    ['Fargʻona tumani', 'district_fargona'],
     ['Furqat tumani', 'district_furqat'],
     ['Oltiariq tumani', 'district_oltiariq'],
     ['Oyim tumani', 'district_oyim'],
@@ -176,7 +173,7 @@ export const ferganaCitysKeys = {
     ['Бешарыкский район', 'district_beshariq'],
     ['Бувайдо', 'district_buvayda'],
     ['Дангаринский район', 'district_dangara'],
-    ['Ферганский район', 'district_fergana'],
+    ['Ферганский район', 'district_fargona'],
     ['Фуркатский район', 'district_furqat'],
     ['Олтарикский район', 'district_oltiariq'],
     ['Ойим', 'district_oyim'],
@@ -195,7 +192,7 @@ export const ferganaCitysKeys = {
     ['Beshariq district', 'district_beshariq'],
     ['Buvayda', 'district_buvayda'],
     ['Dangara district', 'district_dangara'],
-    ['Fergana district', 'district_fergana'],
+    ['Fergana district', 'district_fargona'],
     ['Furqat district', 'district_furqat'],
     ['Oltiariq district', 'district_oltiariq'],
     ['Oyim', 'district_oyim'],

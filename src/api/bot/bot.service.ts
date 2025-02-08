@@ -27,6 +27,7 @@ export class BotService {
       await ctx.reply(startMessage, { reply_markup: selectLangKeys });
       return;
     }
+    ctx.session.lang = user.lang;
     switch (user.role) {
       case 'generous':
         await ctx.reply(mainMessage[user.lang], {

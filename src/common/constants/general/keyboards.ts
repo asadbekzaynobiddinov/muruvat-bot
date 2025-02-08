@@ -84,29 +84,27 @@ export const settingsKeys = {
 export const backToRegions: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
-      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_regions')],
+      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_r')],
     ],
   },
   ru: {
-    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_regions')]],
+    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_r')]],
   },
   en: {
-    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_regions')]],
+    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_r')]],
   },
 };
 
 export const backToDistricts: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
-      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_districts')],
+      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_d')],
     ],
   },
   ru: {
-    inline_keyboard: [
-      [Markup.button.callback('🔙 Назад', 'back_to_districts')],
-    ],
+    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_d')]],
   },
   en: {
-    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_districts')]],
+    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_d')]],
   },
 };

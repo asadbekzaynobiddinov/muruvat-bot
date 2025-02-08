@@ -28,7 +28,7 @@ export const askRegionMessage = {
 };
 
 export const districtMessage = {
-  uz: 'Tumanni tanlang: ',
+  uz: 'Tumaningizni tanlang: ',
   ru: 'Выберите район: ',
   en: 'Select a district: ',
 };
@@ -46,7 +46,7 @@ export const PhoneNumberMessages = {
 };
 
 export const acceptAddresMessage = {
-  uz: [`Manzilingiz to'g'rimi?`, 'Viloyat: ', 'Tuman: '],
-  ru: [`Ваш адрес верный?`, 'Область: ', 'Район: '],
-  en: [`Is your address correct?`, 'Region: ', 'District: '],
+  uz: `Manzilingiz to'g'rimi?`,
+  ru: `Ваш адрес верный?`,
+  en: `Is your address correct?`,
 };

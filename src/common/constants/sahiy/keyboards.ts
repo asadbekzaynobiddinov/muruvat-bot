@@ -147,22 +147,17 @@ export const viewPatientsKeys: Record<string, InlineKeyboardMarkup> = {
 export const backToViewPatients: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
-      [
-        Markup.button.callback(
-          '🔙 Ortga qaytish',
-          'view_patients_for_generous',
-        ),
-      ],
+      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_view_patents')],
     ],
   },
   ru: {
     inline_keyboard: [
-      [Markup.button.callback('🔙 Назад', 'view_patients_for_generous')],
+      [Markup.button.callback('🔙 Назад', 'back_to_view_patents')],
     ],
   },
   en: {
     inline_keyboard: [
-      [Markup.button.callback('🔙 Back', 'view_patients_for_generous')],
+      [Markup.button.callback('🔙 Back', 'back_to_view_patents')],
     ],
   },
 };
