@@ -50,3 +50,21 @@ export const acceptAddresMessage = {
   ru: `Ваш адрес верный?`,
   en: `Is your address correct?`,
 };
+
+export const langMessages = {
+  uz: `O'zingiz uchun qulay tilni tanlang:`,
+  ru: 'Выберите подходящий вам язык:',
+  en: 'Choose a language that suits you:',
+};
+
+export const correctFormatPhone = {
+  uz: `Iltimos, raqamni to'g'ri formatda kiriting.`,
+  en: `Please enter the number in the correct format.`,
+  ru: `Пожалуйста, введите номер в правильном формате.`,
+};
+
+export const acceptPhoneMessage = {
+  uz: ['Yangi raqamni tasdiqlaysizmi:', 'Raqam: '],
+  ru: ['Вы подтверждаете новый номер?', 'Номер: '],
+  en: ['Do you confirm the new number?', 'Number: '],
+};
