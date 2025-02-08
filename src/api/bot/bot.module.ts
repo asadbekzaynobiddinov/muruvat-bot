@@ -12,6 +12,7 @@ import { AdminModule } from './admin/admin.module';
 import { SahiyModule } from './sahiy/sahiy.module';
 import { SabrliModule } from './sabrli/sabrli.module';
 import { BotService } from './bot.service';
+import { ButtonModule } from './button/button.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { BotService } from './bot.service';
     AdminModule,
     SahiyModule,
     SabrliModule,
+    ButtonModule,
   ],
   providers: [BotService],
 })

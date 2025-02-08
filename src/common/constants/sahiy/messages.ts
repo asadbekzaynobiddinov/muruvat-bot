@@ -9,3 +9,15 @@ export const regionMessage = {
   ru: 'Выберите нужную область: ',
   en: 'Choose the required region: ',
 };
+
+export const neededRegionMessage = {
+  uz: 'Kerakli viloyatni tanlang: ',
+  ru: 'Выберите нужный регион: ',
+  en: 'Select the required region: ',
+};
+
+export const neededDistrictMessage = {
+  uz: 'Kerakli tumanni tanlang: ',
+  ru: 'Выберите нужный район: ',
+  en: 'Select the required district: ',
+};
