@@ -78,7 +78,7 @@ export const viewPatientsKeys: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
       [
-        Markup.button.callback('👥 Barcha Sabrlilar', 'all_patientd'),
+        Markup.button.callback('👥 Barcha Sabrlilar', 'all_patients'),
         Markup.button.callback(
           `📍 Hudud Bo'yicha`,
           'patient_by_region_for_generous',
@@ -102,7 +102,7 @@ export const viewPatientsKeys: Record<string, InlineKeyboardMarkup> = {
   ru: {
     inline_keyboard: [
       [
-        Markup.button.callback('👥 Все пациенты', 'all_patientd'),
+        Markup.button.callback('👥 Все пациенты', 'all_patients'),
         Markup.button.callback(
           '📍 По региону',
           'patient_by_region_for_generous',
@@ -126,7 +126,7 @@ export const viewPatientsKeys: Record<string, InlineKeyboardMarkup> = {
   en: {
     inline_keyboard: [
       [
-        Markup.button.callback('👥 All Patients', 'all_patientd'),
+        Markup.button.callback('👥 All Patients', 'all_patients'),
         Markup.button.callback(
           '📍 By Region',
           'patient_by_region_for_generous',
@@ -159,5 +159,215 @@ export const backToViewPatients: Record<string, InlineKeyboardMarkup> = {
     inline_keyboard: [
       [Markup.button.callback('🔙 Back', 'back_to_view_patents')],
     ],
+  },
+};
+
+export const backToGenerosMenu: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_generous_menu')],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'back_to_generous_menu')],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'back_to_generous_menu')],
+    ],
+  },
+};
+
+export const backToChanges: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_changes')],
+    ],
+  },
+  ru: {
+    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_changes')]],
+  },
+  en: {
+    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_changes')]],
+  },
+};
+
+export const ageKeys: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('3 yoshgacha', 'age_0_3'),
+        Markup.button.callback('3 - 6 yosh', 'age_3_6'),
+      ],
+      [
+        Markup.button.callback('6 - 9 yosh', 'age_6_9'),
+        Markup.button.callback('9 - 12 yosh', 'age_9_12'),
+      ],
+      [
+        Markup.button.callback('12 - 15 yosh', 'age_12_15'),
+        Markup.button.callback('15 dan yuqori', 'age_15_100'),
+      ],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('До 3 лет', 'age_0_3'),
+        Markup.button.callback('3 - 6 лет', 'age_3_6'),
+      ],
+      [
+        Markup.button.callback('6 - 9 лет', 'age_6_9'),
+        Markup.button.callback('9 - 12 лет', 'age_9_12'),
+      ],
+      [
+        Markup.button.callback('12 - 15 лет', 'age_12_15'),
+        Markup.button.callback('Старше 15', 'age_15_100'),
+      ],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('Under 3 years', 'age_0_3'),
+        Markup.button.callback('3 - 6 years', 'age_3_6'),
+      ],
+      [
+        Markup.button.callback('6 - 9 years', 'age_6_9'),
+        Markup.button.callback('9 - 12 years', 'age_9_12'),
+      ],
+      [
+        Markup.button.callback('12 - 15 years', 'age_12_15'),
+        Markup.button.callback('Over 15 years', 'age_15_100'),
+      ],
+    ],
+  },
+};
+
+export const genderForAgeKeys: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('Erkak', 'genderForAge_male'),
+        Markup.button.callback('Ayol', 'genderForAge_female'),
+      ],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('Мужчина', 'genderForAge_male'),
+        Markup.button.callback('Женщина', 'genderForAge_female'),
+      ],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('Male', 'genderForAge_male'),
+        Markup.button.callback('Female', 'genderForAge_female'),
+      ],
+    ],
+  },
+};
+
+export const genderForSizeKeys: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('Erkak', 'genderForSize_male'),
+        Markup.button.callback('Ayol', 'genderForSize_female'),
+      ],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('Мужчина', 'genderForSize_male'),
+        Markup.button.callback('Женщина', 'genderForSize_female'),
+      ],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('Male', 'genderForSize_male'),
+        Markup.button.callback('Female', 'genderForSize_female'),
+      ],
+    ],
+  },
+};
+
+export const backToGendersForAge: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_g_f_a')],
+    ],
+  },
+  ru: {
+    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_g_f_a')]],
+  },
+  en: {
+    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_g_f_a')]],
+  },
+};
+
+export const backToGendersForSize: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_g_f_s')],
+    ],
+  },
+  ru: {
+    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_g_f_s')]],
+  },
+  en: {
+    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_g_f_s')]],
+  },
+};
+
+export const backToAges: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_a')],
+    ],
+  },
+  ru: {
+    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_a')]],
+  },
+  en: {
+    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_a')]],
+  },
+};
+
+export const sizeKeys: InlineKeyboardMarkup = {
+  inline_keyboard: [
+    [
+      Markup.button.callback('XS - 32-34', 'size_xs'),
+      Markup.button.callback('S - 36-38', 'size_s'),
+    ],
+    [
+      Markup.button.callback('M - 40-42', 'size_m'),
+      Markup.button.callback('L - 44-46', 'size_l'),
+    ],
+    [
+      Markup.button.callback('XL - 48-50', 'size_xl'),
+      Markup.button.callback('XXL - 52-54', 'size_xxl'),
+    ],
+  ],
+};
+
+export const backToS: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_s')],
+    ],
+  },
+  ru: {
+    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_s')]],
+  },
+  en: {
+    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_s')]],
   },
 };

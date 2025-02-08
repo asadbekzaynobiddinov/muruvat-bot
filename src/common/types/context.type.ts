@@ -7,5 +7,9 @@ export type ContextType = Context &
       lang: string;
       search_region: string;
       search_district: string;
+      search_gender: 'male' | 'femalae';
+      past: number;
+      yuqori: number;
+      search_size: string;
     };
   };

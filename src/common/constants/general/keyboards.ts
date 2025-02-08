@@ -108,3 +108,11 @@ export const backToDistricts: Record<string, InlineKeyboardMarkup> = {
     inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_d')]],
   },
 };
+
+export const langKeys = {
+  inline_keyboard: [
+    [Markup.button.callback("🇺🇿 O'zbekcha", 'setUz')],
+    [Markup.button.callback('🇷🇺 Русский', 'setRu')],
+    [Markup.button.callback('🇺🇸 English', 'setEn')],
+  ],
+};
