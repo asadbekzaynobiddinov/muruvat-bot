@@ -93,7 +93,7 @@ export class BotService {
   async registerPatient(@Ctx() ctx: ContextType) {
     await this.userRepo.update(
       { telegram_id: `${ctx.from.id}` },
-      { role: Role.GENEROUS },
+      { role: Role.PATIENT },
     );
     await ctx.scene.enter('registerAsPatient');
   }
