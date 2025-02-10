@@ -257,8 +257,40 @@ export class ButtonsService {
 
     const patients = await this.patintsRepo.find({ where, skip, take });
 
-    console.log(patients);
+    if (patients.length === 0) {
+      return false;
+    }
 
-    return patients.length > 0;
+    const text = patients
+      .map((p, i) => `${skip + i + 1}. ${p.name}`)
+      .join('\n');
+
+    const buttons = [];
+    for (let i = 0; i < patients.length; i += 5) {
+      buttons.push(
+        patients.slice(i, i + 5).map((p, index) => ({
+          text: (skip + i + index + 1).toString(),
+          callback_data: `patient_${p.id}`,
+        })),
+      );
+    }
+
+    const navigationButtons = [];
+    if (page > 1)
+      navigationButtons.push({
+        text: '⬅️ Oldingi',
+        callback_data: `page_${page - 1}`,
+      });
+    if (patients.length === take)
+      navigationButtons.push({
+        text: '➡️ Keyingi',
+        callback_data: `page_${page + 1}`,
+      });
+
+    if (navigationButtons.length) {
+      buttons.push(navigationButtons);
+    }
+
+    return { text, buttons };
   }
 }
