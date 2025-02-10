@@ -1,7 +1,7 @@
 export const regionKeys = {
   uz: [
     ['Toshkent shahar', 'region_toshkent shahar'],
-    ['Toshkent viloyai', 'region_region_toshkent viloyat'],
+    ['Toshkent viloyai', 'region_toshkent viloyat'],
     ['Samarqand', 'region_samarqand'],
     ['Buxoro', 'region_buxoro'],
     ['Andijon', 'region_andijon'],
