@@ -43,7 +43,11 @@ export class ButtonsService {
     en: { back: '⬅️ Back', next: 'Next ➡️' },
   };
 
-  generateRegionButtons(page: number, lang: any): InlineKeyboardMarkup {
+  generateRegionButtons(
+    page: number,
+    lang: any,
+    customCallback: string,
+  ): InlineKeyboardMarkup {
     const start = page * this.perPage;
     const end = start + this.perPage;
     const totalPages = Math.ceil(regionKeys[lang].length / this.perPage);
@@ -51,7 +55,7 @@ export class ButtonsService {
     const buttons = regionKeys[lang]
       .slice(start, end)
       .map(([text, callback]) => {
-        return [Markup.button.callback(text, callback)];
+        return [Markup.button.callback(text, customCallback + '=' + callback)];
       });
 
     const navButtons = [];
@@ -59,7 +63,7 @@ export class ButtonsService {
       navButtons.push(
         Markup.button.callback(
           this.navigationLabels[lang].back,
-          `pageRegion_${page - 1}`,
+          `${customCallback}Page=${page - 1}`,
         ),
       );
     }
@@ -67,7 +71,7 @@ export class ButtonsService {
       navButtons.push(
         Markup.button.callback(
           this.navigationLabels[lang].next,
-          `pageRegion_${page + 1}`,
+          `${customCallback}Page=${page + 1}`,
         ),
       );
     }
@@ -83,6 +87,7 @@ export class ButtonsService {
     region: string,
     page: number,
     lang: any,
+    customCallback: string,
   ): InlineKeyboardMarkup {
     const start = page * this.perPage;
     const end = start + this.perPage;
@@ -96,7 +101,9 @@ export class ButtonsService {
         buttons = tashkentCitysKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       case 'toshkent viloyat':
@@ -106,7 +113,9 @@ export class ButtonsService {
         buttons = tashkentRegionCitysKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       case 'samarqand':
@@ -114,7 +123,9 @@ export class ButtonsService {
         buttons = samarkandCityKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       case 'buxoro':
@@ -122,7 +133,9 @@ export class ButtonsService {
         buttons = bukharaCityKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       case 'andijon':
@@ -130,7 +143,9 @@ export class ButtonsService {
         buttons = andijanCityKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       case 'fargona':
@@ -138,7 +153,9 @@ export class ButtonsService {
         buttons = ferganaCitysKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       case 'namangan':
@@ -146,7 +163,9 @@ export class ButtonsService {
         buttons = namanganCityKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       case 'qashqadaryo':
@@ -154,7 +173,9 @@ export class ButtonsService {
         buttons = qashqadaryaCityKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       case 'jizzax':
@@ -162,7 +183,9 @@ export class ButtonsService {
         buttons = jizzaxCityKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       case 'sirdaryo':
@@ -170,7 +193,9 @@ export class ButtonsService {
         buttons = sirdaryoCityKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       case 'xorazm':
@@ -178,7 +203,9 @@ export class ButtonsService {
         buttons = xorazmCityKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       case 'navoiy':
@@ -186,7 +213,9 @@ export class ButtonsService {
         buttons = navoiCityKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       case 'surxondaryo':
@@ -194,7 +223,9 @@ export class ButtonsService {
         buttons = surxandaryaCityKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       case 'qoraqalpogiston':
@@ -204,7 +235,9 @@ export class ButtonsService {
         buttons = karakalpakstanCityKeys[lang]
           .slice(start, end)
           .map(([text, callback]) => {
-            return [Markup.button.callback(text, callback)];
+            return [
+              Markup.button.callback(text, customCallback + '=' + callback),
+            ];
           });
         break;
       default:
@@ -216,7 +249,7 @@ export class ButtonsService {
       navButtons.push(
         Markup.button.callback(
           this.navigationLabels[lang].back,
-          `pageDistrict_${page - 1}`,
+          `${customCallback}Page=${page - 1}`,
         ),
       );
     }
@@ -224,7 +257,7 @@ export class ButtonsService {
       navButtons.push(
         Markup.button.callback(
           this.navigationLabels[lang].next,
-          `pageDistrict_${page + 1}`,
+          `${customCallback}Page=${page + 1}`,
         ),
       );
     }
