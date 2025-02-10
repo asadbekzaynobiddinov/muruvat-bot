@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersEntity } from 'src/core';
+import { PatientsEntity, UsersEntity } from 'src/core';
 import {
   AskGenerousProvince,
   AskGenerousPhone,
@@ -12,7 +12,10 @@ import { ButtonsService } from '../../button/button.service';
 import { ButtonModule } from '../../button/button.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UsersEntity]), ButtonModule],
+  imports: [
+    TypeOrmModule.forFeature([UsersEntity, PatientsEntity]),
+    ButtonModule,
+  ],
   providers: [
     RegisterAsGenerous,
     AskGenerousPhone,

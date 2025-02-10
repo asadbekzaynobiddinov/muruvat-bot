@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { InlineKeyboardMarkup } from '@telegraf/types';
 import {
   andijanCityKeys,
   bukharaCityKeys,
   ferganaCitysKeys,
+  Genders,
   jizzaxCityKeys,
   karakalpakstanCityKeys,
   namanganCityKeys,
@@ -17,10 +19,22 @@ import {
   tashkentRegionCitysKeys,
   xorazmCityKeys,
 } from 'src/common';
+import {
+  PatientsEntity,
+  PatientsRepository,
+  UsersEntity,
+  UsersRepository,
+} from 'src/core';
 import { Markup } from 'telegraf';
+import { Between } from 'typeorm';
 
 @Injectable()
 export class ButtonsService {
+  constructor(
+    @InjectRepository(PatientsEntity)
+    private readonly patintsRepo: PatientsRepository,
+    @InjectRepository(UsersEntity) private readonly userRepo: UsersRepository,
+  ) {}
   private perPage = 5;
 
   private navigationLabels = {
@@ -219,5 +233,32 @@ export class ButtonsService {
       buttons.push(navButtons);
     }
     return { inline_keyboard: buttons };
+  }
+
+  async generatePatientsButtons(
+    filters: Partial<{
+      gender: Genders;
+      age: [number, number];
+      size: string;
+      region: string;
+      district: string;
+    }>,
+    page: number,
+  ) {
+    const skip = (page - 1) * 10;
+    const take = 10;
+
+    const where: any = {};
+    if (filters.gender) where.gender = filters.gender;
+    if (filters.age) where.age = Between(filters.age[0], filters.age[1]);
+    if (filters.size) where.size = filters.size;
+    if (filters.region) where.region = filters.region;
+    if (filters.district) where.district = filters.district;
+
+    const patients = await this.patintsRepo.find({ where, skip, take });
+
+    console.log(patients);
+
+    return patients.length > 0;
   }
 }

@@ -21,3 +21,9 @@ export const neededDistrictMessage = {
   ru: 'Выберите нужный район: ',
   en: 'Select the required district: ',
 };
+
+export const noPatintsMessage = {
+  uz: 'Sabrilar mavjud emas',
+  ru: 'Пациенты отсутствуют',
+  en: 'No patients available',
+};

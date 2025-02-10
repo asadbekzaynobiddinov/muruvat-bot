@@ -5,11 +5,23 @@ export type ContextType = Context &
   SceneContext & {
     session: {
       lang: string;
-      search_region: string;
-      search_district: string;
-      search_gender: 'male' | 'femalae';
-      past: number;
-      yuqori: number;
-      search_size: string;
+      search: {
+        region: string;
+        district: string;
+        gender: string;
+        down: number;
+        up: number;
+        size: string;
+      };
     };
   };
+
+export type DbOptions = {
+  page?: number;
+  gender?: string;
+  up?: number;
+  down?: number;
+  size?: string;
+  region?: string;
+  district?: string;
+};

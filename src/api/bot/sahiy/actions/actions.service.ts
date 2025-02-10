@@ -13,12 +13,14 @@ import {
   ContextType,
   genderForAgeKeys,
   genderForSizeKeys,
+  Genders,
   generousMenuKeys,
   langKeys,
   langMessages,
   mainMessage,
   neededDistrictMessage,
   neededRegionMessage,
+  noPatintsMessage,
   repairKeys,
   repairMessage,
   settingsKeys,
@@ -118,7 +120,7 @@ export class ActionsService {
   @Action(/region/)
   async region(@Ctx() ctx: ContextType) {
     const [, region] = (ctx.update as any).callback_query.data.split('_');
-    ctx.session.search_region = region;
+    ctx.session.search.region = region;
     console.log(ctx.session);
     const buttons = this.buttonService.generateDistrictButtons(
       region,
@@ -139,7 +141,7 @@ export class ActionsService {
   async pageDistrict(@Ctx() ctx: ContextType) {
     const [, page] = (ctx.update as any).callback_query.data.split('_');
     const buttons = this.buttonService.generateDistrictButtons(
-      ctx.session.search_region,
+      ctx.session.search.region,
       +page,
       ctx.session.lang,
     );
@@ -156,8 +158,21 @@ export class ActionsService {
   @Action(/district/)
   async district(@Ctx() ctx: ContextType) {
     const [, district] = (ctx.update as any).callback_query.data.split('_');
-    ctx.session.search_district = district;
-    await ctx.editMessageText(neededDistrictMessage[ctx.session.lang], {
+    ctx.session.search.district = district;
+    const result = await this.buttonService.generatePatientsButtons(
+      {
+        region: ctx.session.search.region,
+        district: ctx.session.search.district,
+      },
+      1,
+    );
+    if (!result) {
+      await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
+    await ctx.editMessageText('Endi yoziladi', {
       reply_markup: backToDistricts[ctx.session.lang],
     });
   }
@@ -181,7 +196,7 @@ export class ActionsService {
   @Action('back_to_d')
   async backToDistricts(@Ctx() ctx: ContextType) {
     const buttons = this.buttonService.generateDistrictButtons(
-      ctx.session.search_region,
+      ctx.session.search.region,
       0,
       ctx.session.lang,
     );
@@ -309,8 +324,7 @@ export class ActionsService {
   @Action(/genderForAge/)
   async searchGenderForAge(@Ctx() ctx: ContextType) {
     const [, gender] = (ctx.update as any).callback_query.data.split('_');
-    console.log({ gender });
-    ctx.session.search_gender = gender;
+    ctx.session.search.gender = gender;
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
@@ -324,8 +338,7 @@ export class ActionsService {
   @Action(/genderForSize/)
   async searchGenderForSize(@Ctx() ctx: ContextType) {
     const [, gender] = (ctx.update as any).callback_query.data.split('_');
-    console.log({ gender });
-    ctx.session.search_gender = gender;
+    ctx.session.search.gender = gender;
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
@@ -339,9 +352,21 @@ export class ActionsService {
   @Action(/age/)
   async searchAge(@Ctx() ctx: ContextType) {
     const [, past, yuqori] = (ctx.update as any).callback_query.data.split('_');
-    console.log({ past, yuqori });
-    ctx.session.past = past;
-    ctx.session.yuqori = yuqori;
+    ctx.session.search.down = past;
+    ctx.session.search.up = yuqori;
+    const result = await this.buttonService.generatePatientsButtons(
+      {
+        gender: ctx.session.search.gender as Genders,
+        age: [ctx.session.search.down, ctx.session.search.up],
+      },
+      1,
+    );
+    if (!result) {
+      await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
     await ctx.editMessageText('Endi yoziladi', {
       reply_markup: backToAges[ctx.session.lang],
     });
@@ -350,7 +375,20 @@ export class ActionsService {
   @Action(/size/)
   async size(@Ctx() ctx: ContextType) {
     const [, size] = (ctx.update as any).callback_query.data.split('_');
-    ctx.session.search_size = size;
+    ctx.session.search.size = size;
+    const result = await this.buttonService.generatePatientsButtons(
+      {
+        gender: ctx.session.search.gender as Genders,
+        size: ctx.session.search.size,
+      },
+      1,
+    );
+    if (!result) {
+      await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
     await ctx.editMessageText('Endi yoziladi', {
       reply_markup: backToS[ctx.session.lang],
     });
@@ -358,7 +396,6 @@ export class ActionsService {
 
   @Action('back_to_g_f_a')
   async backToGendersForAge(@Ctx() ctx: ContextType) {
-    console.log('back to genders');
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
@@ -371,7 +408,6 @@ export class ActionsService {
 
   @Action('back_to_g_f_s')
   async backToGendersForSize(@Ctx() ctx: ContextType) {
-    console.log('back to genders');
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
@@ -384,7 +420,6 @@ export class ActionsService {
 
   @Action('back_to_a')
   async backToAges(@Ctx() ctx: ContextType) {
-    console.log('Back to ages');
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
@@ -397,7 +432,6 @@ export class ActionsService {
 
   @Action('back_to_s')
   async backToSize(@Ctx() ctx: ContextType) {
-    console.log('Back to ages');
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [

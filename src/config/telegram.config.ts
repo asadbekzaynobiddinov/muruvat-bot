@@ -14,6 +14,7 @@ const telegrafModuleOptions = (): TelegrafModuleOptions => {
         if (!ctx.session) {
           ctx.session = {};
         }
+        ctx.session.search = ctx.session.search || {};
         await next();
       },
     ],
