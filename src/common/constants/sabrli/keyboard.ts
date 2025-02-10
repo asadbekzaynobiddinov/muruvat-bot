@@ -29,3 +29,16 @@ export const patientMenuKeys: Record<string, InlineKeyboardMarkup> = {
     ],
   },
 };
+export const backToRegionsForPatient: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_r_for_p')],
+    ],
+  },
+  ru: {
+    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_r_for_p')]],
+  },
+  en: {
+    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_r_for_p')]],
+  },
+};

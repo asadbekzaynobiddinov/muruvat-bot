@@ -7,6 +7,7 @@ import {
   registerMenuKeys,
   generousMenuKeys,
   mainMessage,
+  patientMenuKeys,
 } from 'src/common/constants/';
 import { ContextType, Role } from 'src/common';
 import { UsersEntity, UsersRepository } from 'src/core';
@@ -35,7 +36,9 @@ export class BotService {
         });
         break;
       case 'patient':
-        await ctx.reply(mainMessage[user.lang]);
+        await ctx.reply(mainMessage[user.lang], {
+          reply_markup: patientMenuKeys[user.lang],
+        });
       default:
         break;
     }

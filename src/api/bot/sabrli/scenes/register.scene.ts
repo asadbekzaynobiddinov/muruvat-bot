@@ -4,10 +4,10 @@ import { ContextType } from 'src/common';
 import {
   acceptAddresMessage,
   askRegionMessage,
-  backToRegions,
+  backToRegionsForPatient,
   districtMessage,
-  generousMenuKeys,
   mainMessage,
+  patientMenuKeys,
   phoneNumberKeys,
   PhoneNumberMessages,
 } from 'src/common/constants';
@@ -75,9 +75,9 @@ export class AskPatientAddress {
       reply_markup: buttons,
     });
   }
-  @Action(/page/)
+  @Action(/regionForPatientPage/)
   async page(@Ctx() ctx: ContextType) {
-    const [, page] = (ctx.update as any).callback_query.data.split('_');
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
     const buttons = this.buttonService.generateRegionButtons(
       +page,
       ctx.session.lang,
@@ -87,9 +87,9 @@ export class AskPatientAddress {
       reply_markup: buttons,
     });
   }
-  @Action(/region/)
+  @Action(/regionForPatient/)
   async callbackHandler(@Ctx() ctx: ContextType) {
-    const [, region] = (ctx.update as any).callback_query.data.split('_');
+    const [, region] = (ctx.update as any).callback_query.data.split('=');
     await this.userRepo.update({ telegram_id: `${ctx.from.id}` }, { region });
     await ctx.scene.enter('askPatientDistrict');
   }
@@ -103,7 +103,7 @@ export class AskPatientDistrict {
   ) {}
   @SceneEnter()
   async onEnter(ctx: ContextType) {
-    const [, region] = (ctx.update as any).callback_query.data.split('_');
+    const [, region] = (ctx.update as any).callback_query.data.split('=');
     const buttons = this.buttonService.generateDistrictButtons(
       region,
       0,
@@ -114,17 +114,17 @@ export class AskPatientDistrict {
       reply_markup: {
         inline_keyboard: [
           ...buttons.inline_keyboard,
-          ...backToRegions[ctx.session.lang].inline_keyboard,
+          ...backToRegionsForPatient[ctx.session.lang].inline_keyboard,
         ],
       },
     });
   }
-  @Action(/pageDistrict/)
+  @Action(/districtForPatientPage/)
   async page(@Ctx() ctx: ContextType) {
     const user = await this.userRepo.findOne({
       where: { telegram_id: `${ctx.from.id}` },
     });
-    const [, page] = (ctx.update as any).callback_query.data.split('_');
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
     const buttons = this.buttonService.generateDistrictButtons(
       user.region,
       +page,
@@ -133,14 +133,14 @@ export class AskPatientDistrict {
     );
     await ctx.editMessageText(districtMessage[user.lang], {
       reply_markup: {
-        inline_keyboard: {
+        inline_keyboard: [
           ...buttons.inline_keyboard,
-          ...backToRegions[user.lang].inline_keyboard,
-        },
+          ...backToRegionsForPatient[user.lang].inline_keyboard,
+        ],
       },
     });
   }
-  @Action('back_region')
+  @Action('back_to_r_for_p')
   async backToRegions(@Ctx() ctx: ContextType) {
     await this.userRepo.update(
       {
@@ -161,7 +161,7 @@ export class AskPatientDistrict {
   }
   @Action(/districtForPatient/)
   async callbackHandler(ctx: ContextType) {
-    const [, districts] = (ctx.update as any).callback_query.data.split('_');
+    const [, districts] = (ctx.update as any).callback_query.data.split('=');
     await this.userRepo.update(
       { telegram_id: `${ctx.from.id}` },
       {
@@ -182,7 +182,7 @@ export class AskPatientDistrict {
   @Action('accept')
   async acceptDistrict(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
-      reply_markup: generousMenuKeys[ctx.session.lang],
+      reply_markup: patientMenuKeys[ctx.session.lang],
     });
     await ctx.scene.leave();
   }
@@ -205,14 +205,14 @@ export class AskPatientDistrict {
       reply_markup: {
         inline_keyboard: [
           ...buttons.inline_keyboard,
-          ...backToRegions[ctx.session.lang].inline_keyboard,
+          ...backToRegionsForPatient[ctx.session.lang].inline_keyboard,
         ],
       },
     });
   }
   @Action(/regionForPatientPage/)
   async regionPage(@Ctx() ctx: ContextType) {
-    const [, page] = (ctx.update as any).callback_query.data.split('_');
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
     const buttons = this.buttonService.generateRegionButtons(
       +page,
       ctx.session.lang,
@@ -224,7 +224,7 @@ export class AskPatientDistrict {
   }
   @Action(/regionForPatient/)
   async regionHandler(ctx: ContextType) {
-    const [, region] = (ctx.update as any).callback_query.data.split('_');
+    const [, region] = (ctx.update as any).callback_query.data.split('=');
     await this.userRepo.update(
       { telegram_id: `${ctx.from.id}` },
       {
@@ -241,7 +241,7 @@ export class AskPatientDistrict {
       reply_markup: {
         inline_keyboard: [
           ...buttons.inline_keyboard,
-          ...backToRegions[ctx.session.lang].inline_keyboard,
+          ...backToRegionsForPatient[ctx.session.lang].inline_keyboard,
         ],
       },
     });
