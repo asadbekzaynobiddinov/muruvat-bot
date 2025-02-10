@@ -69,6 +69,7 @@ export class AskPatientAddress {
     const buttons = this.buttonService.generateRegionButtons(
       0,
       ctx.session.lang,
+      'regionForPatient',
     );
     await ctx.reply(askRegionMessage[ctx.session.lang], {
       reply_markup: buttons,
@@ -80,6 +81,7 @@ export class AskPatientAddress {
     const buttons = this.buttonService.generateRegionButtons(
       +page,
       ctx.session.lang,
+      'regionForPatient',
     );
     await ctx.editMessageText(askRegionMessage[ctx.session.lang], {
       reply_markup: buttons,
@@ -106,6 +108,7 @@ export class AskPatientDistrict {
       region,
       0,
       ctx.session.lang,
+      'districtForPatient',
     );
     await ctx.editMessageText(districtMessage[ctx.session.lang], {
       reply_markup: {
@@ -126,6 +129,7 @@ export class AskPatientDistrict {
       user.region,
       +page,
       user.lang,
+      'districtForPatient',
     );
     await ctx.editMessageText(districtMessage[user.lang], {
       reply_markup: {
@@ -149,12 +153,13 @@ export class AskPatientDistrict {
     const buttons = this.buttonService.generateRegionButtons(
       0,
       ctx.session.lang,
+      'regionForPatient',
     );
     await ctx.editMessageText(askRegionMessage[ctx.session.lang], {
       reply_markup: buttons,
     });
   }
-  @Action(/districts/)
+  @Action(/districtForPatient/)
   async callbackHandler(ctx: ContextType) {
     const [, districts] = (ctx.update as any).callback_query.data.split('_');
     await this.userRepo.update(
@@ -194,6 +199,7 @@ export class AskPatientDistrict {
       user.region,
       0,
       ctx.session.lang,
+      'districtForPatient',
     );
     await ctx.editMessageText(districtMessage[ctx.session.lang], {
       reply_markup: {
@@ -204,18 +210,19 @@ export class AskPatientDistrict {
       },
     });
   }
-  @Action(/regionPage/)
+  @Action(/regionForPatientPage/)
   async regionPage(@Ctx() ctx: ContextType) {
     const [, page] = (ctx.update as any).callback_query.data.split('_');
     const buttons = this.buttonService.generateRegionButtons(
       +page,
       ctx.session.lang,
+      'regionForPatient',
     );
     await ctx.editMessageText(askRegionMessage[ctx.session.lang], {
       reply_markup: buttons,
     });
   }
-  @Action(/region/)
+  @Action(/regionForPatient/)
   async regionHandler(ctx: ContextType) {
     const [, region] = (ctx.update as any).callback_query.data.split('_');
     await this.userRepo.update(
@@ -228,6 +235,7 @@ export class AskPatientDistrict {
       region,
       0,
       ctx.session.lang,
+      'districtForPatient',
     );
     await ctx.editMessageText(districtMessage[ctx.session.lang], {
       reply_markup: {
