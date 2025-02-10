@@ -76,6 +76,7 @@ export class AskGenerousProvince {
     const buttons = this.buttonService.generateRegionButtons(
       0,
       ctx.session.lang,
+      'regionForRegisterAsG',
     );
     await ctx.reply(askRegionMessage[ctx.session.lang], {
       reply_markup: buttons,
@@ -88,6 +89,7 @@ export class AskGenerousProvince {
     const buttons = this.buttonService.generateRegionButtons(
       +page,
       ctx.session.lang,
+      'regionForRegisterAsG',
     );
     await ctx.editMessageText(askRegionMessage[ctx.session.lang], {
       reply_markup: buttons,
@@ -115,6 +117,7 @@ export class AskGenerousDistrict {
       region,
       0,
       ctx.session.lang,
+      'districtForRegisterAsg',
     );
     await ctx.editMessageText(districtMessage[ctx.session.lang], {
       reply_markup: {
@@ -136,6 +139,7 @@ export class AskGenerousDistrict {
       user.region,
       +page,
       user.lang,
+      'districtForRegisterAsg',
     );
     await ctx.editMessageText(districtMessage[user.lang], {
       reply_markup: {
@@ -156,6 +160,7 @@ export class AskGenerousDistrict {
     const buttons = this.buttonService.generateRegionButtons(
       0,
       ctx.session.lang,
+      'regionForRegisterAsG',
     );
     await ctx.editMessageText(askRegionMessage[ctx.session.lang], {
       reply_markup: buttons,
@@ -199,6 +204,7 @@ export class AskGenerousDistrict {
       user.region,
       0,
       ctx.session.lang,
+      'districtForRegisterAsg',
     );
     await ctx.editMessageText(districtMessage[ctx.session.lang], {
       reply_markup: {
@@ -216,6 +222,7 @@ export class AskGenerousDistrict {
     const buttons = this.buttonService.generateRegionButtons(
       +page,
       ctx.session.lang,
+      'regionForRegisterAsG',
     );
     await ctx.editMessageText(askRegionMessage[ctx.session.lang], {
       reply_markup: buttons,
@@ -230,6 +237,7 @@ export class AskGenerousDistrict {
       region,
       0,
       ctx.session.lang,
+      'districtForRegisterAsg',
     );
     await ctx.editMessageText(districtMessage[ctx.session.lang], {
       reply_markup: {
