@@ -4,7 +4,7 @@ import { ScenesModule } from './scenes/scenes.module';
 import { ActionsModule } from './actions/actions.module';
 import { ButtonModule } from '../button/button.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersEntity } from 'src/core';
+import { PatientsEntity, UsersEntity } from 'src/core';
 
 @Module({
   providers: [ActionsService],
@@ -12,7 +12,7 @@ import { UsersEntity } from 'src/core';
     ScenesModule,
     ActionsModule,
     ButtonModule,
-    TypeOrmModule.forFeature([UsersEntity]),
+    TypeOrmModule.forFeature([UsersEntity, PatientsEntity]),
   ],
 })
 export class SahiyModule {}

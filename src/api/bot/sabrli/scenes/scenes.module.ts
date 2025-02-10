@@ -6,11 +6,11 @@ import {
   RegisterScenes,
 } from './register.scene';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersEntity } from 'src/core';
+import { PatientsEntity, UsersEntity } from 'src/core';
 import { ButtonsService } from '../../button/button.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UsersEntity])],
+  imports: [TypeOrmModule.forFeature([UsersEntity, PatientsEntity])],
   providers: [
     RegisterScenes,
     AskPatientPhone,
