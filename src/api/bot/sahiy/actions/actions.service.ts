@@ -89,6 +89,7 @@ export class ActionsService {
     const buttons = this.buttonService.generateRegionButtons(
       0,
       ctx.session.lang,
+      'patientsRegionsForG',
     );
     await ctx.editMessageText(neededRegionMessage[ctx.session.lang], {
       reply_markup: {
@@ -106,6 +107,7 @@ export class ActionsService {
     const buttons = this.buttonService.generateRegionButtons(
       +page,
       ctx.session.lang,
+      'patientsRegionsForG',
     );
     await ctx.editMessageText(neededRegionMessage[ctx.session.lang], {
       reply_markup: {
@@ -126,6 +128,7 @@ export class ActionsService {
       region,
       0,
       ctx.session.lang,
+      'patientsDistrictForG',
     );
     await ctx.editMessageText(neededDistrictMessage[ctx.session.lang], {
       reply_markup: {
@@ -144,6 +147,7 @@ export class ActionsService {
       ctx.session.search.region,
       +page,
       ctx.session.lang,
+      'patientsDistrictForG',
     );
     await ctx.editMessageText(neededDistrictMessage[ctx.session.lang], {
       reply_markup: {
@@ -182,6 +186,7 @@ export class ActionsService {
     const buttons = this.buttonService.generateRegionButtons(
       0,
       ctx.session.lang,
+      'patientsRegionsForG',
     );
     await ctx.editMessageText(neededRegionMessage[ctx.session.lang], {
       reply_markup: {
@@ -199,6 +204,7 @@ export class ActionsService {
       ctx.session.search.region,
       0,
       ctx.session.lang,
+      'patientsDistrictForG',
     );
     await ctx.editMessageText(neededDistrictMessage[ctx.session.lang], {
       reply_markup: {
