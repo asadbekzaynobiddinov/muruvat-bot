@@ -4,7 +4,6 @@ import { config } from 'src/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersEntity, UsersRepository } from 'src/core/';
 import { lastMessgeText } from '../constants';
-import e from 'express';
 
 @Injectable()
 export class LastMessageGuard implements CanActivate {
