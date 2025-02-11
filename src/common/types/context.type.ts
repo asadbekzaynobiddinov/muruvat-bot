@@ -14,6 +14,9 @@ export type ContextType = Context &
         up: number;
         size: string;
       };
+      patientApp: {
+        id: string;
+      };
     };
   };
 

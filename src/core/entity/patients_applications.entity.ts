@@ -18,10 +18,10 @@ export class PatientsEntity extends BaseEntity {
   @Column({ type: 'varchar', name: 'stuff_size', nullable: true })
   size: string;
 
-  @Column()
+  @Column({ type: 'varchar', name: 'region', nullable: true })
   region: string;
 
-  @Column()
+  @Column({ type: 'varchar', name: 'district', nullable: true })
   district: string;
 
   @Column({ type: 'enum', enum: Genders, nullable: true })
