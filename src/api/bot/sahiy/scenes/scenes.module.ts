@@ -7,7 +7,7 @@ import {
   RegisterAsGenerous,
   AskGenerousDistrict,
 } from './register.scenes';
-import { ChangeGenerosPhone } from './chsnge.phone.scene';
+import { ChangeGenerosPhone } from './change.phone.scene';
 import { ButtonsService } from '../../button/button.service';
 import { ButtonModule } from '../../button/button.module';
 

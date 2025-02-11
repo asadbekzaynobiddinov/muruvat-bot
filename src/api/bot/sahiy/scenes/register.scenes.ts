@@ -185,9 +185,12 @@ export class AskGenerousDistrict {
 
   @Action('accept')
   async accept(@Ctx() ctx: ContextType) {
-    await ctx.editMessageText(mainMessage[ctx.session.lang], {
-      reply_markup: generousMenuKeys[ctx.session.lang],
-    });
+    ctx.session.lastMessage = await ctx.editMessageText(
+      mainMessage[ctx.session.lang],
+      {
+        reply_markup: generousMenuKeys[ctx.session.lang],
+      },
+    );
     await ctx.scene.leave();
   }
 

@@ -302,42 +302,54 @@ export const genderForSizeKeys: Record<string, InlineKeyboardMarkup> = {
 export const backToGendersForAge: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
-      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_g_f_a')],
+      [Markup.button.callback('🔙 Ortga qaytish', 'backToGenderForAge')],
     ],
   },
   ru: {
-    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_g_f_a')]],
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'backToGenderForAge')],
+    ],
   },
   en: {
-    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_g_f_a')]],
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'backToGenderForAge')],
+    ],
   },
 };
 
 export const backToGendersForSize: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
-      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_g_f_s')],
+      [Markup.button.callback('🔙 Ortga qaytish', 'backToGenderForSize')],
     ],
   },
   ru: {
-    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_g_f_s')]],
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'backToGenderForSize')],
+    ],
   },
   en: {
-    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_g_f_s')]],
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'backToGenderForSize')],
+    ],
   },
 };
 
 export const backToAges: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
-      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_a')],
+      [Markup.button.callback('🔙 Ortga qaytish', 'backToAgeForGenerous')],
     ],
   },
   ru: {
-    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_a')]],
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'backToAgeForGenerous')],
+    ],
   },
   en: {
-    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_a')]],
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'backToAgeForGenerous')],
+    ],
   },
 };
 
@@ -361,14 +373,18 @@ export const sizeKeys: InlineKeyboardMarkup = {
 export const backToS: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
-      [Markup.button.callback('🔙 Ortga qaytish', 'back_to_s')],
+      [Markup.button.callback('🔙 Ortga qaytish', 'backToSizeForGenerous')],
     ],
   },
   ru: {
-    inline_keyboard: [[Markup.button.callback('🔙 Назад', 'back_to_s')]],
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'backToSizeForGenerous')],
+    ],
   },
   en: {
-    inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_s')]],
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'backToSizeForGenerous')],
+    ],
   },
 };
 
@@ -413,6 +429,36 @@ export const backToRegionsForGenerous: Record<string, InlineKeyboardMarkup> = {
   en: {
     inline_keyboard: [
       [Markup.button.callback('🔙 Back', 'backToRegForGenerous')],
+    ],
+  },
+};
+
+export const settingsForGenerous: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [
+        Markup.button.callback(
+          `📞 Raqamni o'zgartirish`,
+          'change_phone_generous',
+        ),
+        Markup.button.callback(`🌐 Tilni o'zgartirish`, 'change_lang_generous'),
+      ],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [
+        Markup.button.callback(`📞 Изменить номер`, 'change_phone_generous'),
+        Markup.button.callback(`🌐 Изменить язык`, 'change_lang_generous'),
+      ],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [
+        Markup.button.callback(`📞 Change phone`, 'change_phone_generous'),
+        Markup.button.callback(`🌐 Change language`, 'change_lang_generous'),
+      ],
     ],
   },
 };

@@ -31,7 +31,7 @@ export class BotService {
     ctx.session.lang = user.lang;
     switch (user.role) {
       case 'generous':
-        await ctx.reply(mainMessage[user.lang], {
+        ctx.session.lastMessage = await ctx.reply(mainMessage[user.lang], {
           reply_markup: generousMenuKeys[user.lang],
         });
         break;

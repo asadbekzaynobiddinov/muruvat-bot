@@ -53,30 +53,3 @@ export const phoneNumberKeys = {
     one_time_keyboard: true,
   },
 };
-
-export const settingsKeys = {
-  uz: {
-    inline_keyboard: [
-      [
-        Markup.button.callback(`📞 Raqamni o'zgartirish`, 'change_phone'),
-        Markup.button.callback(`🌐 Tilni o'zgartirish`, 'change_lang'),
-      ],
-    ],
-  },
-  ru: {
-    inline_keyboard: [
-      [
-        Markup.button.callback(`📞 Изменить номер`, 'change_phone'),
-        Markup.button.callback(`🌐 Изменить язык`, 'change_lang'),
-      ],
-    ],
-  },
-  en: {
-    inline_keyboard: [
-      [
-        Markup.button.callback(`📞 Change phone`, 'change_phone'),
-        Markup.button.callback(`🌐 Change language`, 'change_lang'),
-      ],
-    ],
-  },
-};
