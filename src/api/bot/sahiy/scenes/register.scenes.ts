@@ -9,7 +9,7 @@ import {
   districtMessage,
   mainMessage,
   generousMenuKeys,
-  backToRegions,
+  backToRegionsForGenerous,
   acceptAddresMessage,
 } from 'src/common/';
 import { UsersEntity, UsersRepository } from 'src/core';
@@ -83,9 +83,9 @@ export class AskGenerousProvince {
     });
   }
 
-  @Action(/pageRegion/)
+  @Action(/regionForRegisterAsGPage/)
   async page(@Ctx() ctx: ContextType) {
-    const [, page] = (ctx.update as any).callback_query.data.split('_');
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
     const buttons = this.buttonService.generateRegionButtons(
       +page,
       ctx.session.lang,
@@ -96,9 +96,9 @@ export class AskGenerousProvince {
     });
   }
 
-  @Action(/region/)
+  @Action(/regionForRegisterAsG/)
   async callbackHandler(ctx: ContextType) {
-    const [, region] = (ctx.update as any).callback_query.data.split('_');
+    const [, region] = (ctx.update as any).callback_query.data.split('=');
     await this.userRepo.update({ telegram_id: `${ctx.from.id}` }, { region });
     await ctx.scene.enter('askGenerousDistrict');
   }
@@ -112,46 +112,46 @@ export class AskGenerousDistrict {
   ) {}
   @SceneEnter()
   async onEnter(ctx: ContextType) {
-    const [, region] = (ctx.update as any).callback_query.data.split('_');
+    const [, region] = (ctx.update as any).callback_query.data.split('=');
     const buttons = this.buttonService.generateDistrictButtons(
       region,
       0,
       ctx.session.lang,
-      'districtForRegisterAsg',
+      'districtForRegisterAsG',
     );
     await ctx.editMessageText(districtMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
           ...buttons.inline_keyboard,
-          ...backToRegions[ctx.session.lang].inline_keyboard,
+          ...backToRegionsForGenerous[ctx.session.lang].inline_keyboard,
         ],
       },
     });
   }
 
-  @Action(/pageDistrict/)
+  @Action(/districtForRegisterAsGPage/)
   async page(@Ctx() ctx: ContextType) {
     const user = await this.userRepo.findOne({
       where: { telegram_id: `${ctx.from.id}` },
     });
-    const [, page] = (ctx.update as any).callback_query.data.split('_');
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
     const buttons = this.buttonService.generateDistrictButtons(
       user.region,
       +page,
       user.lang,
-      'districtForRegisterAsg',
+      'districtForRegisterAsG',
     );
     await ctx.editMessageText(districtMessage[user.lang], {
       reply_markup: {
         inline_keyboard: [
           ...buttons.inline_keyboard,
-          ...backToRegions[user.lang].inline_keyboard,
+          ...backToRegionsForGenerous[user.lang].inline_keyboard,
         ],
       },
     });
   }
 
-  @Action('back_to_r')
+  @Action('backToRegForGenerous')
   async backToRegions(@Ctx() ctx: ContextType) {
     await this.userRepo.update(
       { telegram_id: `${ctx.from.id}` },
@@ -167,9 +167,9 @@ export class AskGenerousDistrict {
     });
   }
 
-  @Action(/district/)
+  @Action(/districtForRegisterAsG/)
   async callbackHandler(ctx: ContextType) {
-    const [, district] = (ctx.update as any).callback_query.data.split('_');
+    const [, district] = (ctx.update as any).callback_query.data.split('=');
     await this.userRepo.update({ telegram_id: `${ctx.from.id}` }, { district });
     await ctx.editMessageText(acceptAddresMessage[ctx.session.lang], {
       reply_markup: {
@@ -204,21 +204,21 @@ export class AskGenerousDistrict {
       user.region,
       0,
       ctx.session.lang,
-      'districtForRegisterAsg',
+      'districtForRegisterAsG',
     );
     await ctx.editMessageText(districtMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
           ...buttons.inline_keyboard,
-          ...backToRegions[ctx.session.lang].inline_keyboard,
+          ...backToRegionsForGenerous[ctx.session.lang].inline_keyboard,
         ],
       },
     });
   }
 
-  @Action(/pageRegion/)
+  @Action(/regionForRegisterAsGPage/)
   async pageRegion(@Ctx() ctx: ContextType) {
-    const [, page] = (ctx.update as any).callback_query.data.split('_');
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
     const buttons = this.buttonService.generateRegionButtons(
       +page,
       ctx.session.lang,
@@ -229,21 +229,21 @@ export class AskGenerousDistrict {
     });
   }
 
-  @Action(/region/)
+  @Action(/regionForRegisterAsG/)
   async regionHandler(ctx: ContextType) {
-    const [, region] = (ctx.update as any).callback_query.data.split('_');
+    const [, region] = (ctx.update as any).callback_query.data.split('=');
     await this.userRepo.update({ telegram_id: `${ctx.from.id}` }, { region });
     const buttons = this.buttonService.generateDistrictButtons(
       region,
       0,
       ctx.session.lang,
-      'districtForRegisterAsg',
+      'districtForRegisterAsG',
     );
     await ctx.editMessageText(districtMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
           ...buttons.inline_keyboard,
-          ...backToRegions[ctx.session.lang].inline_keyboard,
+          ...backToRegionsForGenerous[ctx.session.lang].inline_keyboard,
         ],
       },
     });

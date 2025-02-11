@@ -371,3 +371,48 @@ export const backToS: Record<string, InlineKeyboardMarkup> = {
     inline_keyboard: [[Markup.button.callback('🔙 Back', 'back_to_s')]],
   },
 };
+
+export const setGenerousLangKeys: InlineKeyboardMarkup = {
+  inline_keyboard: [
+    [Markup.button.callback("🇺🇿 O'zbekcha", 'setGenerousLangUz')],
+    [Markup.button.callback('🇷🇺 Русский', 'setGenerousLangRu')],
+    [Markup.button.callback('🇺🇸 English', 'setGenerousLangEn')],
+  ],
+};
+
+export const backToDistrictsForGenerous: Record<string, InlineKeyboardMarkup> =
+  {
+    uz: {
+      inline_keyboard: [
+        [Markup.button.callback('🔙 Ortga qaytish', 'backToDistForGenerous')],
+      ],
+    },
+    ru: {
+      inline_keyboard: [
+        [Markup.button.callback('🔙 Назад', 'backToDistForGenerous')],
+      ],
+    },
+    en: {
+      inline_keyboard: [
+        [Markup.button.callback('🔙 Back', 'backToDistForGenerous')],
+      ],
+    },
+  };
+
+export const backToRegionsForGenerous: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Ortga qaytish', 'backToRegForGenerous')],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'backToRegForGenerous')],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'backToRegForGenerous')],
+    ],
+  },
+};
