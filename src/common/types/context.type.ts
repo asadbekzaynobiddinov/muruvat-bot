@@ -5,6 +5,7 @@ export type ContextType = Context &
   SceneContext & {
     session: {
       lang: string;
+      lastMessage: any;
       search: {
         region: string;
         district: string;

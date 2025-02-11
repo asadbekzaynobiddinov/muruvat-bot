@@ -277,6 +277,7 @@ export class ButtonsService {
       district: string;
     }>,
     page: number,
+    customCallback: string,
   ) {
     const skip = (page - 1) * 10;
     const take = 10;
@@ -303,7 +304,7 @@ export class ButtonsService {
       buttons.push(
         patients.slice(i, i + 5).map((p, index) => ({
           text: (skip + i + index + 1).toString(),
-          callback_data: `patient_${p.id}`,
+          callback_data: `${customCallback}=${p.id}`,
         })),
       );
     }
@@ -312,12 +313,12 @@ export class ButtonsService {
     if (page > 1)
       navigationButtons.push({
         text: '⬅️ Oldingi',
-        callback_data: `page_${page - 1}`,
+        callback_data: `${customCallback}Page=${page - 1}`,
       });
     if (patients.length === take)
       navigationButtons.push({
         text: '➡️ Keyingi',
-        callback_data: `page_${page + 1}`,
+        callback_data: `${customCallback}Page=${page + 1}`,
       });
 
     if (navigationButtons.length) {

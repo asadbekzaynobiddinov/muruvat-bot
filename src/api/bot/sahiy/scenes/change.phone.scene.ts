@@ -7,7 +7,7 @@ import {
   ContextType,
   correctFormatPhone,
   mainMessage,
-  settingsKeys,
+  settingsForGenerous,
   uzPhoneRegex,
 } from 'src/common';
 import { UsersEntity, UsersRepository } from 'src/core';
@@ -30,7 +30,7 @@ export class ChangeGenerosPhone {
       await ctx.reply(correctFormatPhone[ctx.session.lang]);
       return;
     }
-    await ctx.reply(
+    ctx.session.lastMessage = await ctx.reply(
       acceptPhoneMessage[ctx.session.lang][0] +
         '\n' +
         acceptPhoneMessage[ctx.session.lang][1] +
@@ -58,7 +58,7 @@ export class ChangeGenerosPhone {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
-          ...settingsKeys[ctx.session.lang].inline_keyboard,
+          ...settingsForGenerous[ctx.session.lang].inline_keyboard,
           ...backToGenerosMenu[ctx.session.lang].inline_keyboard,
         ],
       },
@@ -71,7 +71,7 @@ export class ChangeGenerosPhone {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
-          ...settingsKeys[ctx.session.lang].inline_keyboard,
+          ...settingsForGenerous[ctx.session.lang].inline_keyboard,
           ...backToGenerosMenu[ctx.session.lang].inline_keyboard,
         ],
       },

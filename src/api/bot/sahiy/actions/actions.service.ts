@@ -23,7 +23,7 @@ import {
   noPatintsMessage,
   repairKeys,
   repairMessage,
-  settingsKeys,
+  settingsForGenerous,
   sizeKeys,
   viewPatientsKeys,
 } from 'src/common';
@@ -32,8 +32,11 @@ import { ButtonsService } from '../../button/button.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersEntity, UsersRepository } from 'src/core';
 import { Languages } from 'src/common/enum/language';
+import { UseGuards } from '@nestjs/common';
+import { LastMessageGuard } from 'src/common/guard/lastMessage.guard';
 
 @Update()
+@UseGuards(LastMessageGuard)
 export class ActionsService {
   constructor(
     private readonly buttonService: ButtonsService,
@@ -70,7 +73,7 @@ export class ActionsService {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
-          ...settingsKeys[ctx.session.lang].inline_keyboard,
+          ...settingsForGenerous[ctx.session.lang].inline_keyboard,
           ...backToGenerosMenu[ctx.session.lang].inline_keyboard,
         ],
       },
@@ -162,13 +165,14 @@ export class ActionsService {
   async district(@Ctx() ctx: ContextType) {
     const [, district] = (ctx.update as any).callback_query.data.split('=');
     ctx.session.search.district = district;
-    // console.log(ctx.session.search);
+    console.log(ctx.session.search);
     const result = await this.buttonService.generatePatientsButtons(
       {
         region: ctx.session.search.region,
         district: ctx.session.search.district,
       },
       1,
+      'viewPatientsForGen',
     );
     if (!result) {
       await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
@@ -223,7 +227,7 @@ export class ActionsService {
     });
   }
 
-  @Action('change_lang')
+  @Action('change_lang_generous')
   async changeLang(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(langMessages[ctx.session.lang], {
       reply_markup: {
@@ -245,7 +249,7 @@ export class ActionsService {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
-          ...settingsKeys[ctx.session.lang].inline_keyboard,
+          ...settingsForGenerous[ctx.session.lang].inline_keyboard,
           ...backToGenerosMenu[ctx.session.lang].inline_keyboard,
         ],
       },
@@ -262,7 +266,7 @@ export class ActionsService {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
-          ...settingsKeys[ctx.session.lang].inline_keyboard,
+          ...settingsForGenerous[ctx.session.lang].inline_keyboard,
           ...backToGenerosMenu[ctx.session.lang].inline_keyboard,
         ],
       },
@@ -279,7 +283,7 @@ export class ActionsService {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
-          ...settingsKeys[ctx.session.lang].inline_keyboard,
+          ...settingsForGenerous[ctx.session.lang].inline_keyboard,
           ...backToGenerosMenu[ctx.session.lang].inline_keyboard,
         ],
       },
@@ -291,14 +295,14 @@ export class ActionsService {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
-          ...settingsKeys[ctx.session.lang].inline_keyboard,
+          ...settingsForGenerous[ctx.session.lang].inline_keyboard,
           ...backToGenerosMenu[ctx.session.lang].inline_keyboard,
         ],
       },
     });
   }
 
-  @Action('change_phone')
+  @Action('change_phone_generous')
   async changePhone(@Ctx() ctx: ContextType) {
     await ctx.scene.enter('changeGenerousPhone');
   }
@@ -360,13 +364,14 @@ export class ActionsService {
     const [, past, yuqori] = (ctx.update as any).callback_query.data.split('_');
     ctx.session.search.down = past;
     ctx.session.search.up = yuqori;
-    // console.log(ctx.session.search);
+    console.log(ctx.session.search);
     const result = await this.buttonService.generatePatientsButtons(
       {
         gender: ctx.session.search.gender as Genders,
         age: [ctx.session.search.down, ctx.session.search.up],
       },
       1,
+      'viewPatientsForGen',
     );
     if (!result) {
       await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
@@ -383,13 +388,14 @@ export class ActionsService {
   async size(@Ctx() ctx: ContextType) {
     const [, size] = (ctx.update as any).callback_query.data.split('_');
     ctx.session.search.size = size;
-    // console.log(ctx.session.search);
+    console.log(ctx.session.search);
     const result = await this.buttonService.generatePatientsButtons(
       {
         gender: ctx.session.search.gender as Genders,
         size: ctx.session.search.size,
       },
       1,
+      'viewPatientsForGen',
     );
     if (!result) {
       await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
@@ -402,7 +408,7 @@ export class ActionsService {
     });
   }
 
-  @Action('back_to_g_f_a')
+  @Action('backToGenderForAge')
   async backToGendersForAge(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
@@ -414,7 +420,7 @@ export class ActionsService {
     });
   }
 
-  @Action('back_to_g_f_s')
+  @Action('backToGenderForSize')
   async backToGendersForSize(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
@@ -426,7 +432,7 @@ export class ActionsService {
     });
   }
 
-  @Action('back_to_a')
+  @Action('backToAgeForGenerous')
   async backToAges(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
@@ -438,7 +444,7 @@ export class ActionsService {
     });
   }
 
-  @Action('back_to_s')
+  @Action('backToSizeForGenerous')
   async backToSize(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {
@@ -452,6 +458,17 @@ export class ActionsService {
 
   @Action('all_patients')
   async allPatients(@Ctx() ctx: ContextType) {
+    const result = await this.buttonService.generatePatientsButtons(
+      {},
+      1,
+      'viewPatientsForGen',
+    );
+    if (!result) {
+      await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
     await ctx.editMessageText('Endi yoziladi', {
       reply_markup: backToViewPatients[ctx.session.lang],
     });
