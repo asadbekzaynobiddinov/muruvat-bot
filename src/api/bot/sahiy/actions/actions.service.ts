@@ -3,11 +3,11 @@ import {
   ageKeys,
   backToAges,
   backToChanges,
-  backToDistricts,
+  backToDistrictsForGenerous,
   backToGendersForAge,
   backToGendersForSize,
   backToGenerosMenu,
-  backToRegions,
+  backToRegionsForGenerous,
   backToS,
   backToViewPatients,
   ContextType,
@@ -15,7 +15,7 @@ import {
   genderForSizeKeys,
   Genders,
   generousMenuKeys,
-  langKeys,
+  setGenerousLangKeys,
   langMessages,
   mainMessage,
   neededDistrictMessage,
@@ -101,9 +101,9 @@ export class ActionsService {
     });
   }
 
-  @Action(/pageRegion/)
+  @Action(/patientsRegionsForGPage/)
   async pageRegion(@Ctx() ctx: ContextType) {
-    const [, page] = (ctx.update as any).callback_query.data.split('_');
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
     const buttons = this.buttonService.generateRegionButtons(
       +page,
       ctx.session.lang,
@@ -119,11 +119,10 @@ export class ActionsService {
     });
   }
 
-  @Action(/region/)
+  @Action(/patientsRegionsForG/)
   async region(@Ctx() ctx: ContextType) {
-    const [, region] = (ctx.update as any).callback_query.data.split('_');
+    const [, region] = (ctx.update as any).callback_query.data.split('=');
     ctx.session.search.region = region;
-    console.log(ctx.session);
     const buttons = this.buttonService.generateDistrictButtons(
       region,
       0,
@@ -134,15 +133,15 @@ export class ActionsService {
       reply_markup: {
         inline_keyboard: [
           ...buttons.inline_keyboard,
-          ...backToRegions[ctx.session.lang].inline_keyboard,
+          ...backToRegionsForGenerous[ctx.session.lang].inline_keyboard,
         ],
       },
     });
   }
 
-  @Action(/pageDistrict/)
+  @Action(/patientsDistrictForGPage/)
   async pageDistrict(@Ctx() ctx: ContextType) {
-    const [, page] = (ctx.update as any).callback_query.data.split('_');
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
     const buttons = this.buttonService.generateDistrictButtons(
       ctx.session.search.region,
       +page,
@@ -153,16 +152,17 @@ export class ActionsService {
       reply_markup: {
         inline_keyboard: [
           ...buttons.inline_keyboard,
-          ...backToRegions[ctx.session.lang].inline_keyboard,
+          ...backToRegionsForGenerous[ctx.session.lang].inline_keyboard,
         ],
       },
     });
   }
 
-  @Action(/district/)
+  @Action(/patientsDistrictForG/)
   async district(@Ctx() ctx: ContextType) {
-    const [, district] = (ctx.update as any).callback_query.data.split('_');
+    const [, district] = (ctx.update as any).callback_query.data.split('=');
     ctx.session.search.district = district;
+    // console.log(ctx.session.search);
     const result = await this.buttonService.generatePatientsButtons(
       {
         region: ctx.session.search.region,
@@ -177,11 +177,11 @@ export class ActionsService {
       return;
     }
     await ctx.editMessageText('Endi yoziladi', {
-      reply_markup: backToDistricts[ctx.session.lang],
+      reply_markup: backToDistrictsForGenerous[ctx.session.lang],
     });
   }
 
-  @Action('back_to_r')
+  @Action('backToRegForGenerous')
   async backToRegions(@Ctx() ctx: ContextType) {
     const buttons = this.buttonService.generateRegionButtons(
       0,
@@ -198,7 +198,7 @@ export class ActionsService {
     });
   }
 
-  @Action('back_to_d')
+  @Action('backToDistForGenerous')
   async backToDistricts(@Ctx() ctx: ContextType) {
     const buttons = this.buttonService.generateDistrictButtons(
       ctx.session.search.region,
@@ -210,7 +210,7 @@ export class ActionsService {
       reply_markup: {
         inline_keyboard: [
           ...buttons.inline_keyboard,
-          ...backToRegions[ctx.session.lang].inline_keyboard,
+          ...backToRegionsForGenerous[ctx.session.lang].inline_keyboard,
         ],
       },
     });
@@ -228,14 +228,14 @@ export class ActionsService {
     await ctx.editMessageText(langMessages[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
-          ...langKeys.inline_keyboard,
+          ...setGenerousLangKeys.inline_keyboard,
           ...backToChanges[ctx.session.lang].inline_keyboard,
         ],
       },
     });
   }
 
-  @Action('setUz')
+  @Action('setGenerousLangUz')
   async setUz(@Ctx() ctx: ContextType) {
     await this.userRepo.update(
       { telegram_id: `${ctx.from.id}` },
@@ -252,7 +252,7 @@ export class ActionsService {
     });
   }
 
-  @Action('setRu')
+  @Action('setGenerousLangRu')
   async setRu(@Ctx() ctx: ContextType) {
     await this.userRepo.update(
       { telegram_id: `${ctx.from.id}` },
@@ -269,7 +269,7 @@ export class ActionsService {
     });
   }
 
-  @Action('setEn')
+  @Action('setGenerousLangEn')
   async setEn(@Ctx() ctx: ContextType) {
     await this.userRepo.update(
       { telegram_id: `${ctx.from.id}` },
@@ -360,6 +360,7 @@ export class ActionsService {
     const [, past, yuqori] = (ctx.update as any).callback_query.data.split('_');
     ctx.session.search.down = past;
     ctx.session.search.up = yuqori;
+    // console.log(ctx.session.search);
     const result = await this.buttonService.generatePatientsButtons(
       {
         gender: ctx.session.search.gender as Genders,
@@ -382,6 +383,7 @@ export class ActionsService {
   async size(@Ctx() ctx: ContextType) {
     const [, size] = (ctx.update as any).callback_query.data.split('_');
     ctx.session.search.size = size;
+    // console.log(ctx.session.search);
     const result = await this.buttonService.generatePatientsButtons(
       {
         gender: ctx.session.search.gender as Genders,
