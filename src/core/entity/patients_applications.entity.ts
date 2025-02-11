@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
 import { BaseEntity, Genders } from 'src/common';
 import { UsersEntity } from './users.entity';
 @Entity('patients_applications')
@@ -34,6 +34,5 @@ export class PatientsEntity extends BaseEntity {
   user_id: string;
 
   @ManyToOne(() => UsersEntity, (users) => users.patients)
-  @JoinColumn({ name: 'user_id' })
   users: UsersEntity;
 }
