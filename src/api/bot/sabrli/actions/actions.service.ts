@@ -28,7 +28,11 @@ export class ActionsService {
   ) {}
   @Action('apply')
   async sendApply(@Ctx() ctx: ContextType) {
-    await this.patientRepo.create({ user_id: `${ctx.from.id}` });
+    const createPatientApply = this.patientRepo.create({
+      user_id: `${ctx.from.id}`,
+    });
+    await this.patientRepo.save(createPatientApply);
+    ctx.session.patientApp.id = createPatientApply.id;
     await ctx.scene.enter('sendApplyScene');
   }
   @Action('toAdminAsPatient')

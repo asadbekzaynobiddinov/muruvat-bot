@@ -23,3 +23,8 @@ export const AskingWhatPatientNeeds = {
   ru: 'Что нужно?',
   en: "What's needed?",
 };
+export const alertAgeInput = {
+  uz: "Iltimos, yoshingizni to'g'ri kiriting",
+  ru: 'Пожалуйста, введите правильный возраст',
+  en: 'Please enter a valid age number',
+};

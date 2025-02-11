@@ -10,6 +10,7 @@ import { PatientsEntity, UsersEntity } from 'src/core';
 import { ButtonsService } from '../../button/button.service';
 import { changePatientPhone } from './patient.menu.scene';
 import {
+  enterTheAgeOfPatientScene,
   enterTheNameOfPatientScene,
   SendApplyScene,
 } from './patient.application.scene';
@@ -25,6 +26,7 @@ import {
     changePatientPhone,
     SendApplyScene,
     enterTheNameOfPatientScene,
+    enterTheAgeOfPatientScene,
   ],
 })
 export class ScenesModule {}
