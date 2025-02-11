@@ -1,6 +1,11 @@
 import { Action, Ctx, Update } from 'nestjs-telegraf';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UsersEntity, UsersRepository } from 'src/core';
+import {
+  PatientsEntity,
+  PatientsRepository,
+  UsersEntity,
+  UsersRepository,
+} from 'src/core';
 import { ButtonsService } from '../../button/button.service';
 import {
   ContextType,
@@ -18,10 +23,13 @@ export class ActionsService {
   constructor(
     private readonly buttonService: ButtonsService,
     @InjectRepository(UsersEntity) private readonly userRepo: UsersRepository,
+    @InjectRepository(PatientsEntity)
+    private readonly patientRepo: PatientsRepository,
   ) {}
   @Action('apply')
   async sendApply(@Ctx() ctx: ContextType) {
-    // await ctx.editMessageText();
+    await this.patientRepo.create({ user_id: `${ctx.from.id}` });
+    await ctx.scene.enter('sendApplyScene');
   }
   @Action('toAdminAsPatient')
   async toAdminAsPatient(@Ctx() ctx: ContextType) {
