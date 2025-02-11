@@ -68,3 +68,9 @@ export const acceptPhoneMessage = {
   ru: ['Вы подтверждаете новый номер?', 'Номер: '],
   en: ['Do you confirm the new number?', 'Number: '],
 };
+
+export const lastMessgeText = {
+  uz: `So'ngi menyudan foydalaning`,
+  ru: `Используйте последнее меню`,
+  en: `Use the last menu`,
+};
