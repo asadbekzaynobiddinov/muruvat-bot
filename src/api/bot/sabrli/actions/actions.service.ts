@@ -21,7 +21,7 @@ export class ActionsService {
   ) {}
   @Action('apply')
   async sendApply(@Ctx() ctx: ContextType) {
-    // await ctx.editMessageText();
+    await ctx.scene.enter('sendApplyScene');
   }
   @Action('toAdminAsPatient')
   async toAdminAsPatient(@Ctx() ctx: ContextType) {

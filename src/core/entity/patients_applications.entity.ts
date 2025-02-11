@@ -30,8 +30,8 @@ export class PatientsEntity extends BaseEntity {
   @Column({ type: 'varchar', name: 'media', nullable: true })
   media: string;
 
-  @Column({ type: 'integer', name: 'user_id', nullable: true })
-  user_id: number;
+  @Column({ type: 'varchar', name: 'user_id', nullable: true })
+  user_id: string;
 
   @ManyToOne(() => UsersEntity, (users) => users.patients)
   @JoinColumn({ name: 'user_id' })

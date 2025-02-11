@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PatientsEntity, UsersEntity } from 'src/core';
 import { ButtonsService } from '../../button/button.service';
 import { changePatientPhone } from './patient.menu.scene';
+import { SendApplyScene } from './patient.application.scene';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UsersEntity, PatientsEntity])],
@@ -19,6 +20,7 @@ import { changePatientPhone } from './patient.menu.scene';
     ButtonsService,
     AskPatientDistrict,
     changePatientPhone,
+    SendApplyScene,
   ],
 })
 export class ScenesModule {}
