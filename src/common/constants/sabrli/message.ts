@@ -19,9 +19,14 @@ export const askPatientAgeMessage = {
   en: 'Please enter your age',
 };
 export const AskingWhatPatientNeeds = {
-  uz: 'Nima kerak?',
-  ru: 'Что нужно?',
-  en: "What's needed?",
+  uz: 'Hozir qanday yordamga ehtiyojingiz bor ?',
+  ru: 'Какая помощь вам нужна сейчас?',
+  en: 'What help do you need now?',
+};
+export const askPatientHeightMessage = {
+  uz: "Iltimos, o'zingizning bo'yingizni kiriting",
+  ru: 'Пожалуйста, введите свой рост',
+  en: 'Please enter your height',
 };
 export const alertAgeInput = {
   uz: "Iltimos, yoshingizni to'g'ri kiriting",

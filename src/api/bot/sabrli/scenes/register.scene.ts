@@ -1,7 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Action, Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
-import { ContextType } from 'src/common';
+import { Markup } from 'telegraf';
 import {
+  ContextType,
   acceptAddresMessage,
   askRegionMessage,
   backToRegionsForPatient,
@@ -10,11 +11,10 @@ import {
   patientMenuKeys,
   phoneNumberKeys,
   PhoneNumberMessages,
-} from 'src/common/constants';
-import { askNameMessage } from 'src/common';
+  askNameMessage,
+} from 'src/common';
 import { UsersEntity, UsersRepository } from 'src/core';
 import { ButtonsService } from '../../button/button.service';
-import { Markup } from 'telegraf';
 
 @Scene('registerAsPatient')
 export class RegisterScenes {

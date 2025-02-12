@@ -1,17 +1,19 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   AskPatientAddress,
   AskPatientDistrict,
   AskPatientPhone,
   RegisterScenes,
 } from './register.scene';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { PatientsEntity, UsersEntity } from 'src/core';
 import { ButtonsService } from '../../button/button.service';
 import { changePatientPhone } from './patient.menu.scene';
 import {
-  enterTheAgeOfPatientScene,
-  enterTheNameOfPatientScene,
+  AskPatientNeeds,
+  EnterTheAgeOfPatientScene,
+  EnterTheHeightOfPatientScene,
+  EnterTheNameOfPatientScene,
   SendApplyScene,
 } from './patient.application.scene';
 
@@ -25,8 +27,10 @@ import {
     AskPatientDistrict,
     changePatientPhone,
     SendApplyScene,
-    enterTheNameOfPatientScene,
-    enterTheAgeOfPatientScene,
+    EnterTheNameOfPatientScene,
+    EnterTheAgeOfPatientScene,
+    EnterTheHeightOfPatientScene,
+    AskPatientNeeds,
   ],
 })
 export class ScenesModule {}
