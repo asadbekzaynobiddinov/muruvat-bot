@@ -1,5 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Action, Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
+import { Markup } from 'telegraf';
 import {
   acceptPhoneMessage,
   askPhoneMessage,
@@ -11,7 +12,6 @@ import {
   uzPhoneRegex,
 } from 'src/common';
 import { UsersEntity, UsersRepository } from 'src/core';
-import { Markup } from 'telegraf';
 
 @Scene('ChangePatientPhoneScene')
 export class changePatientPhone {

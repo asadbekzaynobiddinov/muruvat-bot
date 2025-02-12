@@ -6,7 +6,6 @@ import {
   UsersEntity,
   UsersRepository,
 } from 'src/core';
-import { ButtonsService } from '../../button/button.service';
 import {
   ContextType,
   patientMenuKeys,
@@ -14,8 +13,9 @@ import {
   mainMessage,
   backToPatientMenu,
   settingsKeysForPatient,
+  patientLangMessages,
 } from 'src/common';
-import { patientLangMessages } from 'src/common/constants/sabrli/message';
+import { ButtonsService } from '../../button/button.service';
 import { Languages } from 'src/common/enum/language';
 
 @Update()
@@ -35,10 +35,10 @@ export class ActionsService {
     ctx.session.patientApp.id = createPatientApply.id;
     await ctx.scene.enter('sendApplyScene');
   }
-  @Action('toAdminAsPatient')
-  async toAdminAsPatient(@Ctx() ctx: ContextType) {
-    // await ctx.editMessageText();
-  }
+  // @Action('toAdminAsPatient')
+  // async toAdminAsPatient(@Ctx() ctx: ContextType) {
+  //   await ctx.editMessageText();
+  // }
   @Action('settings_for_patient')
   async settingsForPatient(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {

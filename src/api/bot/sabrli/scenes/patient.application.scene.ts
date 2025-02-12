@@ -1,6 +1,6 @@
-import { ContextType } from 'src/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
+import { askPatientHeightMessage, ContextType } from 'src/common';
 import {
   PatientsEntity,
   PatientsRepository,
@@ -9,11 +9,11 @@ import {
 } from 'src/core';
 import {
   alertAgeInput,
+  AskingWhatPatientNeeds,
   askPatientAgeMessage,
   askPatientNameMessage,
   askVideoOrPhotoOfPatientMessage,
-} from 'src/common/constants/sabrli/message';
-// import { Context } from 'telegraf';
+} from 'src/common';
 
 @Scene('sendApplyScene')
 export class SendApplyScene {
@@ -37,7 +37,6 @@ export class SendApplyScene {
     });
     if (message.photo && message.photo.length > 0) {
       const photoId = message.photo[message.photo.length - 1].file_id;
-      console.log(photoId);
       await this.patientRepo.update(
         { id: ctx.session.patientApp.id },
         { media: photoId, region, district },
@@ -55,7 +54,6 @@ export class SendApplyScene {
     });
     if (message.video) {
       const videoId = message.video.file_id;
-      console.log(videoId);
       await this.patientRepo.update(
         { id: ctx.session.patientApp.id },
         { media: videoId, region, district },
@@ -67,7 +65,7 @@ export class SendApplyScene {
   }
 }
 @Scene('enterTheNameOfPatientScene')
-export class enterTheNameOfPatientScene {
+export class EnterTheNameOfPatientScene {
   constructor(
     @InjectRepository(PatientsEntity)
     private readonly patientRepo: PatientsRepository,
@@ -89,7 +87,7 @@ export class enterTheNameOfPatientScene {
   }
 }
 @Scene('enterTheAgeOfPatientScene')
-export class enterTheAgeOfPatientScene {
+export class EnterTheAgeOfPatientScene {
   constructor(
     @InjectRepository(PatientsEntity)
     private readonly patientRepo: PatientsRepository,
@@ -106,7 +104,6 @@ export class enterTheAgeOfPatientScene {
         await ctx.reply(alertAgeInput[ctx.session.lang]);
         return;
       }
-      console.log(ctx.session.patientApp.id);
       await this.patientRepo.update(
         { id: ctx.session.patientApp.id },
         { age: age },
@@ -123,7 +120,7 @@ export class EnterTheHeightOfPatientScene {
   ) {}
   @SceneEnter()
   async onEnter(@Ctx() ctx: ContextType) {
-    await ctx.reply(askPatientAgeMessage[ctx.session.lang]);
+    await ctx.reply(askPatientHeightMessage[ctx.session.lang]);
   }
   @On('text')
   async textHandler(ctx: ContextType) {
@@ -132,6 +129,28 @@ export class EnterTheHeightOfPatientScene {
       await this.patientRepo.update(
         { id: ctx.session.patientApp.id },
         { height: height },
+      );
+      ctx.scene.enter(`enterThePatientNeeds`);
+    }
+  }
+}
+@Scene(`enterThePatientNeeds`)
+export class AskPatientNeeds {
+  constructor(
+    @InjectRepository(PatientsEntity)
+    private readonly patientRepo: PatientsRepository,
+  ) {}
+  @SceneEnter()
+  async onEnter(@Ctx() ctx: ContextType) {
+    await ctx.reply(AskingWhatPatientNeeds[ctx.session.lang]);
+  }
+  @On('text')
+  async textHandler(ctx: ContextType) {
+    if ('text' in ctx.message) {
+      const needs = ctx.message.text;
+      await this.patientRepo.update(
+        { id: ctx.session.patientApp.id },
+        { stuff: needs },
       );
     }
   }
