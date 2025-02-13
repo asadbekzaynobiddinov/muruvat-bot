@@ -53,3 +53,7 @@ export const phoneNumberKeys = {
     one_time_keyboard: true,
   },
 };
+
+// export const answerButton = {
+//   inline_keyboard: [[Markup.button.callback('Xabarga javob berish', 'answer')]],
+// };

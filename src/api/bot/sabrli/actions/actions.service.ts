@@ -36,10 +36,10 @@ export class ActionsService {
     ctx.session.patientApp.id = createPatientApply.id;
     await ctx.scene.enter('sendApplyScene');
   }
-  // @Action('toAdminAsPatient')
-  // async toAdminAsPatient(@Ctx() ctx: ContextType) {
-  //   await ctx.editMessageText();
-  // }
+  @Action('toAdminAsPatient')
+  async toAdminAsPatient(@Ctx() ctx: ContextType) {
+    ctx.scene.enter('sendReportToAdminAsPatient');
+  }
   @Action('settings_for_patient')
   async settingsForPatient(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
@@ -162,11 +162,27 @@ export class ActionsService {
         await this.bot.telegram.sendVideo('@muruvatkorsatish', data.media, {
           caption: createTemplate(data),
           parse_mode: 'Markdown',
+          reply_markup: {
+            inline_keyboard: [
+              [
+                Markup.button.callback('✅', 'acceptPost'),
+                Markup.button.callback('❌', 'rejectPost'),
+              ],
+            ],
+          },
         });
       } else {
         await this.bot.telegram.sendPhoto('@muruvatkorsatish', data.media, {
           caption: createTemplate(data),
           parse_mode: 'Markdown',
+          reply_markup: {
+            inline_keyboard: [
+              [
+                Markup.button.callback('✅', 'acceptPost'),
+                Markup.button.callback('❌', 'rejectPost'),
+              ],
+            ],
+          },
         });
       }
     } catch (error) {
