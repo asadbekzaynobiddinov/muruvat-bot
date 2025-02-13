@@ -11,10 +11,12 @@ import { ButtonsService } from '../../button/button.service';
 import { changePatientPhone } from './patient.menu.scene';
 import {
   AskPatientNeeds,
+  AskPatientNeedsStuffSize,
   EnterTheAgeOfPatientScene,
   EnterTheHeightOfPatientScene,
   EnterTheNameOfPatientScene,
   SendApplyScene,
+  SendMediaApplyScene,
 } from './patient.application.scene';
 
 @Module({
@@ -27,10 +29,12 @@ import {
     AskPatientDistrict,
     changePatientPhone,
     SendApplyScene,
+    SendMediaApplyScene,
     EnterTheNameOfPatientScene,
     EnterTheAgeOfPatientScene,
     EnterTheHeightOfPatientScene,
     AskPatientNeeds,
+    AskPatientNeedsStuffSize,
   ],
 })
 export class ScenesModule {}

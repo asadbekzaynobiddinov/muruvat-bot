@@ -82,6 +82,32 @@ export const settingsKeysForPatient = {
     ],
   },
 };
+export const genderForPatient: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('Erkak', 'male_patient'),
+        Markup.button.callback('Ayol', 'female_patient'),
+      ],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('Мужчина', 'male_patient'),
+        Markup.button.callback('Женщина', 'female_patient'),
+      ],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [
+        Markup.button.callback('Male', 'male_patient'),
+        Markup.button.callback('Female', 'female_patient'),
+      ],
+    ],
+  },
+};
 export const backToPatientMenu: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
@@ -98,4 +124,31 @@ export const backToPatientMenu: Record<string, InlineKeyboardMarkup> = {
       [Markup.button.callback('🔙 Back', 'back_to_patient_menu')],
     ],
   },
+};
+export const sizeByAgeKeys: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [[Markup.button.callback("Yosh bo'yicha", 'by_age')]],
+  },
+  ru: {
+    inline_keyboard: [[Markup.button.callback('По возрасту', 'by_age')]],
+  },
+  en: {
+    inline_keyboard: [[Markup.button.callback('By Age', 'by_age')]],
+  },
+};
+export const sizePatientStuffKeys: InlineKeyboardMarkup = {
+  inline_keyboard: [
+    [
+      Markup.button.callback('XS - 32-34', 'StuffSize=xs'),
+      Markup.button.callback('S - 36-38', 'StuffSize=s'),
+    ],
+    [
+      Markup.button.callback('M - 40-42', 'StuffSize=m'),
+      Markup.button.callback('L - 44-46', 'StuffSize=l'),
+    ],
+    [
+      Markup.button.callback('XL - 48-50', 'StuffSize=xl'),
+      Markup.button.callback('XXL - 52-54', 'StuffSize=xxl'),
+    ],
+  ],
 };

@@ -1,4 +1,4 @@
-import { Action, Ctx, Update } from 'nestjs-telegraf';
+import { Action, Ctx, InjectBot, Update } from 'nestjs-telegraf';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   PatientsEntity,
@@ -14,14 +14,15 @@ import {
   backToPatientMenu,
   settingsKeysForPatient,
   patientLangMessages,
+  createTemplate,
 } from 'src/common';
-import { ButtonsService } from '../../button/button.service';
 import { Languages } from 'src/common/enum/language';
+import { Markup, Telegraf } from 'telegraf';
 
 @Update()
 export class ActionsService {
   constructor(
-    private readonly buttonService: ButtonsService,
+    @InjectBot() private readonly bot: Telegraf,
     @InjectRepository(UsersEntity) private readonly userRepo: UsersRepository,
     @InjectRepository(PatientsEntity)
     private readonly patientRepo: PatientsRepository,
@@ -118,6 +119,69 @@ export class ActionsService {
           ...settingsKeysForPatient[ctx.session.lang].inline_keyboard,
           ...backToPatientMenu[ctx.session.lang].inline_keyboard,
         ],
+      },
+    });
+  }
+  @Action(/StuffSize/)
+  async callbackHandler(@Ctx() ctx: ContextType) {
+    const [, size] = (ctx.update as any).callback_query.data.split('=');
+    await this.patientRepo.update({ id: ctx.session.patientApp.id }, { size });
+    await ctx.scene.leave();
+    await ctx.editMessageText('Tasdiqlaysizmi ?', {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            Markup.button.callback('✅', 'acceptApply'),
+            Markup.button.callback('❌', 'rejectApply'),
+          ],
+        ],
+      },
+    });
+  }
+  @Action('acceptApply')
+  async acceptApply(@Ctx() ctx: ContextType) {
+    await ctx.editMessageText(mainMessage[ctx.session.lang], {
+      reply_markup: patientMenuKeys[ctx.session.lang],
+    });
+    const data = await this.patientRepo.findOne({
+      where: {
+        id: `${ctx.session.patientApp.id}`,
+      },
+    });
+    if (!data || !data.media) {
+      await ctx.reply('Fayl topilmadi.');
+      return;
+    }
+    try {
+      const file = await this.bot.telegram.getFile(data.media);
+      const isVideo =
+        file.file_path.endsWith('.mp4') ||
+        file.file_path.endsWith('.mov') ||
+        file.file_path.endsWith('.mkv');
+      if (isVideo) {
+        await this.bot.telegram.sendVideo('@muruvatkorsatish', data.media, {
+          caption: createTemplate(data),
+          parse_mode: 'Markdown',
+        });
+      } else {
+        await this.bot.telegram.sendPhoto('@muruvatkorsatish', data.media, {
+          caption: createTemplate(data),
+          parse_mode: 'Markdown',
+        });
+      }
+    } catch (error) {
+      await ctx.reply('Media yuborishda xatolik yuz berdi.');
+      console.error(error.message);
+    }
+    await ctx.scene.leave();
+  }
+
+  @Action('rejectApply')
+  async reject(@Ctx() ctx: ContextType) {
+    await this.patientRepo.delete({ id: `${ctx.session.patientApp.id}` });
+    await ctx.editMessageText(mainMessage[ctx.session.lang], {
+      reply_markup: {
+        inline_keyboard: [...patientMenuKeys[ctx.session.lang].inline_keyboard],
       },
     });
   }

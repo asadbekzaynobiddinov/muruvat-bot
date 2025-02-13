@@ -1,22 +1,63 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
-import { askPatientHeightMessage, ContextType } from 'src/common';
+import { Action, Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
+import { Markup } from 'telegraf';
+import {
+  askPatientGender,
+  askPatientHeightMessage,
+  askPatientNeedsSize,
+  ContextType,
+  genderForPatient,
+  Genders,
+  sizeByAgeKeys,
+  alertAgeInput,
+  AskingWhatPatientNeeds,
+  askPatientAgeMessage,
+  askPatientNameMessage,
+  askVideoOrPhotoOfPatientMessage,
+  sizePatientStuffKeys,
+} from 'src/common';
 import {
   PatientsEntity,
   PatientsRepository,
   UsersEntity,
   UsersRepository,
 } from 'src/core';
-import {
-  alertAgeInput,
-  AskingWhatPatientNeeds,
-  askPatientAgeMessage,
-  askPatientNameMessage,
-  askVideoOrPhotoOfPatientMessage,
-} from 'src/common';
 
 @Scene('sendApplyScene')
 export class SendApplyScene {
+  constructor(
+    @InjectRepository(PatientsEntity)
+    private readonly patientRepo: PatientsRepository,
+  ) {}
+  @SceneEnter()
+  async onEnter(@Ctx() ctx: ContextType) {
+    await ctx.reply(askPatientGender[ctx.session.lang], {
+      reply_markup: {
+        inline_keyboard: [
+          ...genderForPatient[ctx.session.lang].inline_keyboard,
+        ],
+      },
+    });
+  }
+  @Action('female_patient')
+  async felmaleGenHandler(ctx: ContextType) {
+    await this.patientRepo.update(
+      { id: ctx.session.patientApp.id },
+      { gender: Genders.FEMALE },
+    );
+    await ctx.scene.enter('sendMediaApplyScene');
+  }
+  @Action('male_patient')
+  async maleGenHandler(ctx: ContextType) {
+    await this.patientRepo.update(
+      { id: ctx.session.patientApp.id },
+      { gender: Genders.MALE },
+    );
+    await ctx.scene.enter('sendMediaApplyScene');
+  }
+}
+@Scene('sendMediaApplyScene')
+export class SendMediaApplyScene {
   constructor(
     @InjectRepository(PatientsEntity)
     private readonly patientRepo: PatientsRepository,
@@ -130,7 +171,7 @@ export class EnterTheHeightOfPatientScene {
         { id: ctx.session.patientApp.id },
         { height: height },
       );
-      ctx.scene.enter(`enterThePatientNeeds`);
+      ctx.scene.enter('enterThePatientNeeds');
     }
   }
 }
@@ -152,6 +193,39 @@ export class AskPatientNeeds {
         { id: ctx.session.patientApp.id },
         { stuff: needs },
       );
+      await ctx.scene.enter('AskPatientNeedsStuffSize');
     }
+  }
+}
+@Scene('AskPatientNeedsStuffSize')
+export class AskPatientNeedsStuffSize {
+  constructor(
+    @InjectRepository(PatientsEntity)
+    private readonly patientRepo: PatientsRepository,
+  ) {}
+  @SceneEnter()
+  async onEnter(@Ctx() ctx: ContextType) {
+    await ctx.reply(askPatientNeedsSize[ctx.session.lang], {
+      reply_markup: {
+        inline_keyboard: [
+          ...sizePatientStuffKeys.inline_keyboard,
+          ...sizeByAgeKeys[ctx.session.lang].inline_keyboard,
+        ],
+      },
+    });
+  }
+  @Action('by_age')
+  async byAgeCallbackHandler(@Ctx() ctx: ContextType) {
+    await ctx.reply('Tasdiqlaysizmi ?', {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            Markup.button.callback('✅', 'acceptApply'),
+            Markup.button.callback('❌', 'rejectApply'),
+          ],
+        ],
+      },
+    });
+    await ctx.scene.leave();
   }
 }
