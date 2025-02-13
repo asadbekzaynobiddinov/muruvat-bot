@@ -13,7 +13,4 @@ export class AdminEntity extends BaseEntity {
 
   @Column({ type: 'varchar', name: 'last_name', nullable: true })
   last_name: string;
-
-  @Column({ type: 'varchar', name: 'phone_number', nullable: true })
-  phone_number: string;
 }
