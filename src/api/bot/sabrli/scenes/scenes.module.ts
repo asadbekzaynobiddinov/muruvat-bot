@@ -18,6 +18,7 @@ import {
   SendApplyScene,
   SendMediaApplyScene,
 } from './patient.application.scene';
+import { ReportToAdminAsPatient } from './reportto.admin.scene';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UsersEntity, PatientsEntity])],
@@ -35,6 +36,7 @@ import {
     EnterTheHeightOfPatientScene,
     AskPatientNeeds,
     AskPatientNeedsStuffSize,
+    ReportToAdminAsPatient,
   ],
 })
 export class ScenesModule {}
