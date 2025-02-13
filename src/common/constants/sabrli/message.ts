@@ -43,8 +43,3 @@ export const askPatientNeedsSize = {
   ru: 'Пожалуйста, нажмите одну из кнопок ниже, чтобы ввести размер вашего пациента.',
   en: 'Please click one of the buttons below to enter the size of your patience',
 };
-export const messageForToAdminAsPatient = {
-  uz: 'Adminga xabaringizni qoldirishingiz mumkin',
-  ru: 'Вы можете оставить сообщение для администратора',
-  en: 'You can leave a message for the admin',
-};

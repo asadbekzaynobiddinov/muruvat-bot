@@ -27,7 +27,6 @@ import {
   sizeKeys,
   viewPatientsKeys,
 } from 'src/common';
-import { Markup } from 'telegraf';
 import { ButtonsService } from '../../button/button.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersEntity, UsersRepository } from 'src/core';
@@ -59,13 +58,7 @@ export class ActionsService {
 
   @Action('toAdminAsGenerous')
   async toAdmin(@Ctx() ctx: ContextType) {
-    await ctx.editMessageText('To Admin As Generous', {
-      reply_markup: {
-        inline_keyboard: [
-          [Markup.button.callback('🔙', 'back_to_generous_menu')],
-        ],
-      },
-    });
+    ctx.scene.enter('sendReportToAdminAsGenerous');
   }
 
   @Action('settings_for_generous')

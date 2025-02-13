@@ -10,6 +10,7 @@ import {
 import { ChangeGenerosPhone } from './change.phone.scene';
 import { ButtonsService } from '../../button/button.service';
 import { ButtonModule } from '../../button/button.module';
+import { ReportToAdminAsGenerous } from './reportfrom.generous.scene';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ButtonModule } from '../../button/button.module';
     ButtonsService,
     AskGenerousDistrict,
     ChangeGenerosPhone,
+    ReportToAdminAsGenerous,
   ],
 })
 export class ScenesModule {}
