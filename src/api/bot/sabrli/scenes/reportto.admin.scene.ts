@@ -26,7 +26,7 @@ export class ReportToAdminAsPatient {
               [
                 {
                   text: 'Xabarga javob ✉️',
-                  url: `https://t.me/music_with_spotifybot?start=admin_response`,
+                  url: `https://t.me/music_with_spotifybot`,
                 },
               ],
             ],
