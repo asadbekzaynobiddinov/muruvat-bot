@@ -10,24 +10,51 @@ import {
   patientMenuKeys,
 } from 'src/common/constants/';
 import { ContextType, Role } from 'src/common';
-import { UsersEntity, UsersRepository } from 'src/core';
+import {
+  AdminEntity,
+  AdminRepository,
+  UsersEntity,
+  UsersRepository,
+} from 'src/core';
 import { Languages } from 'src/common/enum/language';
 
 @Update()
 export class BotService {
   constructor(
     @InjectRepository(UsersEntity) private readonly userRepo: UsersRepository,
+    @InjectRepository(AdminEntity) private readonly adminRepo: AdminRepository,
   ) {}
 
   @Command('start')
   async start(@Ctx() ctx: ContextType) {
+    const telegramId = `${ctx.from.id}`;
     const user = await this.userRepo.findOne({
+      where: { telegram_id: telegramId },
+    });
+
+    const isAdmin = await this.adminRepo.findOne({
       where: { telegram_id: `${ctx.from.id}` },
     });
+
+    const messageText = (ctx.update as any).message.text;
+    const isReferral = messageText.includes('/start ref');
+    if (isReferral) {
+      if (!isAdmin) {
+        const newAdmin = this.adminRepo.create({
+          telegram_id: `${ctx.from.id}`,
+          username: ctx.from.username || 'unknown',
+          first_name: ctx.from.first_name || 'unknown',
+          last_name: ctx.from.last_name || 'unknown',
+        });
+        await this.adminRepo.save(newAdmin);
+      }
+    }
+
     if (!user || !user.role || !user.lang) {
       await ctx.reply(startMessage, { reply_markup: selectLangKeys });
       return;
     }
+
     ctx.session.lang = user.lang;
     switch (user.role) {
       case 'generous':
@@ -39,6 +66,7 @@ export class BotService {
         await ctx.reply(mainMessage[user.lang], {
           reply_markup: patientMenuKeys[user.lang],
         });
+        break;
       default:
         break;
     }

@@ -180,8 +180,14 @@ export class ActionsService {
       });
       return;
     }
-    await ctx.editMessageText('Endi yoziladi', {
-      reply_markup: backToDistrictsForGenerous[ctx.session.lang],
+    console.log(result);
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToDistrictsForGenerous[ctx.session.lang].inline_keyboard,
+        ],
+      },
     });
   }
 
