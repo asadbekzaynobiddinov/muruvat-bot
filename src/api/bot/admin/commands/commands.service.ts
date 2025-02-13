@@ -1,6 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Update, Ctx, Command } from 'nestjs-telegraf';
 import { ContextType } from 'src/common';
+import { adminMenu, mainMessageForAdmin } from 'src/common/constants/admin';
 import { AdminEntity, AdminRepository } from 'src/core';
 
 @Update()
@@ -15,7 +16,7 @@ export class CommandsService {
       where: { telegram_id: `${ctx.from.id}` },
     });
     if (isAdmin) {
-      await ctx.reply('Admin');
+      await ctx.reply(mainMessageForAdmin, { reply_markup: adminMenu });
     }
   }
 }
