@@ -1,14 +1,14 @@
 import { Ctx, InjectBot, On, Scene, SceneEnter } from 'nestjs-telegraf';
 import {
   ContextType,
+  generousMenuKeys,
   mainMessage,
   messageToAdmin,
-  patientMenuKeys,
 } from 'src/common';
 import { Telegraf } from 'telegraf';
 
-@Scene('sendReportToAdminAsPatient')
-export class ReportToAdminAsPatient {
+@Scene('sendReportToAdminAsGenerous')
+export class ReportToAdminAsGenerous {
   constructor(@InjectBot() private readonly bot: Telegraf) {}
   @SceneEnter()
   async onEnter(@Ctx() ctx: ContextType) {
@@ -36,7 +36,7 @@ export class ReportToAdminAsPatient {
       ctx.session.lastMessage = await ctx.reply(mainMessage[ctx.session.lang], {
         reply_markup: {
           inline_keyboard: [
-            ...patientMenuKeys[ctx.session.lang].inline_keyboard,
+            ...generousMenuKeys[ctx.session.lang].inline_keyboard,
           ],
         },
       });

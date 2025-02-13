@@ -74,3 +74,8 @@ export const lastMessgeText = {
   ru: `Используйте последнее меню`,
   en: `Use the last menu`,
 };
+export const messageToAdmin = {
+  uz: 'Adminga xabaringizni qoldirishingiz mumkin',
+  ru: 'Вы можете оставить сообщение для администратора',
+  en: 'You can leave a message for the admin',
+};
