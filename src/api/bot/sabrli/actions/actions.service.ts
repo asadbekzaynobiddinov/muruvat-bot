@@ -18,7 +18,9 @@ import {
 } from 'src/common';
 import { Languages } from 'src/common/enum/language';
 import { Markup, Telegraf } from 'telegraf';
-
+import { UseGuards } from '@nestjs/common';
+import { LastMessageGuard } from 'src/common/guard/lastMessage.guard';
+@UseGuards(LastMessageGuard)
 @Update()
 export class ActionsService {
   constructor(
