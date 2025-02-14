@@ -13,9 +13,9 @@ import { AdminEntity, AdminRepository } from 'src/core';
 @Update()
 // @UseGuards(AdminGuard)
 export class ActionsService {
-  constructor(
-    @InjectRepository(AdminEntity) private readonly adminRepo: AdminRepository,
-  ) {}
+  // constructor(
+  // @InjectRepository(AdminEntity) private readonly adminRepo: AdminRepository,
+  // ) {}
   @Action('generousesForAdmin')
   async gnerouses(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessageForAdmin, {
