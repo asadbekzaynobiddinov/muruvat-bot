@@ -4,6 +4,7 @@ import { ActionsModule } from './actions/actions.module';
 import { ButtonModule } from '../button/button.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PatientsEntity, UsersEntity } from 'src/core';
+import { ActionsService } from './actions/actions.service';
 
 @Module({
   imports: [
@@ -12,5 +13,6 @@ import { PatientsEntity, UsersEntity } from 'src/core';
     ButtonModule,
     TypeOrmModule.forFeature([UsersEntity, PatientsEntity]),
   ],
+  providers: [ActionsService],
 })
 export class SahiyModule {}

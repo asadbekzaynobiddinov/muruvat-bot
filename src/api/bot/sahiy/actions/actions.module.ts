@@ -7,6 +7,5 @@ import { UsersEntity } from 'src/core';
 @Module({
   imports: [ButtonModule, TypeOrmModule.forFeature([UsersEntity])],
   providers: [ActionsService],
-  exports: [ActionsService],
 })
 export class ActionsModule {}
