@@ -179,8 +179,8 @@ export class ActionsService {
             reply_markup: {
               inline_keyboard: [
                 [
-                  Markup.button.callback('✅', 'acceptPost'),
-                  Markup.button.callback('❌', 'rejectPost'),
+                  Markup.button.callback('✅', `acceptPostAsAdmin=${data.id}`),
+                  Markup.button.callback('❌', `rejectPostAsAdmin=${data.id}`),
                 ],
               ],
             },
@@ -196,8 +196,8 @@ export class ActionsService {
             reply_markup: {
               inline_keyboard: [
                 [
-                  Markup.button.callback('✅', 'acceptPost'),
-                  Markup.button.callback('❌', 'rejectPost'),
+                  Markup.button.callback('✅', `acceptPostAsAdmin=${data.id}`),
+                  Markup.button.callback('❌', `rejectPostAsAdmin=${data.id}`),
                 ],
               ],
             },

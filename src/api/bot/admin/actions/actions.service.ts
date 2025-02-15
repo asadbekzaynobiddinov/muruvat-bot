@@ -1,3 +1,4 @@
+// import { InjectRepository } from '@nestjs/typeorm';
 import { Update, Action, Ctx } from 'nestjs-telegraf';
 import { ContextType } from 'src/common';
 import {
@@ -6,10 +7,15 @@ import {
   mainMessageForAdmin,
   patientsKeysForAdmin,
 } from 'src/common/constants/admin';
+// import { PatientsEntity, PatientsRepository } from 'src/core';
 import { Markup } from 'telegraf';
 
 @Update()
 export class ActionsService {
+  // constructor(
+  //   @InjectRepository(PatientsEntity)
+  //   private readonly patientRepo: PatientsRepository,
+  // ) {}
   @Action('generousesForAdmin')
   async gnerouses(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessageForAdmin, {
@@ -115,5 +121,11 @@ export class ActionsService {
         ],
       },
     });
+  }
+
+  @Action(/acceptPostAsAdmin/)
+  async acceptPostAsAdmin(@Ctx() ctx: ContextType) {
+    const [, id] = (ctx.update as any).callback_query.data.split('=');
+    console.log(id);
   }
 }
