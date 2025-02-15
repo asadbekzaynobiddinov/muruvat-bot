@@ -20,6 +20,7 @@ import { Languages } from 'src/common/enum/language';
 import { Markup, Telegraf } from 'telegraf';
 import { UseGuards } from '@nestjs/common';
 import { LastMessageGuard } from 'src/common/guard/lastMessage.guard';
+import { Media } from 'src/common/enum/media.';
 @UseGuards(LastMessageGuard)
 @Update()
 export class ActionsService {
@@ -150,17 +151,12 @@ export class ActionsService {
         id: `${ctx.session.patientApp.id}`,
       },
     });
-    if (!data || !data.media) {
+    if (!data || !data.media.file_id) {
       await ctx.reply('Fayl topilmadi.');
       return;
     }
     try {
-      const file = await this.bot.telegram.getFile(data.media.file_id);
-      const isVideo =
-        file.file_path.endsWith('.mp4') ||
-        file.file_path.endsWith('.mov') ||
-        file.file_path.endsWith('.mkv');
-      if (isVideo) {
+      if (data.media.type == Media.video) {
         await this.bot.telegram.sendVideo(
           '@muruvatkorsatish',
           data.media.file_id,
