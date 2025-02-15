@@ -269,15 +269,16 @@ export class ButtonsService {
   }
 
   async generatePatientsButtons(
-    filters: Partial<{
+    filters?: Partial<{
       gender: Genders;
       age: [number, number];
       size: string;
       region: string;
       district: string;
     }>,
-    page: number,
-    customCallback: string,
+    page?: number,
+    customCallback?: string,
+    customNavigation?: string,
   ) {
     const skip = (page - 1) * 10;
     const take = 10;
@@ -290,6 +291,8 @@ export class ButtonsService {
     if (filters.district) where.district = filters.district;
 
     const patients = await this.patintsRepo.find({ where, skip, take });
+
+    console.log(page);
 
     if (patients.length === 0) {
       return false;
@@ -313,12 +316,12 @@ export class ButtonsService {
     if (page > 1)
       navigationButtons.push({
         text: '⬅️ Oldingi',
-        callback_data: `${customCallback}Page=${page - 1}`,
+        callback_data: `${customNavigation}=${page - 1}`,
       });
     if (patients.length === take)
       navigationButtons.push({
         text: '➡️ Keyingi',
-        callback_data: `${customCallback}Page=${page + 1}`,
+        callback_data: `${customNavigation}=${page + 1}`,
       });
 
     if (navigationButtons.length) {

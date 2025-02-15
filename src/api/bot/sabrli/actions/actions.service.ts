@@ -153,37 +153,45 @@ export class ActionsService {
       return;
     }
     try {
-      const file = await this.bot.telegram.getFile(data.media);
+      const file = await this.bot.telegram.getFile(data.media.file_id);
       const isVideo =
         file.file_path.endsWith('.mp4') ||
         file.file_path.endsWith('.mov') ||
         file.file_path.endsWith('.mkv');
       if (isVideo) {
-        await this.bot.telegram.sendVideo('@muruvatkorsatish', data.media, {
-          caption: createTemplate(data),
-          parse_mode: 'Markdown',
-          reply_markup: {
-            inline_keyboard: [
-              [
-                Markup.button.callback('✅', 'acceptPost'),
-                Markup.button.callback('❌', 'rejectPost'),
+        await this.bot.telegram.sendVideo(
+          '@muruvatkorsatish',
+          data.media.file_id,
+          {
+            caption: createTemplate(data),
+            parse_mode: 'Markdown',
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  Markup.button.callback('✅', 'acceptPost'),
+                  Markup.button.callback('❌', 'rejectPost'),
+                ],
               ],
-            ],
+            },
           },
-        });
+        );
       } else {
-        await this.bot.telegram.sendPhoto('@muruvatkorsatish', data.media, {
-          caption: createTemplate(data),
-          parse_mode: 'Markdown',
-          reply_markup: {
-            inline_keyboard: [
-              [
-                Markup.button.callback('✅', 'acceptPost'),
-                Markup.button.callback('❌', 'rejectPost'),
+        await this.bot.telegram.sendPhoto(
+          '@muruvatkorsatish',
+          data.media.file_id,
+          {
+            caption: createTemplate(data),
+            parse_mode: 'Markdown',
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  Markup.button.callback('✅', 'acceptPost'),
+                  Markup.button.callback('❌', 'rejectPost'),
+                ],
               ],
-            ],
+            },
           },
-        });
+        );
       }
     } catch (error) {
       await ctx.reply('Media yuborishda xatolik yuz berdi.');
