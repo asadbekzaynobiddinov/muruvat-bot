@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ButtonModule } from '../../button/button.module';
-import { ActionsService } from '../../admin/actions/actions.service';
+import { ActionsService } from './actions.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersEntity } from 'src/core';
+import { PatientsEntity, UsersEntity } from 'src/core';
 
 @Module({
-  imports: [ButtonModule, TypeOrmModule.forFeature([UsersEntity])],
+  imports: [
+    ButtonModule,
+    TypeOrmModule.forFeature([UsersEntity, PatientsEntity]),
+  ],
   providers: [ActionsService],
 })
 export class ActionsModule {}
