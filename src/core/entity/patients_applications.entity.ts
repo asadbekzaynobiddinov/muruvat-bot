@@ -33,6 +33,6 @@ export class PatientsEntity extends BaseEntity {
   @Column({ type: 'varchar', name: 'user_id', nullable: true })
   user_id: string;
 
-  @ManyToOne(() => UsersEntity, (users) => users.patients)
-  users: UsersEntity;
+  @ManyToOne(() => UsersEntity, (user) => user.patients)
+  user: UsersEntity;
 }

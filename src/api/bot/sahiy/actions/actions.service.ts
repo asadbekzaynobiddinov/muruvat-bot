@@ -29,7 +29,12 @@ import {
 } from 'src/common';
 import { ButtonsService } from '../../button/button.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UsersEntity, UsersRepository } from 'src/core';
+import {
+  PatientsEntity,
+  PatientsRepository,
+  UsersEntity,
+  UsersRepository,
+} from 'src/core';
 import { Languages } from 'src/common/enum/language';
 import { UseGuards } from '@nestjs/common';
 import { LastMessageGuard } from 'src/common/guard/lastMessage.guard';
@@ -40,6 +45,8 @@ export class ActionsService {
   constructor(
     private readonly buttonService: ButtonsService,
     @InjectRepository(UsersEntity) private readonly userRepo: UsersRepository,
+    @InjectRepository(PatientsEntity)
+    private readonly patientsRepo: PatientsRepository,
   ) {}
 
   @Action('repair')
@@ -600,5 +607,10 @@ export class ActionsService {
   async viewPatientsForGen(@Ctx() ctx: ContextType) {
     const [, id] = (ctx.update as any).callback_query.data.split('=');
     console.log(id);
+    const application = await this.patientsRepo.findOne({
+      where: { id },
+      relations: ['user'],
+    });
+    console.log(application.user);
   }
 }

@@ -29,6 +29,6 @@ export class UsersEntity extends BaseEntity {
   @OneToMany(() => GenerousEntity, (generous) => generous.users)
   generous: GenerousEntity[];
 
-  @OneToMany(() => PatientsEntity, (patients) => patients.users)
+  @OneToMany(() => PatientsEntity, (patient) => patient.user)
   patients: PatientsEntity[];
 }
