@@ -21,6 +21,7 @@ import { Markup, Telegraf } from 'telegraf';
 import { UseGuards } from '@nestjs/common';
 import { LastMessageGuard } from 'src/common/guard/lastMessage.guard';
 import { Media } from 'src/common/enum/media.';
+import { config } from 'src/config';
 @UseGuards(LastMessageGuard)
 @Update()
 export class ActionsService {
@@ -158,7 +159,7 @@ export class ActionsService {
     try {
       if (data.media.type == Media.video) {
         await this.bot.telegram.sendVideo(
-          '@muruvatkorsatish',
+          config.TG_CHANNEL,
           data.media.file_id,
           {
             caption: createTemplate(data),
@@ -175,7 +176,7 @@ export class ActionsService {
         );
       } else {
         await this.bot.telegram.sendPhoto(
-          '@muruvatkorsatish',
+          config.TG_CHANNEL,
           data.media.file_id,
           {
             caption: createTemplate(data),

@@ -5,6 +5,7 @@ import {
   mainMessage,
   messageToAdmin,
 } from 'src/common';
+import { config } from 'src/config';
 import { Telegraf } from 'telegraf';
 
 @Scene('sendReportToAdminAsGenerous')
@@ -17,22 +18,18 @@ export class ReportToAdminAsGenerous {
   @On('text')
   async textHandler(@Ctx() ctx: ContextType) {
     if ('text' in ctx.message) {
-      await this.bot.telegram.sendMessage(
-        '@muruvatkorsatish',
-        ctx.message.text,
-        {
-          reply_markup: {
-            inline_keyboard: [
-              [
-                {
-                  text: 'Xabarga javob ✉️',
-                  url: `https://t.me/music_with_spotifybot`,
-                },
-              ],
+      await this.bot.telegram.sendMessage(config.TG_CHANNEL, ctx.message.text, {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: 'Xabarga javob ✉️',
+                url: config.BOT_URL,
+              },
             ],
-          },
+          ],
         },
-      );
+      });
       ctx.session.lastMessage = await ctx.reply(mainMessage[ctx.session.lang], {
         reply_markup: {
           inline_keyboard: [
