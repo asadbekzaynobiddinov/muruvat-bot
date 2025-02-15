@@ -105,6 +105,7 @@ export class ActionsService {
       ctx.session.lang,
       'patientsRegionsForG',
     );
+    ctx.session.generousNavigation.RegionPage = +page;
     await ctx.editMessageText(neededRegionMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
@@ -144,6 +145,7 @@ export class ActionsService {
       ctx.session.lang,
       'patientsDistrictForG',
     );
+    ctx.session.generousNavigation.DistrictPage = +page;
     await ctx.editMessageText(neededDistrictMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
@@ -158,7 +160,6 @@ export class ActionsService {
   async district(@Ctx() ctx: ContextType) {
     const [, district] = (ctx.update as any).callback_query.data.split('=');
     ctx.session.search.district = district;
-    console.log(ctx.session.search);
     const result = await this.buttonService.generatePatientsButtons(
       {
         region: ctx.session.search.region,
@@ -166,6 +167,7 @@ export class ActionsService {
       },
       1,
       'viewPatientsForGen',
+      'patNavForGenByReg',
     );
     if (!result) {
       await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
@@ -184,10 +186,38 @@ export class ActionsService {
     });
   }
 
+  @Action(/patNavForGenByReg/)
+  async viewPatientsForGenPage(@Ctx() ctx: ContextType) {
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
+    const result = await this.buttonService.generatePatientsButtons(
+      {
+        region: ctx.session.search.region,
+        district: ctx.session.search.district,
+      },
+      +page,
+      'viewPatientsForGen',
+      'patNavForGenByReg',
+    );
+    if (!result) {
+      await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToDistrictsForGenerous[ctx.session.lang].inline_keyboard,
+        ],
+      },
+    });
+  }
+
   @Action('backToRegForGenerous')
   async backToRegions(@Ctx() ctx: ContextType) {
     const buttons = this.buttonService.generateRegionButtons(
-      0,
+      ctx.session.generousNavigation.RegionPage || 0,
       ctx.session.lang,
       'patientsRegionsForG',
     );
@@ -205,7 +235,7 @@ export class ActionsService {
   async backToDistricts(@Ctx() ctx: ContextType) {
     const buttons = this.buttonService.generateDistrictButtons(
       ctx.session.search.region,
-      0,
+      ctx.session.generousNavigation.DistrictPage || 0,
       ctx.session.lang,
       'patientsDistrictForG',
     );
@@ -363,7 +393,6 @@ export class ActionsService {
     const [, past, yuqori] = (ctx.update as any).callback_query.data.split('_');
     ctx.session.search.down = past;
     ctx.session.search.up = yuqori;
-    console.log(ctx.session.search);
     const result = await this.buttonService.generatePatientsButtons(
       {
         gender: ctx.session.search.gender as Genders,
@@ -371,6 +400,7 @@ export class ActionsService {
       },
       1,
       'viewPatientsForGen',
+      'patNavForGenByGenAndAg',
     );
     if (!result) {
       await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
@@ -378,8 +408,41 @@ export class ActionsService {
       });
       return;
     }
-    await ctx.editMessageText('Endi yoziladi', {
-      reply_markup: backToAges[ctx.session.lang],
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToAges[ctx.session.lang].inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/patNavForGenByGenAndAg/)
+  async patNavForGenByGenAndAg(@Ctx() ctx: ContextType) {
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
+    const result = await this.buttonService.generatePatientsButtons(
+      {
+        gender: ctx.session.search.gender as Genders,
+        age: [+ctx.session.search.down, +ctx.session.search.up],
+      },
+      +page,
+      'viewPatientsForGen',
+      'patNavForGenByGenAndAg',
+    );
+    if (!result) {
+      await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToAges[ctx.session.lang].inline_keyboard,
+        ],
+      },
     });
   }
 
@@ -395,6 +458,7 @@ export class ActionsService {
       },
       1,
       'viewPatientsForGen',
+      'patNavForGenByGenAndSz',
     );
     if (!result) {
       await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
@@ -404,6 +468,34 @@ export class ActionsService {
     }
     await ctx.editMessageText('Endi yoziladi', {
       reply_markup: backToS[ctx.session.lang],
+    });
+  }
+
+  @Action(/patNavForGenByGenAndSz/)
+  async patNavForGenByGenAndSz(@Ctx() ctx: ContextType) {
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
+    const result = await this.buttonService.generatePatientsButtons(
+      {
+        gender: ctx.session.search.gender as Genders,
+        size: ctx.session.search.size,
+      },
+      +page,
+      'viewPatientsForGen',
+      'patNavForGenByGenAndSz',
+    );
+    if (!result) {
+      await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToS[ctx.session.lang].inline_keyboard,
+        ],
+      },
     });
   }
 
@@ -461,6 +553,7 @@ export class ActionsService {
       {},
       1,
       'viewPatientsForGen',
+      'patNavForGenAll',
     );
     if (!result) {
       await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
@@ -468,8 +561,44 @@ export class ActionsService {
       });
       return;
     }
-    await ctx.editMessageText('Endi yoziladi', {
-      reply_markup: backToViewPatients[ctx.session.lang],
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToViewPatients[ctx.session.lang].inline_keyboard,
+        ],
+      },
     });
+  }
+
+  @Action(/patNavForGenAll/)
+  async patNavForGenAll(@Ctx() ctx: ContextType) {
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
+    const result = await this.buttonService.generatePatientsButtons(
+      {},
+      +page,
+      'viewPatientsForGen',
+      'patNavForGenAll',
+    );
+    if (!result) {
+      await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToViewPatients[ctx.session.lang].inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/viewPatientsForGen/)
+  async viewPatientsForGen(@Ctx() ctx: ContextType) {
+    const [, id] = (ctx.update as any).callback_query.data.split('=');
+    console.log(id);
   }
 }

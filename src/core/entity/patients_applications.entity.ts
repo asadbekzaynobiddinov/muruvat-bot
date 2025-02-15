@@ -27,8 +27,8 @@ export class PatientsEntity extends BaseEntity {
   @Column({ type: 'enum', enum: Genders, nullable: true })
   gender: Genders;
 
-  @Column({ type: 'varchar', name: 'media', nullable: true })
-  media: string;
+  @Column({ type: 'jsonb', name: 'media', nullable: true })
+  media: { type: string; file_id: string };
 
   @Column({ type: 'varchar', name: 'user_id', nullable: true })
   user_id: string;

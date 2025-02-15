@@ -17,6 +17,10 @@ export type ContextType = Context &
       patientApp: {
         id: string;
       };
+      generousNavigation: {
+        RegionPage: number;
+        DistrictPage: number;
+      };
     };
   };
 

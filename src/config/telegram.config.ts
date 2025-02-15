@@ -16,6 +16,7 @@ const telegrafModuleOptions = (): TelegrafModuleOptions => {
         }
         ctx.session.search = ctx.session.search || {};
         ctx.session.patientApp = ctx.session.patientApp || {};
+        ctx.session.generousNavigation = ctx.session.generousNavigation || {};
         await next();
       },
     ],
