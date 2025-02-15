@@ -220,14 +220,17 @@ export class AskPatientNeedsStuffSize {
   ) {}
   @SceneEnter()
   async onEnter(@Ctx() ctx: ContextType) {
-    await ctx.reply(askPatientNeedsSize[ctx.session.lang], {
-      reply_markup: {
-        inline_keyboard: [
-          ...sizePatientStuffKeys.inline_keyboard,
-          ...sizeByAgeKeys[ctx.session.lang].inline_keyboard,
-        ],
+    ctx.session.lastMessage = await ctx.reply(
+      askPatientNeedsSize[ctx.session.lang],
+      {
+        reply_markup: {
+          inline_keyboard: [
+            ...sizePatientStuffKeys.inline_keyboard,
+            ...sizeByAgeKeys[ctx.session.lang].inline_keyboard,
+          ],
+        },
       },
-    });
+    );
   }
   @Action('by_age')
   async byAgeCallbackHandler(@Ctx() ctx: ContextType) {

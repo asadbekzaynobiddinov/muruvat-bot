@@ -63,7 +63,7 @@ export class BotService {
         });
         break;
       case 'patient':
-        await ctx.reply(mainMessage[user.lang], {
+        ctx.session.lastMessage = await ctx.reply(mainMessage[user.lang], {
           reply_markup: patientMenuKeys[user.lang],
         });
         break;

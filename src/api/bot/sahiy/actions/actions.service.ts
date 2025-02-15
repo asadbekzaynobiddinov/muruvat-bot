@@ -32,6 +32,7 @@ import {
   backToPatientsListFromGenderSize,
   backToPatientsListFromAll,
   helpFor,
+  usernameFirst,
 } from 'src/common';
 import { ButtonsService } from '../../button/button.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -72,6 +73,12 @@ export class ActionsService {
 
   @Action('toAdminAsGenerous')
   async toAdmin(@Ctx() ctx: ContextType) {
+    if (!ctx.from.username) {
+      await ctx.answerCbQuery(usernameFirst[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
     ctx.scene.enter('sendReportToAdminAsGenerous');
   }
 
@@ -140,7 +147,6 @@ export class ActionsService {
       ctx.session.lang,
       'patientsDistrictForG',
     );
-    console.log(buttons);
     await ctx.editMessageText(neededDistrictMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
@@ -468,7 +474,6 @@ export class ActionsService {
   async size(@Ctx() ctx: ContextType) {
     const [, size] = (ctx.update as any).callback_query.data.split('_');
     ctx.session.search.size = size;
-    console.log(ctx.session.search);
     const result = await this.buttonService.generatePatientsButtons(
       {
         gender: ctx.session.search.gender as Genders,

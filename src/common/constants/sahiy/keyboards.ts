@@ -56,19 +56,19 @@ export const generousMenuKeys: Record<string, InlineKeyboardMarkup> = {
 export const repairKeys: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
-      [Markup.button.callback('👤 Istalgan odamga', 'anyone')],
+      [Markup.button.callback('👤 Istalgan odamga', 'helFor')],
       [Markup.button.callback('🔙 Ortga qaytish', 'back_to_generous_menu')],
     ],
   },
   ru: {
     inline_keyboard: [
-      [Markup.button.callback('👤 Любому человеку', 'anyone')],
+      [Markup.button.callback('👤 Любому человеку', 'helFor')],
       [Markup.button.callback('🔙 Назад', 'back_to_generous_menu')],
     ],
   },
   en: {
     inline_keyboard: [
-      [Markup.button.callback('👤 To anyone', 'anyone')],
+      [Markup.button.callback('👤 To anyone', 'helFor')],
       [Markup.button.callback('🔙 Back', 'back_to_generous_menu')],
     ],
   },

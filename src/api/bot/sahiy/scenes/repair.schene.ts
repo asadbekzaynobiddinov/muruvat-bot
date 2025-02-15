@@ -51,7 +51,6 @@ export class RepairScene {
         id: currentUser.id,
       },
     });
-    console.log(newApplication);
     try {
       await this.generousRepo.save(newApplication);
     } catch (error) {
@@ -88,10 +87,13 @@ export class RepairScene {
       relations: ['user'],
     });
 
-    const patient = await this.patientRepo.findOne({
-      where: { id: application.whom },
-    });
-    console.log(patient);
+    let patient = null;
+    if (!isNaN(Number(application.whom))) {
+      patient = await this.patientRepo.findOne({
+        where: { id: application.whom },
+        relations: ['user'],
+      });
+    }
 
     await ctx.editMessageText(thankMessage[ctx.session.lang]);
     ctx.session.lastMessage = await ctx.reply(mainMessage[ctx.session.lang], {
@@ -106,7 +108,7 @@ export class RepairScene {
       `     ${application.stuff}\n` +
       `\nKimga: \n      ${
         patient
-          ? `${patient.name}\n      ${patient.region}\n      ${patient.district}\n `
+          ? `${patient.name}\n      ${patient.region}\n      ${patient.district}\n      <code>${patient.user.phone_number ? patient.phone_number : 'raqami nomalum'}</code>`
           : 'istalgan odamga'
       }\n`;
 

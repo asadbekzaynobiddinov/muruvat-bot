@@ -30,7 +30,6 @@ export class RegisterAsGenerous {
   async textHandler(ctx: ContextType) {
     if ('text' in ctx.message) {
       const name = ctx.message.text;
-      console.log(name);
       await this.userRepo.update({ telegram_id: `${ctx.from.id}` }, { name });
       await ctx.scene.enter('askGenerousPhone');
     }
@@ -55,7 +54,6 @@ export class AskGenerousPhone {
     if ('contact' in ctx.message) {
       const contact = ctx.message.contact as { phone_number: string };
       const phone_number = contact.phone_number;
-      console.log(phone_number);
       await this.userRepo.update(
         { telegram_id: `${ctx.from.id}` },
         { phone_number },
