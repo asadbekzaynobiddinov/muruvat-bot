@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ActionsService } from './actions.service';
+import { KeysService } from './keys.update';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AdminEntity, PatientsEntity } from 'src/core';
 
 @Module({
   imports: [TypeOrmModule.forFeature([AdminEntity, PatientsEntity])],
-  providers: [ActionsService],
+  providers: [KeysService],
 })
-export class ActionsModule {}
+export class KeysModule {}

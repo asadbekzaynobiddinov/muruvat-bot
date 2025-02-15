@@ -11,7 +11,7 @@ import {
 import { Markup } from 'telegraf';
 
 @Update()
-export class ActionsService {
+export class KeysService {
   // constructor(
   //   @InjectRepository(PatientsEntity)
   //   private readonly patientRepo: PatientsRepository,
