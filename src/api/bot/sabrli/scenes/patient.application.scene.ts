@@ -32,7 +32,7 @@ export class SendApplyScene {
   ) {}
   @SceneEnter()
   async onEnter(@Ctx() ctx: ContextType) {
-    await ctx.reply(askPatientGender[ctx.session.lang], {
+    await ctx.editMessageText(askPatientGender[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
           ...genderForPatient[ctx.session.lang].inline_keyboard,
@@ -231,7 +231,7 @@ export class AskPatientNeedsStuffSize {
   }
   @Action('by_age')
   async byAgeCallbackHandler(@Ctx() ctx: ContextType) {
-    await ctx.reply('Tasdiqlaysizmi ?', {
+    await ctx.editMessageText('Tasdiqlaysizmi ?', {
       reply_markup: {
         inline_keyboard: [
           [
