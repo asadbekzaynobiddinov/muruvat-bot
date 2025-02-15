@@ -283,16 +283,19 @@ export class ButtonsService {
     const skip = (page - 1) * 10;
     const take = 10;
 
-    const where: any = {};
+    const where: any = { is_available: true };
     if (filters.gender) where.gender = filters.gender;
     if (filters.age) where.age = Between(filters.age[0], filters.age[1]);
     if (filters.size) where.size = filters.size;
     if (filters.region) where.region = filters.region;
     if (filters.district) where.district = filters.district;
 
-    const patients = await this.patintsRepo.find({ where, skip, take });
-
-    console.log(page);
+    const patients = await this.patintsRepo.find({
+      where,
+      skip,
+      take,
+      order: { created_at: 'DESC' },
+    });
 
     if (patients.length === 0) {
       return false;

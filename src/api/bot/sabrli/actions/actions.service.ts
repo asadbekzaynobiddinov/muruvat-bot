@@ -15,6 +15,8 @@ import {
   settingsKeysForPatient,
   patientLangMessages,
   createTemplate,
+  usernameFirst,
+  acceptMessage,
 } from 'src/common';
 import { Languages } from 'src/common/enum/language';
 import { Markup, Telegraf } from 'telegraf';
@@ -22,8 +24,8 @@ import { UseGuards } from '@nestjs/common';
 import { LastMessageGuard } from 'src/common/guard/lastMessage.guard';
 import { Media } from 'src/common/enum/media.';
 import { config } from 'src/config';
-@UseGuards(LastMessageGuard)
 @Update()
+@UseGuards(LastMessageGuard)
 export class ActionsService {
   constructor(
     @InjectBot() private readonly bot: Telegraf,
@@ -33,8 +35,13 @@ export class ActionsService {
   ) {}
   @Action('apply')
   async sendApply(@Ctx() ctx: ContextType) {
+    const user = await this.userRepo.findOne({
+      where: { telegram_id: `${ctx.from.id}` },
+    });
     const createPatientApply = this.patientRepo.create({
-      user_id: `${ctx.from.id}`,
+      user: {
+        id: user.id,
+      },
     });
     await this.patientRepo.save(createPatientApply);
     ctx.session.patientApp.id = createPatientApply.id;
@@ -42,6 +49,12 @@ export class ActionsService {
   }
   @Action('toAdminAsPatient')
   async toAdminAsPatient(@Ctx() ctx: ContextType) {
+    if (!ctx.from.username) {
+      await ctx.answerCbQuery(usernameFirst[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
     ctx.scene.enter('sendReportToAdminAsPatient');
   }
   @Action('settings_for_patient')
@@ -65,7 +78,7 @@ export class ActionsService {
   }
   @Action('change_phone_of_patient')
   async changePhoneOfPatient(@Ctx() ctx: ContextType) {
-    await ctx.scene.enter('ChangePatientPhoneScene');
+    await ctx.scene.enter('changePatientsPhone');
   }
   @Action('change_lang_of_patient')
   async changeLangOfPatient(@Ctx() ctx: ContextType) {
@@ -131,7 +144,7 @@ export class ActionsService {
     const [, size] = (ctx.update as any).callback_query.data.split('=');
     await this.patientRepo.update({ id: ctx.session.patientApp.id }, { size });
     await ctx.scene.leave();
-    await ctx.editMessageText('Tasdiqlaysizmi ?', {
+    await ctx.editMessageText(acceptMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
           [
@@ -153,13 +166,12 @@ export class ActionsService {
       },
     });
     if (!data || !data.media.file_id) {
-      await ctx.reply('Fayl topilmadi.');
       return;
     }
     try {
       if (data.media.type == Media.video) {
         await this.bot.telegram.sendVideo(
-          config.TG_CHANNEL,
+          config.PATIENT_APPLICATIONS_CHANEL,
           data.media.file_id,
           {
             caption: createTemplate(data),
@@ -176,7 +188,7 @@ export class ActionsService {
         );
       } else {
         await this.bot.telegram.sendPhoto(
-          config.TG_CHANNEL,
+          config.PATIENT_APPLICATIONS_CHANEL,
           data.media.file_id,
           {
             caption: createTemplate(data),
@@ -193,7 +205,6 @@ export class ActionsService {
         );
       }
     } catch (error) {
-      await ctx.reply('Media yuborishda xatolik yuz berdi.');
       console.error(error.message);
     }
     await ctx.scene.leave();
@@ -207,5 +218,6 @@ export class ActionsService {
         inline_keyboard: [...patientMenuKeys[ctx.session.lang].inline_keyboard],
       },
     });
+    await ctx.scene.leave();
   }
 }

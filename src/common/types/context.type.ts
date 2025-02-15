@@ -13,6 +13,7 @@ export type ContextType = Context &
         down: number;
         up: number;
         size: string;
+        page: number;
       };
       patientApp: {
         id: string;
@@ -21,6 +22,7 @@ export type ContextType = Context &
         RegionPage: number;
         DistrictPage: number;
       };
+      applicationId: number;
     };
   };
 

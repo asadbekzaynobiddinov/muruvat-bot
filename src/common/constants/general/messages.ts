@@ -79,3 +79,15 @@ export const messageToAdmin = {
   ru: 'Вы можете оставить сообщение для администратора',
   en: 'You can leave a message for the admin',
 };
+
+export const adminReplyMesage = {
+  uz: `Siz bilan adminlarimiz bog'lanishadi.`,
+  ru: `С вами свяжутся наши администраторы.`,
+  en: `Our administrators will contact you.`,
+};
+
+export const usernameFirst = {
+  uz: 'Avval "username" ingizni sozlang',
+  ru: 'Сначала настройте свое "имя пользователя"',
+  en: 'First, set up your "username"',
+};

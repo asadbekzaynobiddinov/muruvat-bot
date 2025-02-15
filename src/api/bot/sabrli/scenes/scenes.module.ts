@@ -8,7 +8,6 @@ import {
 } from './register.scene';
 import { PatientsEntity, UsersEntity } from 'src/core';
 import { ButtonsService } from '../../button/button.service';
-import { changePatientPhone } from './patient.menu.scene';
 import {
   AskPatientNeeds,
   AskPatientNeedsStuffSize,
@@ -19,6 +18,7 @@ import {
   SendMediaApplyScene,
 } from './patient.application.scene';
 import { ReportToAdminAsPatient } from './reportto.admin.scene';
+import { ChangePatientsPhone } from './change_number';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UsersEntity, PatientsEntity])],
@@ -28,7 +28,7 @@ import { ReportToAdminAsPatient } from './reportto.admin.scene';
     AskPatientAddress,
     ButtonsService,
     AskPatientDistrict,
-    changePatientPhone,
+    ChangePatientsPhone,
     SendApplyScene,
     SendMediaApplyScene,
     EnterTheNameOfPatientScene,
@@ -37,6 +37,7 @@ import { ReportToAdminAsPatient } from './reportto.admin.scene';
     AskPatientNeeds,
     AskPatientNeedsStuffSize,
     ReportToAdminAsPatient,
+    ChangePatientsPhone,
   ],
 })
 export class ScenesModule {}

@@ -16,7 +16,7 @@ export const regionKeys = {
     ["Qoraqalpog'iston", 'qoraqalpogiston'],
   ],
   ru: [
-    ['Город Ташкент', 'regoin_tashkent shahar'],
+    ['Город Ташкент', 'toshkent shahar'],
     ['Ташкентская область', 'toshkent viloyat'],
     ['Самарканд', 'samarqand'],
     ['Бухара', 'buxoro'],
@@ -32,7 +32,7 @@ export const regionKeys = {
     ['Каракалпакстан', 'qoraqalpogiston'],
   ],
   en: [
-    ['Tashkent city', '_tashkent shahar'],
+    ['Tashkent city', 'tashkent shahar'],
     ['Tashkent region', 'toshkent viloyat'],
     ['Samarkand', 'samarqand'],
     ['Bukhara', 'buxoro'],

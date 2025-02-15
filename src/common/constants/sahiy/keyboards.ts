@@ -56,19 +56,19 @@ export const generousMenuKeys: Record<string, InlineKeyboardMarkup> = {
 export const repairKeys: Record<string, InlineKeyboardMarkup> = {
   uz: {
     inline_keyboard: [
-      [Markup.button.callback('👤 Istalgan odamga', 'anyone')],
+      [Markup.button.callback('👤 Istalgan odamga', 'helFor')],
       [Markup.button.callback('🔙 Ortga qaytish', 'back_to_generous_menu')],
     ],
   },
   ru: {
     inline_keyboard: [
-      [Markup.button.callback('👤 Любому человеку', 'anyone')],
+      [Markup.button.callback('👤 Любому человеку', 'helFor')],
       [Markup.button.callback('🔙 Назад', 'back_to_generous_menu')],
     ],
   },
   en: {
     inline_keyboard: [
-      [Markup.button.callback('👤 To anyone', 'anyone')],
+      [Markup.button.callback('👤 To anyone', 'helFor')],
       [Markup.button.callback('🔙 Back', 'back_to_generous_menu')],
     ],
   },
@@ -459,6 +459,102 @@ export const settingsForGenerous: Record<string, InlineKeyboardMarkup> = {
         Markup.button.callback(`📞 Change phone`, 'change_phone_generous'),
         Markup.button.callback(`🌐 Change language`, 'change_lang_generous'),
       ],
+    ],
+  },
+};
+
+export const backToPatientsListFromRegion: Record<
+  string,
+  InlineKeyboardMarkup
+> = {
+  uz: {
+    inline_keyboard: [
+      [
+        Markup.button.callback(
+          '🔙 Ortga qaytish',
+          'backToPatientsListFromRegion',
+        ),
+      ],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'backToPatientsListFromRegion')],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'backToPatientsListFromRegion')],
+    ],
+  },
+};
+
+export const backToPatientsListFromGenderAge: Record<
+  string,
+  InlineKeyboardMarkup
+> = {
+  uz: {
+    inline_keyboard: [
+      [
+        Markup.button.callback(
+          '🔙 Ortga qaytish',
+          'backToPatientsListFromGenderAge',
+        ),
+      ],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'backToPatientsListFromGenderAge')],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'backToPatientsListFromGenderAge')],
+    ],
+  },
+};
+
+export const backToPatientsListFromGenderSize: Record<
+  string,
+  InlineKeyboardMarkup
+> = {
+  uz: {
+    inline_keyboard: [
+      [
+        Markup.button.callback(
+          '🔙 Ortga qaytish',
+          'backToPatientsListFromGenderSize',
+        ),
+      ],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'backToPatientsListFromGenderSize')],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'backToPatientsListFromGenderSize')],
+    ],
+  },
+};
+
+export const backToPatientsListFromAll: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Ortga qaytish', 'backToPatientsListFromAll')],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'backToPatientsListFromAll')],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'backToPatientsListFromAll')],
     ],
   },
 };
