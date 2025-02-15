@@ -292,8 +292,6 @@ export class ButtonsService {
 
     const patients = await this.patintsRepo.find({ where, skip, take });
 
-    console.log(page);
-
     if (patients.length === 0) {
       return false;
     }

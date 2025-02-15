@@ -462,3 +462,99 @@ export const settingsForGenerous: Record<string, InlineKeyboardMarkup> = {
     ],
   },
 };
+
+export const backToPatientsListFromRegion: Record<
+  string,
+  InlineKeyboardMarkup
+> = {
+  uz: {
+    inline_keyboard: [
+      [
+        Markup.button.callback(
+          '🔙 Ortga qaytish',
+          'backToPatientsListFromRegion',
+        ),
+      ],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'backToPatientsListFromRegion')],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'backToPatientsListFromRegion')],
+    ],
+  },
+};
+
+export const backToPatientsListFromGenderAge: Record<
+  string,
+  InlineKeyboardMarkup
+> = {
+  uz: {
+    inline_keyboard: [
+      [
+        Markup.button.callback(
+          '🔙 Ortga qaytish',
+          'backToPatientsListFromGenderAge',
+        ),
+      ],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'backToPatientsListFromGenderAge')],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'backToPatientsListFromGenderAge')],
+    ],
+  },
+};
+
+export const backToPatientsListFromGenderSize: Record<
+  string,
+  InlineKeyboardMarkup
+> = {
+  uz: {
+    inline_keyboard: [
+      [
+        Markup.button.callback(
+          '🔙 Ortga qaytish',
+          'backToPatientsListFromGenderSize',
+        ),
+      ],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'backToPatientsListFromGenderSize')],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'backToPatientsListFromGenderSize')],
+    ],
+  },
+};
+
+export const backToPatientsListFromAll: Record<string, InlineKeyboardMarkup> = {
+  uz: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Ortga qaytish', 'backToPatientsListFromAll')],
+    ],
+  },
+  ru: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Назад', 'backToPatientsListFromAll')],
+    ],
+  },
+  en: {
+    inline_keyboard: [
+      [Markup.button.callback('🔙 Back', 'backToPatientsListFromAll')],
+    ],
+  },
+};

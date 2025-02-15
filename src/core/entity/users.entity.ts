@@ -26,7 +26,7 @@ export class UsersEntity extends BaseEntity {
   @Column({ type: 'enum', enum: Languages })
   lang: Languages;
 
-  @OneToMany(() => GenerousEntity, (generous) => generous.users)
+  @OneToMany(() => GenerousEntity, (generous) => generous.user)
   generous: GenerousEntity[];
 
   @OneToMany(() => PatientsEntity, (patient) => patient.user)

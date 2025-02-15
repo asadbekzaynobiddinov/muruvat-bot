@@ -26,6 +26,12 @@ import {
   settingsForGenerous,
   sizeKeys,
   viewPatientsKeys,
+  patientsInformation,
+  backToPatientsListFromRegion,
+  backToPatientsListFromGenderAge,
+  backToPatientsListFromGenderSize,
+  backToPatientsListFromAll,
+  helpFor,
 } from 'src/common';
 import { ButtonsService } from '../../button/button.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -38,6 +44,7 @@ import {
 import { Languages } from 'src/common/enum/language';
 import { UseGuards } from '@nestjs/common';
 import { LastMessageGuard } from 'src/common/guard/lastMessage.guard';
+import { Markup } from 'telegraf';
 
 @Update()
 @UseGuards(LastMessageGuard)
@@ -133,6 +140,7 @@ export class ActionsService {
       ctx.session.lang,
       'patientsDistrictForG',
     );
+    console.log(buttons);
     await ctx.editMessageText(neededDistrictMessage[ctx.session.lang], {
       reply_markup: {
         inline_keyboard: [
@@ -173,7 +181,7 @@ export class ActionsService {
         district: ctx.session.search.district,
       },
       1,
-      'viewPatientsForGen',
+      'viewPatientsForGenByRegion',
       'patNavForGenByReg',
     );
     if (!result) {
@@ -182,7 +190,7 @@ export class ActionsService {
       });
       return;
     }
-    console.log(result);
+    ctx.session.search.page = 1;
     await ctx.editMessageText(result.text, {
       reply_markup: {
         inline_keyboard: [
@@ -202,7 +210,7 @@ export class ActionsService {
         district: ctx.session.search.district,
       },
       +page,
-      'viewPatientsForGen',
+      'viewPatientsForGenByRegion',
       'patNavForGenByReg',
     );
     if (!result) {
@@ -211,6 +219,7 @@ export class ActionsService {
       });
       return;
     }
+    ctx.session.search.page = +page;
     await ctx.editMessageText(result.text, {
       reply_markup: {
         inline_keyboard: [
@@ -406,7 +415,7 @@ export class ActionsService {
         age: [ctx.session.search.down, ctx.session.search.up],
       },
       1,
-      'viewPatientsForGen',
+      'viewPatientsForGenByAge',
       'patNavForGenByGenAndAg',
     );
     if (!result) {
@@ -415,6 +424,7 @@ export class ActionsService {
       });
       return;
     }
+    ctx.session.search.page = 1;
     await ctx.editMessageText(result.text, {
       reply_markup: {
         inline_keyboard: [
@@ -434,7 +444,7 @@ export class ActionsService {
         age: [+ctx.session.search.down, +ctx.session.search.up],
       },
       +page,
-      'viewPatientsForGen',
+      'viewPatientsForGenByAge',
       'patNavForGenByGenAndAg',
     );
     if (!result) {
@@ -443,6 +453,7 @@ export class ActionsService {
       });
       return;
     }
+    ctx.session.search.page = +page;
     await ctx.editMessageText(result.text, {
       reply_markup: {
         inline_keyboard: [
@@ -464,7 +475,7 @@ export class ActionsService {
         size: ctx.session.search.size,
       },
       1,
-      'viewPatientsForGen',
+      'viewPatientsForGenBySize',
       'patNavForGenByGenAndSz',
     );
     if (!result) {
@@ -473,8 +484,14 @@ export class ActionsService {
       });
       return;
     }
-    await ctx.editMessageText('Endi yoziladi', {
-      reply_markup: backToS[ctx.session.lang],
+    ctx.session.search.page = 1;
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToS[ctx.session.lang].inline_keyboard,
+        ],
+      },
     });
   }
 
@@ -487,7 +504,7 @@ export class ActionsService {
         size: ctx.session.search.size,
       },
       +page,
-      'viewPatientsForGen',
+      'viewPatientsForGenBySize',
       'patNavForGenByGenAndSz',
     );
     if (!result) {
@@ -496,6 +513,7 @@ export class ActionsService {
       });
       return;
     }
+    ctx.session.search.page = +page;
     await ctx.editMessageText(result.text, {
       reply_markup: {
         inline_keyboard: [
@@ -559,7 +577,7 @@ export class ActionsService {
     const result = await this.buttonService.generatePatientsButtons(
       {},
       1,
-      'viewPatientsForGen',
+      'viewPatientsForGenAll',
       'patNavForGenAll',
     );
     if (!result) {
@@ -568,6 +586,7 @@ export class ActionsService {
       });
       return;
     }
+    ctx.session.search.page = 1;
     await ctx.editMessageText(result.text, {
       reply_markup: {
         inline_keyboard: [
@@ -584,7 +603,7 @@ export class ActionsService {
     const result = await this.buttonService.generatePatientsButtons(
       {},
       +page,
-      'viewPatientsForGen',
+      'viewPatientsForGenAll',
       'patNavForGenAll',
     );
     if (!result) {
@@ -603,14 +622,379 @@ export class ActionsService {
     });
   }
 
-  @Action(/viewPatientsForGen/)
+  @Action(/viewPatientsForGenByRegion/)
   async viewPatientsForGen(@Ctx() ctx: ContextType) {
     const [, id] = (ctx.update as any).callback_query.data.split('=');
-    console.log(id);
     const application = await this.patientsRepo.findOne({
       where: { id },
-      relations: ['user'],
     });
-    console.log(application.user);
+    if (!application) {
+      await ctx.answerCbQuery('oops', { show_alert: true });
+      return;
+    }
+    const l = ctx.session.lang;
+    const message =
+      `${patientsInformation.name[l]}${application.name}\n` +
+      `${patientsInformation.age[l]}${application.age}\n` +
+      `${patientsInformation.height[l]}${application.height}\n` +
+      `${patientsInformation.size[l]}${application.size ? application.size : patientsInformation.lookAge[l]}\n` +
+      `${patientsInformation.stuff[l]}${application.stuff}\n` +
+      `${patientsInformation.region[l]}${application.region.charAt(0).toUpperCase() + application.region.slice(1)}\n` +
+      `${patientsInformation.district[l]}${application.district.charAt(0).toUpperCase() + application.district.slice(1)}\n`;
+
+    switch (application.media.type) {
+      case 'PHOTO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendPhoto(
+          application.media.file_id,
+          {
+            caption: message,
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  Markup.button.callback(
+                    helpFor[ctx.session.lang],
+                    `helpFor=${application.id}`,
+                  ),
+                ],
+                ...backToPatientsListFromRegion[ctx.session.lang]
+                  .inline_keyboard,
+              ],
+            },
+          },
+        );
+        break;
+      case 'VIDEO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendVideo(
+          application.media.file_id,
+          {
+            caption: message,
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  Markup.button.callback(
+                    helpFor[ctx.session.lang],
+                    `helpFor=${application.id}`,
+                  ),
+                ],
+                ...backToPatientsListFromRegion[ctx.session.lang]
+                  .inline_keyboard,
+              ],
+            },
+          },
+        );
+        break;
+    }
+  }
+
+  @Action('backToPatientsListFromRegion')
+  async backToPatientsListFromRegion(@Ctx() ctx: ContextType) {
+    const result = await this.buttonService.generatePatientsButtons(
+      {
+        region: ctx.session.search.region,
+        district: ctx.session.search.district,
+      },
+      +ctx.session.search.page,
+      'viewPatientsForGenByRegion',
+      'patNavForGenByReg',
+    );
+    if (!result) {
+      await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
+    await ctx.deleteMessage();
+    ctx.session.lastMessage = await ctx.reply(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToDistrictsForGenerous[ctx.session.lang].inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/viewPatientsForGenByAge/)
+  async viewPatientsForGenByAge(@Ctx() ctx: ContextType) {
+    const [, id] = (ctx.update as any).callback_query.data.split('=');
+    const application = await this.patientsRepo.findOne({
+      where: { id },
+    });
+    if (!application) {
+      await ctx.answerCbQuery('oops', { show_alert: true });
+      return;
+    }
+    const l = ctx.session.lang;
+    const message =
+      `${patientsInformation.name[l]}${application.name}\n` +
+      `${patientsInformation.age[l]}${application.age}\n` +
+      `${patientsInformation.height[l]}${application.height}\n` +
+      `${patientsInformation.size[l]}${application.size ? application.size : patientsInformation.lookAge[l]}\n` +
+      `${patientsInformation.stuff[l]}${application.stuff}\n` +
+      `${patientsInformation.region[l]}${application.region.charAt(0).toUpperCase() + application.region.slice(1)}\n` +
+      `${patientsInformation.district[l]}${application.district.charAt(0).toUpperCase() + application.district.slice(1)}\n`;
+
+    switch (application.media.type) {
+      case 'PHOTO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendPhoto(
+          application.media.file_id,
+          {
+            caption: message,
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  Markup.button.callback(
+                    helpFor[ctx.session.lang],
+                    `helpFor=${application.id}`,
+                  ),
+                ],
+                ...backToPatientsListFromGenderAge[ctx.session.lang]
+                  .inline_keyboard,
+              ],
+            },
+          },
+        );
+        break;
+      case 'VIDEO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendVideo(
+          application.media.file_id,
+          {
+            caption: message,
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  Markup.button.callback(
+                    helpFor[ctx.session.lang],
+                    `helpFor=${application.id}`,
+                  ),
+                ],
+                ...backToPatientsListFromGenderAge[ctx.session.lang]
+                  .inline_keyboard,
+              ],
+            },
+          },
+        );
+        break;
+    }
+  }
+
+  @Action('backToPatientsListFromGenderAge')
+  async backToPatientsListFromGenderAge(@Ctx() ctx: ContextType) {
+    const result = await this.buttonService.generatePatientsButtons(
+      {
+        gender: ctx.session.search.gender as Genders,
+        age: [+ctx.session.search.down, +ctx.session.search.up],
+      },
+      +ctx.session.search.page,
+      'viewPatientsForGenByAge',
+      'patNavForGenByGenAndAg',
+    );
+    if (!result) {
+      await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
+    await ctx.deleteMessage();
+    ctx.session.lastMessage = await ctx.reply(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToAges[ctx.session.lang].inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/viewPatientsForGenBySize/)
+  async viewPatientsForGenBySize(@Ctx() ctx: ContextType) {
+    const [, id] = (ctx.update as any).callback_query.data.split('=');
+    const application = await this.patientsRepo.findOne({
+      where: { id },
+    });
+    if (!application) {
+      await ctx.answerCbQuery('oops', { show_alert: true });
+      return;
+    }
+    const l = ctx.session.lang;
+    const message =
+      `${patientsInformation.name[l]}${application.name}\n` +
+      `${patientsInformation.age[l]}${application.age}\n` +
+      `${patientsInformation.height[l]}${application.height}\n` +
+      `${patientsInformation.size[l]}${application.size ? application.size : patientsInformation.lookAge[l]}\n` +
+      `${patientsInformation.stuff[l]}${application.stuff}\n` +
+      `${patientsInformation.region[l]}${application.region.charAt(0).toUpperCase() + application.region.slice(1)}\n` +
+      `${patientsInformation.district[l]}${application.district.charAt(0).toUpperCase() + application.district.slice(1)}\n`;
+
+    switch (application.media.type) {
+      case 'PHOTO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendPhoto(
+          application.media.file_id,
+          {
+            caption: message,
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  Markup.button.callback(
+                    helpFor[ctx.session.lang],
+                    `helpFor=${application.id}`,
+                  ),
+                ],
+                ...backToPatientsListFromGenderSize[ctx.session.lang]
+                  .inline_keyboard,
+              ],
+            },
+          },
+        );
+        break;
+      case 'VIDEO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendVideo(
+          application.media.file_id,
+          {
+            caption: message,
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  Markup.button.callback(
+                    helpFor[ctx.session.lang],
+                    `helpFor=${application.id}`,
+                  ),
+                ],
+                ...backToPatientsListFromGenderSize[ctx.session.lang]
+                  .inline_keyboard,
+              ],
+            },
+          },
+        );
+        break;
+    }
+  }
+
+  @Action('backToPatientsListFromGenderSize')
+  async backToPatientsListFromGenderSize(@Ctx() ctx: ContextType) {
+    const result = await this.buttonService.generatePatientsButtons(
+      {
+        gender: ctx.session.search.gender as Genders,
+        age: [+ctx.session.search.down, +ctx.session.search.up],
+      },
+      +ctx.session.search.page,
+      'viewPatientsForGenBySize',
+      'patNavForGenByGenAndSz',
+    );
+    if (!result) {
+      await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
+    await ctx.deleteMessage();
+    ctx.session.lastMessage = await ctx.reply(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToS[ctx.session.lang].inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/viewPatientsForGenAll/)
+  async viewPatientsForGenAll(@Ctx() ctx: ContextType) {
+    const [, id] = (ctx.update as any).callback_query.data.split('=');
+    const application = await this.patientsRepo.findOne({
+      where: { id },
+    });
+    if (!application) {
+      await ctx.answerCbQuery('oops', { show_alert: true });
+      return;
+    }
+    const l = ctx.session.lang;
+    const message =
+      `${patientsInformation.name[l]}${application.name}\n` +
+      `${patientsInformation.age[l]}${application.age}\n` +
+      `${patientsInformation.height[l]}${application.height}\n` +
+      `${patientsInformation.size[l]}${application.size ? application.size : patientsInformation.lookAge[l]}\n` +
+      `${patientsInformation.stuff[l]}${application.stuff}\n` +
+      `${patientsInformation.region[l]}${application.region.charAt(0).toUpperCase() + application.region.slice(1)}\n` +
+      `${patientsInformation.district[l]}${application.district.charAt(0).toUpperCase() + application.district.slice(1)}\n`;
+
+    switch (application.media.type) {
+      case 'PHOTO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendPhoto(
+          application.media.file_id,
+          {
+            caption: message,
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  Markup.button.callback(
+                    helpFor[ctx.session.lang],
+                    `helpFor=${application.id}`,
+                  ),
+                ],
+                ...backToPatientsListFromAll[ctx.session.lang].inline_keyboard,
+              ],
+            },
+          },
+        );
+        break;
+      case 'VIDEO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendVideo(
+          application.media.file_id,
+          {
+            caption: message,
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  Markup.button.callback(
+                    helpFor[ctx.session.lang],
+                    `helpFor=${application.id}`,
+                  ),
+                ],
+                ...backToPatientsListFromAll[ctx.session.lang].inline_keyboard,
+              ],
+            },
+          },
+        );
+        break;
+    }
+  }
+
+  @Action('backToPatientsListFromAll')
+  async backToPatientsListFromAll(@Ctx() ctx: ContextType) {
+    const result = await this.buttonService.generatePatientsButtons(
+      {},
+      +ctx.session.search.page,
+      'viewPatientsForGenAll',
+      'patNavForGenAll',
+    );
+    if (!result) {
+      await ctx.answerCbQuery(noPatintsMessage[ctx.session.lang], {
+        show_alert: true,
+      });
+      return;
+    }
+    await ctx.deleteMessage();
+    ctx.session.lastMessage = await ctx.reply(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToViewPatients[ctx.session.lang].inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/helpFor/)
+  async helpFor(@Ctx() ctx: ContextType) {
+    await ctx.scene.enter('repairScene');
   }
 }
