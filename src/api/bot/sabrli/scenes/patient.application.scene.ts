@@ -22,6 +22,7 @@ import {
   UsersEntity,
   UsersRepository,
 } from 'src/core';
+import { Media } from 'src/common/enum/media.';
 
 @Scene('sendApplyScene')
 export class SendApplyScene {
@@ -80,7 +81,14 @@ export class SendMediaApplyScene {
       const photoId = message.photo[message.photo.length - 1].file_id;
       await this.patientRepo.update(
         { id: ctx.session.patientApp.id },
-        { media: photoId, region, district },
+        {
+          media: {
+            type: Media.photo,
+            file_id: photoId,
+          },
+          region,
+          district,
+        },
       );
       ctx.scene.enter('enterTheNameOfPatientScene');
     } else {
@@ -97,7 +105,14 @@ export class SendMediaApplyScene {
       const videoId = message.video.file_id;
       await this.patientRepo.update(
         { id: ctx.session.patientApp.id },
-        { media: videoId, region, district },
+        {
+          media: {
+            type: Media.video,
+            file_id: videoId,
+          },
+          region,
+          district,
+        },
       );
       ctx.scene.enter('enterTheNameOfPatientScene');
     } else {
