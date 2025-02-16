@@ -6,7 +6,7 @@ import {
   patientMenuKeys,
 } from 'src/common';
 import { config } from 'src/config';
-import { Telegraf } from 'telegraf';
+import { Markup, Telegraf } from 'telegraf';
 
 @Scene('sendReportToAdminAsPatient')
 export class ReportToAdminAsPatient {
@@ -22,10 +22,10 @@ export class ReportToAdminAsPatient {
         reply_markup: {
           inline_keyboard: [
             [
-              {
-                text: 'Xabarga javob ✉️',
-                url: config.BOT_URL,
-              },
+              Markup.button.url(
+                'Javob berish',
+                `https://t.me/${ctx.from.username}`,
+              ),
             ],
           ],
         },

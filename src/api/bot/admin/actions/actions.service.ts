@@ -4,7 +4,10 @@ import { Update, Action, Ctx } from 'nestjs-telegraf';
 import { ContextType, Role } from 'src/common';
 import {
   adminMenu,
+  backToDistrictsForAdmin,
+  backToRegionsForAdmin,
   backToViewGenerousesForAdmin,
+  backToViewPatientsForAdmin,
   genereouKeysForAdmin,
   mainMessageForAdmin,
   patientsKeysForAdmin,
@@ -75,28 +78,6 @@ export class ActionsService {
         inline_keyboard: [
           ...result.buttons,
           ...backToViewGenerousesForAdmin.inline_keyboard,
-        ],
-      },
-    });
-  }
-
-  @Action('allPatientsForAdmin')
-  async allPatientsForAdmin(@Ctx() ctx: ContextType) {
-    await ctx.editMessageText('Endi yoziladi', {
-      reply_markup: {
-        inline_keyboard: [
-          [Markup.button.callback('Orqaga', 'backToAdminMenu')],
-        ],
-      },
-    });
-  }
-
-  @Action('patientsByLocationForAdmin')
-  async patientsByLocationForAdmin(@Ctx() ctx: ContextType) {
-    await ctx.editMessageText('Endi yoziladi', {
-      reply_markup: {
-        inline_keyboard: [
-          [Markup.button.callback('Orqaga', 'backToAdminMenu')],
         ],
       },
     });
@@ -237,6 +218,7 @@ export class ActionsService {
       });
       return;
     }
+    ctx.session.search.page = +page;
     await ctx.editMessageText(result.text, {
       reply_markup: {
         inline_keyboard: [
@@ -324,6 +306,7 @@ export class ActionsService {
       });
       return;
     }
+    ctx.session.search.page = +page;
     await ctx.editMessageText(result.text, {
       reply_markup: {
         inline_keyboard: [
@@ -409,6 +392,7 @@ export class ActionsService {
       });
       return;
     }
+    ctx.session.search.page = +page;
     await ctx.editMessageText(result.text, {
       reply_markup: {
         inline_keyboard: [
@@ -421,5 +405,420 @@ export class ActionsService {
 
   // View PAtients Information
 
-  
+  @Action('backToViewPatientsForAdmin')
+  async backToViewPatientsForAdmin(@Ctx() ctx: ContextType) {
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: patientsKeysForAdmin,
+    });
+  }
+
+  // All Patients
+
+  @Action('allPatientsForAdmin')
+  async allPatientsForAdmin(@Ctx() ctx: ContextType) {
+    const result = await this.buttons.generatePatientsButtons(
+      {},
+      1,
+      'patientsForAdminAll',
+      'patientsForAdminAllPage',
+    );
+    if (!result) {
+      await ctx.answerCbQuery('Sabrlilar mavjud emas', { show_alert: true });
+      return;
+    }
+    ctx.session.search.page = 1;
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToViewPatientsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/patientsForAdminAll/)
+  async patientsForAdminAll(@Ctx() ctx: ContextType) {
+    const [, id] = (ctx.update as any).callback_query.data.split('=');
+    const patient = await this.patientRepo.findOne({
+      where: { id, is_available: true },
+      relations: ['user'],
+    });
+    const message =
+      `Ismi: ${patient.name}\n` +
+      `Yoshi: ${patient.age}\n` +
+      `Bo'yi: ${patient.height}\n` +
+      `O'lchami: ${patient.size ? patient.size : 'yoshga qarab'}\n` +
+      `Viloyati: ${patient.region.charAt(0).toUpperCase() + patient.region.slice(1)}\n` +
+      `Tumani: ${patient.district.charAt(0).toUpperCase() + patient.district.slice(1)}\n` +
+      `Raqami: <code>${patient.user.phone_number || ''}</code>\n` +
+      `Kerakli narsalar: ${patient.stuff}`;
+
+    switch (patient.media.type) {
+      case 'VIDEO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendVideo(patient.media.file_id, {
+          caption: message,
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [
+              [Markup.button.callback('Yopish', `close=${patient.id}`)],
+              [
+                Markup.button.callback(
+                  '🔙 Ortga qaytish',
+                  'backToAllPatientsForAdmin',
+                ),
+              ],
+            ],
+          },
+        });
+        break;
+      case 'PHOTO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendPhoto(patient.media.file_id, {
+          caption: message,
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [
+              [Markup.button.callback('Yopish', `close=${patient.id}`)],
+              [
+                Markup.button.callback(
+                  '🔙 Ortga qaytish',
+                  'backToAllPatientsForAdmin',
+                ),
+              ],
+            ],
+          },
+        });
+        break;
+    }
+    // await ctx.editMessageText(message, {
+    //   parse_mode: 'HTML',
+    //   reply_markup: {
+    //     inline_keyboard: [
+    //       [Markup.button.callback('Yopish', `close=${patient.id}`)],
+    //       [
+    //         Markup.button.callback(
+    //           '🔙 Ortga qaytish',
+    //           'backToAllPatientsForAdmin',
+    //         ),
+    //       ],
+    //     ],
+    //   },
+    // });
+  }
+
+  @Action('backToAllPatientsForAdmin')
+  async backToAllPatientsForAdmin(@Ctx() ctx: ContextType) {
+    const result = await this.buttons.generatePatientsButtons(
+      {},
+      +ctx.session.search.page || 1,
+      'patientsForAdminAll',
+      'patientsForAdminAllPage',
+    );
+    if (!result) {
+      await ctx.answerCbQuery('Sabrlilar mavjud emas', { show_alert: true });
+      return;
+    }
+    ctx.session.search.page = 1;
+    await ctx.deleteMessage();
+    ctx.session.lastMessage = await ctx.reply(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToViewPatientsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/patientsForAdminAllPage/)
+  async patientsForAdminAllPage(@Ctx() ctx: ContextType) {
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
+    const result = await this.buttons.generatePatientsButtons(
+      {},
+      +page || 1,
+      'patientsForAdminAll',
+      'patientsForAdminAllPage',
+    );
+    if (!result) {
+      await ctx.answerCbQuery('Sabrlilar topilmadi', { show_alert: true });
+      return;
+    }
+    ctx.session.search.page = +page || 1;
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToViewPatientsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  // By Location
+
+  @Action('patientsByLocationForAdmin')
+  async patientsByLocationForAdmin(@Ctx() ctx: ContextType) {
+    const buttons = this.buttons.generateRegionButtons(
+      0,
+      'uz',
+      'patientByRegionForAdmin',
+    );
+    ctx.session.adminNavigation.RegionPage = 0;
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...buttons.inline_keyboard,
+          ...backToViewPatientsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/patientByRegionForAdminPage/)
+  async patientByRegionForAdminPage(@Ctx() ctx: ContextType) {
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
+    const buttons = await this.buttons.generateRegionButtons(
+      +page,
+      'uz',
+      'patientByRegionForAdmin',
+    );
+    ctx.session.adminNavigation.RegionPage = +page;
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...buttons.inline_keyboard,
+          ...backToViewPatientsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/patientByRegionForAdmin/)
+  async generateDistricts(@Ctx() ctx: ContextType) {
+    const [, region] = (ctx.update as any).callback_query.data.split('=');
+    ctx.session.search.region = region;
+    const buttons = this.buttons.generateDistrictButtons(
+      region,
+      0,
+      'uz',
+      'patientsByDistrictForAdmin',
+    );
+    ctx.session.adminNavigation.DistrictPage = 0;
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...buttons.inline_keyboard,
+          ...backToRegionsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/patientsByDistrictForAdminPage/)
+  async patientsByDistrictForAdminPage(@Ctx() ctx: ContextType) {
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
+    const buttons = this.buttons.generateDistrictButtons(
+      ctx.session.search.region,
+      +page,
+      'uz',
+      'patientsByDistrictForAdmin',
+    );
+    ctx.session.adminNavigation.DistrictPage = +page;
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...buttons.inline_keyboard,
+          ...backToRegionsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action('backToRegionsForAdmin')
+  async backToRegionsForAdmin(@Ctx() ctx: ContextType) {
+    const buttons = this.buttons.generateRegionButtons(
+      ctx.session.adminNavigation.RegionPage,
+      'uz',
+      'patientByRegionForAdmin',
+    );
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...buttons.inline_keyboard,
+          ...backToViewPatientsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/patientsByDistrictForAdmin/)
+  async patientsByDistrictForAdmin(@Ctx() ctx: ContextType) {
+    const [, district] = (ctx.update as any).callback_query.data.split('=');
+    ctx.session.search.district = district;
+    const result = await this.buttons.generatePatientsButtons(
+      {
+        region: ctx.session.search.region,
+        district,
+      },
+      1,
+      'vievPatientByLocationForAdmin',
+      'patientNavForAdminByRegion',
+    );
+    if (!result) {
+      await ctx.answerCbQuery('Sabrilar topilmadi', { show_alert: true });
+      return;
+    }
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToDistrictsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action('backToDistrictsForAdmin')
+  async backToDistrictsForAdmin(@Ctx() ctx: ContextType) {
+    const buttons = this.buttons.generateDistrictButtons(
+      ctx.session.search.region,
+      +ctx.session.adminNavigation.DistrictPage || 0,
+      'uz',
+      'patientsByDistrictForAdmin',
+    );
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...buttons.inline_keyboard,
+          ...backToRegionsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/vievPatientByLocationForAdmin/)
+  async vievPatientByLocationForAdmin(@Ctx() ctx: ContextType) {
+    const [, id] = (ctx.update as any).callback_query.data.split('=');
+    const patient = await this.patientRepo.findOne({
+      where: { id },
+      relations: ['user'],
+    });
+    const message =
+      `Ismi: ${patient.name}\n` +
+      `Yoshi: ${patient.age}\n` +
+      `Bo'yi: ${patient.height}\n` +
+      `O'lchami: ${patient.size ? patient.size : 'yoshga qarab'}\n` +
+      `Viloyati: ${patient.region.charAt(0).toUpperCase() + patient.region.slice(1)}\n` +
+      `Tumani: ${patient.district.charAt(0).toUpperCase() + patient.district.slice(1)}\n` +
+      `Raqami: <code>${patient.user.phone_number || ''}</code>\n` +
+      `Kerakli narsalar: ${patient.stuff}`;
+
+    switch (patient.media.type) {
+      case 'VIDEO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendVideo(patient.media.file_id, {
+          caption: message,
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [
+              [Markup.button.callback('Yopish', `close=${patient.id}`)],
+              [
+                Markup.button.callback(
+                  '🔙 Ortga qaytish',
+                  'backToAllPatientsByRegionForAdmin',
+                ),
+              ],
+            ],
+          },
+        });
+        break;
+      case 'PHOTO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendPhoto(patient.media.file_id, {
+          caption: message,
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [
+              [Markup.button.callback('Yopish', `close=${patient.id}`)],
+              [
+                Markup.button.callback(
+                  '🔙 Ortga qaytish',
+                  'backToAllPatientsByRegionForAdmin',
+                ),
+              ],
+            ],
+          },
+        });
+        break;
+    }
+    // await ctx.editMessageText(message, {
+    //   parse_mode: 'HTML',
+    //   reply_markup: {
+    //     inline_keyboard: [
+    //       [Markup.button.callback('Yopish', `close=${patient.id}`)],
+    //       [
+    //         Markup.button.callback(
+    //           '🔙 Ortga qaytish',
+    //           'backToAllPatientsByRegionForAdmin',
+    //         ),
+    //       ],
+    //     ],
+    //   },
+    // });
+  }
+
+  @Action('backToAllPatientsByRegionForAdmin')
+  async backToAllPatientsByRegionForAdmin(@Ctx() ctx: ContextType) {
+    const result = await this.buttons.generatePatientsButtons(
+      {
+        region: ctx.session.search.region,
+        district: ctx.session.search.district,
+      },
+      +ctx.session.search.page || 1,
+      'vievPatientByLocationForAdmin',
+      'patientNavForAdminByRegion',
+    );
+    if (!result) {
+      await ctx.answerCbQuery('Sabrilar topilmadi', { show_alert: true });
+      return;
+    }
+    await ctx.deleteMessage();
+    ctx.session.lastMessage = await ctx.reply(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToDistrictsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/patientNavForAdminByRegion/)
+  async patientNavForAdminByRegion(@Ctx() ctx: ContextType) {
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
+    const result = await this.buttons.generatePatientsButtons(
+      {
+        region: ctx.session.search.region,
+        district: ctx.session.search.district,
+      },
+      +page || 1,
+      'vievPatientByLocationForAdmin',
+      'patientNavForAdminByRegion',
+    );
+    if (!result) {
+      await ctx.answerCbQuery('Sabrilar topilmadi', { show_alert: true });
+      return;
+    }
+    ctx.session.search.page = +page || 1;
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToDistrictsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
 }

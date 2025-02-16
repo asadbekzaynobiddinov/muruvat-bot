@@ -42,10 +42,7 @@ export const patientsKeysForAdmin: InlineKeyboardMarkup = {
         'patientsByGenderSizeForAdmin',
       ),
     ],
-    [
-      Markup.button.callback('Ism yoki telefoni', 'patientsByNameOrPhone'),
-      Markup.button.callback('🔙 Ortga qaytish', 'backToAdminMenu'),
-    ],
+    [Markup.button.callback('🔙 Ortga qaytish', 'backToAdminMenu')],
   ],
 };
 
@@ -57,5 +54,23 @@ export const backToViewGenerousesForAdmin: InlineKeyboardMarkup = {
         'backToViewGenerousesForAdmin',
       ),
     ],
+  ],
+};
+
+export const backToViewPatientsForAdmin: InlineKeyboardMarkup = {
+  inline_keyboard: [
+    [Markup.button.callback('🔙 Ortga qaytish', 'backToViewPatientsForAdmin')],
+  ],
+};
+
+export const backToRegionsForAdmin: InlineKeyboardMarkup = {
+  inline_keyboard: [
+    [Markup.button.callback('🔙 Ortga qaytish', 'backToRegionsForAdmin')],
+  ],
+};
+
+export const backToDistrictsForAdmin: InlineKeyboardMarkup = {
+  inline_keyboard: [
+    [Markup.button.callback('🔙 Ortga qaytish', 'backToDistrictsForAdmin')],
   ],
 };

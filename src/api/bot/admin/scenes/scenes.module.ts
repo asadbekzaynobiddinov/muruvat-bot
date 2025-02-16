@@ -3,6 +3,10 @@ import {
   SearchGenerousForAdminByName,
   SearchGenerousForAdminByPhone,
 } from './searchgenerous.scene';
+import {
+  SearchPatientForAdminByPhone,
+  SearchpPatientForAdminByName,
+} from './searchpatient.scene';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   AdminEntity,
@@ -25,6 +29,8 @@ import { ButtonsService } from '../../button/button.service';
     ButtonsService,
     SearchGenerousForAdminByName,
     SearchGenerousForAdminByPhone,
+    SearchPatientForAdminByPhone,
+    SearchpPatientForAdminByName,
   ],
 })
 export class ScenesModule {}
