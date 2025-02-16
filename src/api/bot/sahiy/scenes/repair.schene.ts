@@ -108,7 +108,7 @@ export class RepairScene {
       `     ${application.stuff}\n` +
       `\nKimga: \n      ${
         patient
-          ? `${patient.name}\n      ${patient.region}\n      ${patient.district}\n      <code>${patient.user.phone_number ? patient.phone_number : 'raqami nomalum'}</code>`
+          ? `${patient.name}\n      ${patient.region}\n      ${patient.district}\n      <code>${patient.user.phone_number ? patient.user.phone_number : 'raqami nomalum'}</code>`
           : 'istalgan odamga'
       }\n`;
 
