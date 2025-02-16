@@ -24,7 +24,7 @@ export const genereouKeysForAdmin: InlineKeyboardMarkup = {
         'searchGenerousByPhone',
       ),
     ],
-    [Markup.button.callback('Barha Sahiylar', 'searchAllGenerousForAdmin')],
+    [Markup.button.callback('Barcha Sahiylar', 'searchAllGenerousForAdmin')],
     [Markup.button.callback('🔙 Ortga qaytish', 'backToAdminMenu')],
   ],
 };
@@ -45,6 +45,17 @@ export const patientsKeysForAdmin: InlineKeyboardMarkup = {
     [
       Markup.button.callback('Ism yoki telefoni', 'patientsByNameOrPhone'),
       Markup.button.callback('🔙 Ortga qaytish', 'backToAdminMenu'),
+    ],
+  ],
+};
+
+export const backToViewGenerousesForAdmin: InlineKeyboardMarkup = {
+  inline_keyboard: [
+    [
+      Markup.button.callback(
+        '🔙 Ortga qaytish',
+        'backToViewGenerousesForAdmin',
+      ),
     ],
   ],
 };

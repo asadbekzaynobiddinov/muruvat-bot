@@ -3,6 +3,7 @@ import { SceneContext } from 'telegraf/typings/scenes';
 
 export type ContextType = Context &
   SceneContext & {
+    reply_to_message_id?: any;
     session: {
       lang: string;
       lastMessage: any;
@@ -14,11 +15,17 @@ export type ContextType = Context &
         up: number;
         size: string;
         page: number;
+        name: string;
+        phone_number: string;
       };
       patientApp: {
         id: string;
       };
       generousNavigation: {
+        RegionPage: number;
+        DistrictPage: number;
+      };
+      adminNavigation: {
         RegionPage: number;
         DistrictPage: number;
       };

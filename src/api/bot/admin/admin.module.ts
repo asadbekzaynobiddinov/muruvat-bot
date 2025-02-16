@@ -1,13 +1,30 @@
 import { Module } from '@nestjs/common';
-// import { ActionsModule } from './actions/actions.module';
+import { ActionsModule } from './actions/actions.module';
 import { CommandsModule } from './commands/commands.module';
 import { ScenesModule } from './scenes/scenes.module';
-// import { ActionsService } from './actions/actions.service';
-import { KeysService } from './inlineKeys/keys.update';
-import { KeysModule } from './inlineKeys/keys.module';
+import { ActionsService } from './actions/actions.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import {
+  AdminEntity,
+  GenerousEntity,
+  PatientsEntity,
+  UsersEntity,
+} from 'src/core';
+import { ButtonModule } from '../button/button.module';
 
 @Module({
-  providers: [KeysService],
-  imports: [KeysModule, CommandsModule, ScenesModule],
+  providers: [ActionsService],
+  imports: [
+    CommandsModule,
+    ScenesModule,
+    ActionsModule,
+    ButtonModule,
+    TypeOrmModule.forFeature([
+      UsersEntity,
+      PatientsEntity,
+      GenerousEntity,
+      AdminEntity,
+    ]),
+  ],
 })
 export class AdminModule {}

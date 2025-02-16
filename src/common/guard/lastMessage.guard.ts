@@ -25,7 +25,10 @@ export class LastMessageGuard implements CanActivate {
       ctx.update.callback_query.message.message_id !=
         ctx.session.lastMessage.message_id
     ) {
-      await ctx.answerCbQuery(lastMessgeText[user.lang], ctx.callbackQuery.id);
+      await ctx.answerCbQuery(
+        lastMessgeText[user.lang || 'uz'],
+        ctx.callbackQuery.id,
+      );
       await ctx.deleteMessage(ctx.update.callback_query.message.message_id);
       return false;
     }
