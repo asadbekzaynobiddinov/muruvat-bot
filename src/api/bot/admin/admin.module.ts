@@ -10,6 +10,7 @@ import {
   PatientsEntity,
   UsersEntity,
 } from 'src/core';
+import { ButtonModule } from '../button/button.module';
 
 @Module({
   providers: [ActionsService],
@@ -17,6 +18,7 @@ import {
     CommandsModule,
     ScenesModule,
     ActionsModule,
+    ButtonModule,
     TypeOrmModule.forFeature([
       UsersEntity,
       PatientsEntity,

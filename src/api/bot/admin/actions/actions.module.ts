@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ActionsService } from './actions.service';
+import { ButtonsService } from '../../button/button.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   AdminEntity,
@@ -18,6 +19,6 @@ import {
       UsersEntity,
     ]),
   ],
-  providers: [ActionsService],
+  providers: [ButtonsService, ActionsService],
 })
 export class ActionsModule {}
