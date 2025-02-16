@@ -7,6 +7,7 @@ import {
   SearchPatientForAdminByPhone,
   SearchpPatientForAdminByName,
 } from './searchpatient.scene';
+import { SendMessage } from './sendMessage.scene';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   AdminEntity,
@@ -31,6 +32,7 @@ import { ButtonsService } from '../../button/button.service';
     SearchGenerousForAdminByPhone,
     SearchPatientForAdminByPhone,
     SearchpPatientForAdminByName,
+    SendMessage,
   ],
 })
 export class ScenesModule {}

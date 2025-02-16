@@ -24,8 +24,10 @@ import { UseGuards } from '@nestjs/common';
 import { LastMessageGuard } from 'src/common/guard/lastMessage.guard';
 import { Media } from 'src/common/enum/media.';
 import { config } from 'src/config';
+import { ChannelSubscriptionGuard } from 'src/common/guard/subsccribe.guard';
+import { LangGuard } from 'src/common/guard/language.guard';
 @Update()
-@UseGuards(LastMessageGuard)
+@UseGuards(LastMessageGuard, LangGuard)
 export class ActionsService {
   constructor(
     @InjectBot() private readonly bot: Telegraf,
@@ -34,6 +36,7 @@ export class ActionsService {
     private readonly patientRepo: PatientsRepository,
   ) {}
   @Action('apply')
+  @UseGuards(ChannelSubscriptionGuard)
   async sendApply(@Ctx() ctx: ContextType) {
     const user = await this.userRepo.findOne({
       where: { telegram_id: `${ctx.from.id}` },
@@ -48,6 +51,7 @@ export class ActionsService {
     await ctx.scene.enter('sendApplyScene');
   }
   @Action('toAdminAsPatient')
+  @UseGuards(ChannelSubscriptionGuard)
   async toAdminAsPatient(@Ctx() ctx: ContextType) {
     if (!ctx.from.username) {
       await ctx.answerCbQuery(usernameFirst[ctx.session.lang], {
@@ -58,6 +62,7 @@ export class ActionsService {
     ctx.scene.enter('sendReportToAdminAsPatient');
   }
   @Action('settings_for_patient')
+  @UseGuards(ChannelSubscriptionGuard)
   async settingsForPatient(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {

@@ -1,16 +1,24 @@
 import { UseGuards } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Update, Action, Ctx } from 'nestjs-telegraf';
-import { ContextType, Role } from 'src/common';
+import { ContextType, Genders, Role } from 'src/common';
 import {
   adminMenu,
+  ageKeysForAdmin,
+  backToAgesForAdmin,
   backToDistrictsForAdmin,
+  backToGendersFromAgeForAdmin,
+  backToGendersFromSizeForAdmin,
   backToRegionsForAdmin,
+  backToSizeForAdmin,
   backToViewGenerousesForAdmin,
   backToViewPatientsForAdmin,
+  gendersForAgeForAdmin,
+  gendersForSizeForAdmin,
   genereouKeysForAdmin,
   mainMessageForAdmin,
   patientsKeysForAdmin,
+  sizeKeysForAdmin,
 } from 'src/common/constants/admin';
 import { AdminGuard } from 'src/common/guard/admin.guard';
 import { LastMessageGuard } from 'src/common/guard/lastMessage.guard';
@@ -83,38 +91,16 @@ export class ActionsService {
     });
   }
 
-  @Action('patientsByGenderAgeForAdmin')
-  async patientsByGenderAgeForAdmin(@Ctx() ctx: ContextType) {
-    await ctx.editMessageText('Endi yoziladi', {
-      reply_markup: {
-        inline_keyboard: [
-          [Markup.button.callback('Orqaga', 'backToAdminMenu')],
-        ],
-      },
-    });
-  }
-
-  @Action('patientsByGenderSizeForAdmin')
-  async patientsByGenderSizeForAdmin(@Ctx() ctx: ContextType) {
-    await ctx.editMessageText('Endi yoziladi', {
-      reply_markup: {
-        inline_keyboard: [
-          [Markup.button.callback('Orqaga', 'backToAdminMenu')],
-        ],
-      },
-    });
-  }
-
-  @Action('patientsByNameOrPhone')
-  async patientsByNameOrPhone(@Ctx() ctx: ContextType) {
-    await ctx.editMessageText('Endi yoziladi', {
-      reply_markup: {
-        inline_keyboard: [
-          [Markup.button.callback('Orqaga', 'backToAdminMenu')],
-        ],
-      },
-    });
-  }
+  // @Action('patientsByNameOrPhone')
+  // async patientsByNameOrPhone(@Ctx() ctx: ContextType) {
+  //   await ctx.editMessageText('Endi yoziladi', {
+  //     reply_markup: {
+  //       inline_keyboard: [
+  //         [Markup.button.callback('Orqaga', 'backToAdminMenu')],
+  //       ],
+  //     },
+  //   });
+  // }
 
   @Action(/acceptPostAsAdmin/)
   async acceptPostAsAdmin(@Ctx() ctx: ContextType) {
@@ -401,6 +387,13 @@ export class ActionsService {
         ],
       },
     });
+  }
+
+  @Action(/sendMessageAsAdmin/)
+  async sendMessageAsAdmin(@Ctx() ctx: ContextType) {
+    const [, id] = (ctx.update as any).callback_query.data.split('=');
+    ctx.session.userId = id;
+    await ctx.scene.enter('sendMessage');
   }
 
   // View PAtients Information
@@ -820,5 +813,397 @@ export class ActionsService {
         ],
       },
     });
+  }
+
+  //By Gender And Age
+
+  @Action('patientsByGenderAgeForAdmin')
+  async patientsByGenderAgeForAdmin(@Ctx() ctx: ContextType) {
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...gendersForAgeForAdmin.inline_keyboard,
+          ...backToViewPatientsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/genAndAgeForAdmin/)
+  async genderForSizeForAdmin(@Ctx() ctx: ContextType) {
+    const [, gender] = (ctx.update as any).callback_query.data.split('_');
+    ctx.session.search.gender = gender;
+    console.log(gender);
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...ageKeysForAdmin.inline_keyboard,
+          ...backToGendersFromAgeForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action('backToAgesForAdmin')
+  async backToAgesForAdmin(@Ctx() ctx: ContextType) {
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...ageKeysForAdmin.inline_keyboard,
+          ...backToGendersFromAgeForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action('backToGendersFromAgeForAdmin')
+  async backToGendersFromAgeForAdmin(@Ctx() ctx: ContextType) {
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...gendersForAgeForAdmin.inline_keyboard,
+          ...backToViewPatientsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/searchAgeForAdmin/)
+  async searchAgeForAdmin(@Ctx() ctx: ContextType) {
+    const [, down, up] = (ctx.update as any).callback_query.data.split('_');
+    ctx.session.search.down = down;
+    ctx.session.search.up = up;
+    const result = await this.buttons.generatePatientsButtons(
+      {
+        gender: ctx.session.search.gender as Genders,
+        age: [+ctx.session.search.down, +ctx.session.search.up],
+      },
+      1,
+      'viewPatientsForAdminByAge',
+      'viewPatientsForAdminByAgePage',
+    );
+    if (!result) {
+      await ctx.answerCbQuery('Sabrlilar topilmadi');
+      return;
+    }
+    ctx.session.search.page = 1;
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToAgesForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/viewPatientsForAdminByAgePage/)
+  async viewPatientsForAdminByAgePage(@Ctx() ctx: ContextType) {
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
+    const result = await this.buttons.generatePatientsButtons(
+      {
+        gender: ctx.session.search.gender as Genders,
+        age: [+ctx.session.search.down, +ctx.session.search.up],
+      },
+      +page || 1,
+      'viewPatientsForAdminByAge',
+      'viewPatientsForAdminByAgePage',
+    );
+    if (!result) {
+      await ctx.answerCbQuery('Sabrlilar topilmadi');
+      return;
+    }
+    ctx.session.search.page = +page || 1;
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToAgesForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/viewPatientsForAdminByAge/)
+  async viewPatientsForAdminByAge(@Ctx() ctx: ContextType) {
+    const [, id] = (ctx.update as any).callback_query.data.split('=');
+    const patient = await this.patientRepo.findOne({
+      where: { id },
+      relations: ['user'],
+    });
+    const message =
+      `Ismi: ${patient.name}\n` +
+      `Yoshi: ${patient.age}\n` +
+      `Bo'yi: ${patient.height}\n` +
+      `O'lchami: ${patient.size ? patient.size : 'yoshga qarab'}\n` +
+      `Viloyati: ${patient.region.charAt(0).toUpperCase() + patient.region.slice(1)}\n` +
+      `Tumani: ${patient.district.charAt(0).toUpperCase() + patient.district.slice(1)}\n` +
+      `Raqami: <code>${patient.user.phone_number || ''}</code>\n` +
+      `Kerakli narsalar: ${patient.stuff}`;
+
+    switch (patient.media.type) {
+      case 'VIDEO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendVideo(patient.media.file_id, {
+          caption: message,
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [
+              [Markup.button.callback('Yopish', `close=${patient.id}`)],
+              [
+                Markup.button.callback(
+                  '🔙 Ortga qaytish',
+                  'backToAllPatientsByAgeForAdmin',
+                ),
+              ],
+            ],
+          },
+        });
+        break;
+      case 'PHOTO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendPhoto(patient.media.file_id, {
+          caption: message,
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [
+              [Markup.button.callback('Yopish', `close=${patient.id}`)],
+              [
+                Markup.button.callback(
+                  '🔙 Ortga qaytish',
+                  'backToAllPatientsByAgeForAdmin',
+                ),
+              ],
+            ],
+          },
+        });
+        break;
+    }
+  }
+
+  @Action('backToAllPatientsByAgeForAdmin')
+  async backToAllPatientsByAgeForAdmin(@Ctx() ctx: ContextType) {
+    const result = await this.buttons.generatePatientsButtons(
+      {
+        gender: ctx.session.search.gender as Genders,
+        age: [+ctx.session.search.down, +ctx.session.search.up],
+      },
+      +ctx.session.search.page || 1,
+      'viewPatientsForAdminByAge',
+      'viewPatientsForAdminByAgePage',
+    );
+    if (!result) {
+      await ctx.answerCbQuery('Sabrlilar mavjud emas', { show_alert: true });
+      return;
+    }
+    ctx.session.search.page = 1;
+    await ctx.deleteMessage();
+    ctx.session.lastMessage = await ctx.reply(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToAgesForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  // By Gender And Size
+
+  @Action('patientsByGenderSizeForAdmin')
+  async patientsByGenderSizeForAdmin(@Ctx() ctx: ContextType) {
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...gendersForSizeForAdmin.inline_keyboard,
+          ...backToViewPatientsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/genAndSizeForAdmin/)
+  async genAndSizeForAdmin(@Ctx() ctx: ContextType) {
+    const [, gender] = (ctx.update as any).callback_query.data.split('_');
+    ctx.session.search.gender = gender;
+    console.log(gender);
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...sizeKeysForAdmin.inline_keyboard,
+          ...backToGendersFromSizeForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action('backToSizeForAdmin')
+  async backToSizeForAdmin(@Ctx() ctx: ContextType) {
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...sizeKeysForAdmin.inline_keyboard,
+          ...backToGendersFromSizeForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action('backToGendersFromSizeForAdmin')
+  async backToGendersFromSizeForAdmin(@Ctx() ctx: ContextType) {
+    await ctx.editMessageText(mainMessageForAdmin, {
+      reply_markup: {
+        inline_keyboard: [
+          ...gendersForSizeForAdmin.inline_keyboard,
+          ...backToViewPatientsForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/sizeForAdmin/)
+  async sizeForAdmin(@Ctx() ctx: ContextType) {
+    const [, size] = (ctx.update as any).callback_query.data.split('_');
+    ctx.session.search.size = size;
+    const result = await this.buttons.generatePatientsButtons(
+      {
+        gender: ctx.session.search.gender as Genders,
+        age: [+ctx.session.search.down, +ctx.session.search.up],
+      },
+      1,
+      'viewPatientsForAdminBySize',
+      'viewPatientsForAdminBySizePage',
+    );
+    if (!result) {
+      await ctx.answerCbQuery('Sabrlilar topilmadi');
+      return;
+    }
+    ctx.session.search.page = 1;
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToSizeForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/viewPatientsForAdminBySizePage/)
+  async viewPatientsForAdminBySizePage(@Ctx() ctx: ContextType) {
+    const [, page] = (ctx.update as any).callback_query.data.split('=');
+    const result = await this.buttons.generatePatientsButtons(
+      {
+        gender: ctx.session.search.gender as Genders,
+        size: ctx.session.search.size,
+      },
+      +page || 1,
+      'viewPatientsForAdminBySize',
+      'viewPatientsForAdminBySizePage',
+    );
+    if (!result) {
+      await ctx.answerCbQuery('Sabrlilar topilmadi');
+      return;
+    }
+    ctx.session.search.page = +page || 1;
+    await ctx.editMessageText(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToSizeForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/viewPatientsForAdminBySize/)
+  async viewPatientsForAdminBySize(@Ctx() ctx: ContextType) {
+    const [, id] = (ctx.update as any).callback_query.data.split('=');
+    const patient = await this.patientRepo.findOne({
+      where: { id },
+      relations: ['user'],
+    });
+    const message =
+      `Ismi: ${patient.name}\n` +
+      `Yoshi: ${patient.age}\n` +
+      `Bo'yi: ${patient.height}\n` +
+      `O'lchami: ${patient.size ? patient.size : 'yoshga qarab'}\n` +
+      `Viloyati: ${patient.region.charAt(0).toUpperCase() + patient.region.slice(1)}\n` +
+      `Tumani: ${patient.district.charAt(0).toUpperCase() + patient.district.slice(1)}\n` +
+      `Raqami: <code>${patient.user.phone_number || ''}</code>\n` +
+      `Kerakli narsalar: ${patient.stuff}`;
+
+    switch (patient.media.type) {
+      case 'VIDEO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendVideo(patient.media.file_id, {
+          caption: message,
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [
+              [Markup.button.callback('Yopish', `close=${patient.id}`)],
+              [
+                Markup.button.callback(
+                  '🔙 Ortga qaytish',
+                  'backToAllPatientsBySizeForAdmin',
+                ),
+              ],
+            ],
+          },
+        });
+        break;
+      case 'PHOTO':
+        await ctx.deleteMessage();
+        ctx.session.lastMessage = await ctx.sendPhoto(patient.media.file_id, {
+          caption: message,
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [
+              [Markup.button.callback('Yopish', `close=${patient.id}`)],
+              [
+                Markup.button.callback(
+                  '🔙 Ortga qaytish',
+                  'backToAllPatientsBySizeForAdmin',
+                ),
+              ],
+            ],
+          },
+        });
+        break;
+    }
+  }
+
+  @Action('backToAllPatientsBySizeForAdmin')
+  async backToAllPatientsBySizeForAdmin(@Ctx() ctx: ContextType) {
+    const result = await this.buttons.generatePatientsButtons(
+      {
+        gender: ctx.session.search.gender as Genders,
+        size: ctx.session.search.size,
+      },
+      +ctx.session.search.page || 1,
+      'viewPatientsForAdminBySize',
+      'viewPatientsForAdminBySizePage',
+    );
+    if (!result) {
+      await ctx.answerCbQuery('Sabrlilar mavjud emas', { show_alert: true });
+      return;
+    }
+    ctx.session.search.page = 1;
+    await ctx.deleteMessage();
+    ctx.session.lastMessage = await ctx.reply(result.text, {
+      reply_markup: {
+        inline_keyboard: [
+          ...result.buttons,
+          ...backToAgesForAdmin.inline_keyboard,
+        ],
+      },
+    });
+  }
+
+  @Action(/close/)
+  async close(@Ctx() ctx: ContextType) {
+    const [, id] = (ctx.update as any).callback_query.data.split('=');
+    await this.patientRepo.update({ id }, { is_available: false });
+    await ctx.answerCbQuery('Bu elon yopildi', { show_alert: true });
   }
 }

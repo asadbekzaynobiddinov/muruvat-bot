@@ -17,6 +17,8 @@ import {
   UsersRepository,
 } from 'src/core';
 import { Languages } from 'src/common/enum/language';
+import { UseGuards } from '@nestjs/common';
+import { ChannelSubscriptionGuard } from 'src/common/guard/subsccribe.guard';
 
 @Update()
 export class BotService {
@@ -127,5 +129,33 @@ export class BotService {
       { role: Role.PATIENT },
     );
     await ctx.scene.enter('registerAsPatient');
+  }
+
+  @Action('subscribed')
+  @UseGuards(ChannelSubscriptionGuard)
+  async subscribed(@Ctx() ctx: ContextType) {
+    const user = await this.userRepo.findOne({
+      where: { telegram_id: `${ctx.from.id}` },
+    });
+    switch (user.role) {
+      case 'generous':
+        ctx.session.lastMessage = await ctx.editMessageText(
+          mainMessage[user.lang],
+          {
+            reply_markup: generousMenuKeys[user.lang],
+          },
+        );
+        break;
+      case 'patient':
+        ctx.session.lastMessage = await ctx.editMessageText(
+          mainMessage[user.lang],
+          {
+            reply_markup: patientMenuKeys[user.lang],
+          },
+        );
+        break;
+      default:
+        break;
+    }
   }
 }
