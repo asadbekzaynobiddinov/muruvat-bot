@@ -21,11 +21,15 @@ export class SendMessage {
     const user = await this.userRepo.findOne({
       where: { telegram_id: ctx.session.userId.toString() },
     });
-    await ctx.telegram.sendMessage(
-      user.telegram_id,
-      messageFormAdmin[user.lang] + '\n' + message,
-    );
-    await ctx.reply('Habar yuborildi ✅');
+    try {
+      await ctx.telegram.sendMessage(
+        user.telegram_id,
+        messageFormAdmin[user.lang] + '\n' + message,
+      );
+      await ctx.reply('Habar yuborildi ✅');
+    } catch (error) {
+      await ctx.reply(`Hatolik yuz berdi: ${error.message}`);
+    }
     ctx.session.lastMessage = await ctx.reply(mainMessageForAdmin, {
       reply_markup: adminMenu,
     });
