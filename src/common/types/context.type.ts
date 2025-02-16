@@ -7,6 +7,7 @@ export type ContextType = Context &
     session: {
       lang: string;
       lastMessage: any;
+      userId: number;
       search: {
         region: string;
         district: string;

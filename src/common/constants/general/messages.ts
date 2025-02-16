@@ -91,3 +91,31 @@ export const usernameFirst = {
   ru: 'Сначала настройте свое "имя пользователя"',
   en: 'First, set up your "username"',
 };
+
+export const messageFormAdmin = {
+  uz: 'Admindan habar:',
+  ru: 'Сообщение от администратора:',
+  en: 'Message from Admin:',
+};
+
+export const requireMessage = {
+  uz: `Botdan to'liq foydalanish uchun \navval quyidagi kanallarga a'zo bo'ling`,
+  en: `To fully use the bot, please subscribe to the following channels first`,
+  ru: `Для полного использования бота, пожалуйста, подпишитесь на следующие каналы`,
+};
+
+export const subscribeMessage = {
+  uz: `A'zo bo'ldim ✅`,
+  en: `Subscribed ✅`,
+  ru: `Подписался ✅`,
+};
+
+export const joinMessage = {
+  uz: `Qo'shilish ➕`,
+  en: `Join ➕`,
+  ru: `Присоединиться ➕`,
+};
+
+export const requireChanels = [
+  ['@fulstack_dev', 'https://t.me/+rdEyAn6RqTNlY2Fi'],
+];

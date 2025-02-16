@@ -46,9 +46,11 @@ import { Languages } from 'src/common/enum/language';
 import { UseGuards } from '@nestjs/common';
 import { LastMessageGuard } from 'src/common/guard/lastMessage.guard';
 import { Markup } from 'telegraf';
+import { ChannelSubscriptionGuard } from 'src/common/guard/subsccribe.guard';
+import { LangGuard } from 'src/common/guard/language.guard';
 
 @Update()
-@UseGuards(LastMessageGuard)
+@UseGuards(LastMessageGuard, LangGuard)
 export class ActionsService {
   constructor(
     private readonly buttonService: ButtonsService,
@@ -58,6 +60,7 @@ export class ActionsService {
   ) {}
 
   @Action('repair')
+  @UseGuards(ChannelSubscriptionGuard)
   async repair(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(repairMessage[ctx.session.lang], {
       reply_markup: repairKeys[ctx.session.lang],
@@ -65,6 +68,7 @@ export class ActionsService {
   }
 
   @Action('view_patients_for_generous')
+  @UseGuards(ChannelSubscriptionGuard)
   async viewPatients(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: viewPatientsKeys[ctx.session.lang],
@@ -72,6 +76,7 @@ export class ActionsService {
   }
 
   @Action('toAdminAsGenerous')
+  @UseGuards(ChannelSubscriptionGuard)
   async toAdmin(@Ctx() ctx: ContextType) {
     if (!ctx.from.username) {
       await ctx.answerCbQuery(usernameFirst[ctx.session.lang], {
@@ -83,6 +88,7 @@ export class ActionsService {
   }
 
   @Action('settings_for_generous')
+  @UseGuards(ChannelSubscriptionGuard)
   async settings(@Ctx() ctx: ContextType) {
     await ctx.editMessageText(mainMessage[ctx.session.lang], {
       reply_markup: {

@@ -397,4 +397,67 @@ export class ButtonsService {
 
     return { text, buttons };
   }
+
+  // async generatePatientsButtonsForAdmin(
+  //   filters?: Partial<{
+  //     name: string;
+  //     phone_number: string;
+  //   }>,
+  //   page?: number,
+  //   customCallback?: string,
+  //   customNavigation?: string,
+  // ) {
+  //   const skip = (page - 1) * 10;
+  //   const take = 10;
+
+  //   const where: any = { is_available: true };
+  //   if (filters.name) where.name = filters.name;
+  //   if (filters.phone_number) where.user.phone_number = filters.phone_number;
+
+  //   const generous = await this.patintsRepo.find({
+  //     where,
+  //     skip,
+  //     take,
+  //     order: { created_at: 'DESC' },
+  //   });
+
+  //   if (generous.length === 0) {
+  //     return false;
+  //   }
+
+  //   const text = generous
+  //     .map(
+  //       (p, i) =>
+  //         `${skip + i + 1}. ${p.name} - ${p.region.charAt(0).toUpperCase() + p.region.slice(1)}`,
+  //     )
+  //     .join('\n');
+
+  //   const buttons = [];
+  //   for (let i = 0; i < generous.length; i += 5) {
+  //     buttons.push(
+  //       generous.slice(i, i + 5).map((p, index) => ({
+  //         text: (skip + i + index + 1).toString(),
+  //         callback_data: `${customCallback}=${p.id}`,
+  //       })),
+  //     );
+  //   }
+
+  //   const navigationButtons = [];
+  //   if (page > 1)
+  //     navigationButtons.push({
+  //       text: '⬅️ Oldingi',
+  //       callback_data: `${customNavigation}=${page - 1}`,
+  //     });
+  //   if (generous.length === take)
+  //     navigationButtons.push({
+  //       text: '➡️ Keyingi',
+  //       callback_data: `${customNavigation}=${page + 1}`,
+  //     });
+
+  //   if (navigationButtons.length) {
+  //     buttons.push(navigationButtons);
+  //   }
+
+  //   return { text, buttons };
+  // }
 }
