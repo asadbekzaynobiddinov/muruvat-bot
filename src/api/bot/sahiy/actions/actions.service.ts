@@ -758,7 +758,7 @@ export class ActionsService {
               inline_keyboard: [
                 [
                   Markup.button.callback(
-                    helpFor[ctx.session.lang],
+                    helpFor[l],
                     `helpFor=${application.id}`,
                   ),
                 ],
@@ -779,7 +779,7 @@ export class ActionsService {
               inline_keyboard: [
                 [
                   Markup.button.callback(
-                    helpFor[ctx.session.lang],
+                    helpFor[l],
                     `helpFor=${application.id}`,
                   ),
                 ],
@@ -852,7 +852,7 @@ export class ActionsService {
               inline_keyboard: [
                 [
                   Markup.button.callback(
-                    helpFor[ctx.session.lang],
+                    helpFor[l],
                     `helpFor=${application.id}`,
                   ),
                 ],

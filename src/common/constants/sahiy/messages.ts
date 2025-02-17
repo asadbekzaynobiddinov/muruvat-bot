@@ -73,8 +73,8 @@ export const patientsInformation = {
 
 export const helpFor = {
   uz: 'Yordam berish',
-  ru: '',
-  en: '',
+  ru: 'Помощь',
+  en: 'Help',
 };
 
 export const stuffs = {
