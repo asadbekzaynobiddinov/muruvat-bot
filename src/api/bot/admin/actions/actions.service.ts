@@ -413,7 +413,7 @@ export class ActionsService {
       {},
       1,
       'patientsForAdminAll',
-      'patientsForAdminAllPage',
+      'patNavForAdminAll',
     );
     if (!result) {
       await ctx.answerCbQuery('Sabrlilar mavjud emas', { show_alert: true });
@@ -507,7 +507,7 @@ export class ActionsService {
       {},
       +ctx.session.search.page || 1,
       'patientsForAdminAll',
-      'patientsForAdminAllPage',
+      'patNavForAdminAll',
     );
     if (!result) {
       await ctx.answerCbQuery('Sabrlilar mavjud emas', { show_alert: true });
@@ -525,14 +525,14 @@ export class ActionsService {
     });
   }
 
-  @Action(/patientsForAdminAllPage/)
-  async patientsForAdminAllPage(@Ctx() ctx: ContextType) {
+  @Action(/patNavForAdminAll/)
+  async patNavForAdminAll(@Ctx() ctx: ContextType) {
     const [, page] = (ctx.update as any).callback_query.data.split('=');
     const result = await this.buttons.generatePatientsButtons(
       {},
       +page || 1,
       'patientsForAdminAll',
-      'patientsForAdminAllPage',
+      'patNavForAdminAll',
     );
     if (!result) {
       await ctx.answerCbQuery('Sabrlilar topilmadi', { show_alert: true });
@@ -880,7 +880,7 @@ export class ActionsService {
       },
       1,
       'viewPatientsForAdminByAge',
-      'viewPatientsForAdminByAgePage',
+      'viewPatintNavForAdminByAge',
     );
     if (!result) {
       await ctx.answerCbQuery('Sabrlilar topilmadi');
@@ -897,8 +897,8 @@ export class ActionsService {
     });
   }
 
-  @Action(/viewPatientsForAdminByAgePage/)
-  async viewPatientsForAdminByAgePage(@Ctx() ctx: ContextType) {
+  @Action(/viewPatintNavForAdminByAge/)
+  async viewPatintNavForAdminByAge(@Ctx() ctx: ContextType) {
     const [, page] = (ctx.update as any).callback_query.data.split('=');
     const result = await this.buttons.generatePatientsButtons(
       {
@@ -907,7 +907,7 @@ export class ActionsService {
       },
       +page || 1,
       'viewPatientsForAdminByAge',
-      'viewPatientsForAdminByAgePage',
+      'viewPatintNavForAdminByAge',
     );
     if (!result) {
       await ctx.answerCbQuery('Sabrlilar topilmadi');
@@ -990,7 +990,7 @@ export class ActionsService {
       },
       +ctx.session.search.page || 1,
       'viewPatientsForAdminByAge',
-      'viewPatientsForAdminByAgePage',
+      'viewPatintNavForAdminByAge',
     );
     if (!result) {
       await ctx.answerCbQuery('Sabrlilar mavjud emas', { show_alert: true });
@@ -1072,7 +1072,7 @@ export class ActionsService {
       },
       1,
       'viewPatientsForAdminBySize',
-      'viewPatientsForAdminBySizePage',
+      'viewPatientNavForAdminBySize',
     );
     if (!result) {
       await ctx.answerCbQuery('Sabrlilar topilmadi');
@@ -1089,8 +1089,8 @@ export class ActionsService {
     });
   }
 
-  @Action(/viewPatientsForAdminBySizePage/)
-  async viewPatientsForAdminBySizePage(@Ctx() ctx: ContextType) {
+  @Action(/viewPatientNavForAdminBySize/)
+  async viewPatientNavForAdminBySize(@Ctx() ctx: ContextType) {
     const [, page] = (ctx.update as any).callback_query.data.split('=');
     const result = await this.buttons.generatePatientsButtons(
       {
@@ -1099,7 +1099,7 @@ export class ActionsService {
       },
       +page || 1,
       'viewPatientsForAdminBySize',
-      'viewPatientsForAdminBySizePage',
+      'viewPatientNavForAdminBySize',
     );
     if (!result) {
       await ctx.answerCbQuery('Sabrlilar topilmadi');
@@ -1182,7 +1182,7 @@ export class ActionsService {
       },
       +ctx.session.search.page || 1,
       'viewPatientsForAdminBySize',
-      'viewPatientsForAdminBySizePage',
+      'viewPatientNavForAdminBySize',
     );
     if (!result) {
       await ctx.answerCbQuery('Sabrlilar mavjud emas', { show_alert: true });
