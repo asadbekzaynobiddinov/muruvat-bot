@@ -77,7 +77,10 @@ export class AskGenerousProvince {
       'regionForRegisterAsG',
     );
     await ctx.reply(askRegionMessage[ctx.session.lang], {
-      reply_markup: buttons,
+      reply_markup: {
+        remove_keyboard: true,
+        inline_keyboard: [...buttons.inline_keyboard],
+      },
     });
   }
 
