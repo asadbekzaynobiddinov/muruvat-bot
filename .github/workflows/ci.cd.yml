@@ -45,4 +45,4 @@ jobs:
           npm i -g pnpm 
           pnpm i
           pnpm run build
-          npx pm2 start index.js --name Muruvat
+          npx pm2 start dist/main.js --name Muruvat
