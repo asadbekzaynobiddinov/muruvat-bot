@@ -25,9 +25,9 @@ import { LastMessageGuard } from 'src/common/guard/lastMessage.guard';
 import { Media } from 'src/common/enum/media.';
 import { config } from 'src/config';
 import { ChannelSubscriptionGuard } from 'src/common/guard/subsccribe.guard';
-import { LangGuard } from 'src/common/guard/language.guard';
+import { PatientGuard } from 'src/common/guard/patient.guard';
 @Update()
-@UseGuards(LastMessageGuard, LangGuard)
+@UseGuards(PatientGuard, LastMessageGuard)
 export class ActionsService {
   constructor(
     @InjectBot() private readonly bot: Telegraf,

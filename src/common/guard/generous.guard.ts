@@ -3,9 +3,10 @@ import { Telegraf } from 'telegraf';
 import { config } from 'src/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersEntity, UsersRepository } from 'src/core';
+import { Role } from '../enum';
 
 @Injectable()
-export class LangGuard implements CanActivate {
+export class GenerousGuard implements CanActivate {
   private readonly bot: Telegraf;
 
   constructor(
@@ -20,15 +21,14 @@ export class LangGuard implements CanActivate {
       const user = await this.userRepo.findOne({
         where: { telegram_id: `${ctx.from.id}` },
       });
-      if (user) {
-        ctx.session.lang = user.lang;
-      } else {
-        ctx.session.lang = 'uz';
+      if (!user || user.role != Role.GENEROUS) {
+        return false;
       }
+      ctx.session.lang = user.lang;
+      return true;
     } catch (error) {
       console.log(error);
       return false;
     }
-    return true;
   }
 }

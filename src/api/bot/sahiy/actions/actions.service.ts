@@ -47,10 +47,10 @@ import { UseGuards } from '@nestjs/common';
 import { LastMessageGuard } from 'src/common/guard/lastMessage.guard';
 import { Markup } from 'telegraf';
 import { ChannelSubscriptionGuard } from 'src/common/guard/subsccribe.guard';
-import { LangGuard } from 'src/common/guard/language.guard';
+import { GenerousGuard } from 'src/common/guard/generous.guard';
 
 @Update()
-@UseGuards(LastMessageGuard, LangGuard)
+@UseGuards(GenerousGuard, LastMessageGuard)
 export class ActionsService {
   constructor(
     private readonly buttonService: ButtonsService,
