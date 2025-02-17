@@ -367,7 +367,7 @@ export class ActionsService {
   async generousForAdminAllPage(@Ctx() ctx: ContextType) {
     const [, page] = (ctx.update as any).callback_query.data.split('=');
     const result = await this.buttons.generateGenerousButtonsForAdmin(
-      { name: ctx.session.search.name },
+      {},
       +page,
       'generousForAdminAll',
       'generousForAdminAllPage',
