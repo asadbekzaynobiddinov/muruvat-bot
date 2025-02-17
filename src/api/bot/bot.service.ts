@@ -91,7 +91,7 @@ export class BotService {
   async setLangRu(@Ctx() ctx: ContextType) {
     const newUser = this.userRepo.create({
       telegram_id: `${ctx.from.id}`,
-      lang: Languages.UZ,
+      lang: Languages.RU,
     });
     await this.userRepo.save(newUser);
     ctx.session.lang = 'ru';
@@ -105,7 +105,7 @@ export class BotService {
     ctx.session.lang = 'en';
     const newUser = this.userRepo.create({
       telegram_id: `${ctx.from.id}`,
-      lang: Languages.UZ,
+      lang: Languages.EN,
     });
     await this.userRepo.save(newUser);
     await ctx.editMessageText(registerMessage.en, {
