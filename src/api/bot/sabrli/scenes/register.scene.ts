@@ -12,6 +12,7 @@ import {
   phoneNumberKeys,
   PhoneNumberMessages,
   askNameMessage,
+  removeMessage,
 } from 'src/common';
 import { UsersEntity, UsersRepository } from 'src/core';
 import { ButtonsService } from '../../button/button.service';
@@ -71,6 +72,7 @@ export class AskPatientAddress {
       ctx.session.lang,
       'regionForPatient',
     );
+    await ctx.reply(removeMessage[ctx.session.lang], Markup.removeKeyboard());
     await ctx.reply(askRegionMessage[ctx.session.lang], {
       reply_markup: buttons,
     });
