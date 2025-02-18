@@ -11,6 +11,7 @@ import {
   generousMenuKeys,
   backToRegionsForGenerous,
   acceptAddresMessage,
+  removeMessage,
 } from 'src/common/';
 import { UsersEntity, UsersRepository } from 'src/core';
 import { ButtonsService } from '../../button/button.service';
@@ -76,9 +77,9 @@ export class AskGenerousProvince {
       ctx.session.lang,
       'regionForRegisterAsG',
     );
+    await ctx.reply(removeMessage[ctx.session.lang], Markup.removeKeyboard());
     await ctx.reply(askRegionMessage[ctx.session.lang], {
       reply_markup: {
-        remove_keyboard: true,
         inline_keyboard: [...buttons.inline_keyboard],
       },
     });

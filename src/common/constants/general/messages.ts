@@ -98,6 +98,12 @@ export const messageFormAdmin = {
   en: 'Message from Admin:',
 };
 
+export const removeMessage = {
+  uz: 'Yaxshi endi esa...',
+  ru: 'Хорошо, теперь...',
+  en: 'Alright, now...',
+};
+
 export const requireMessage = {
   uz: `Botdan to'liq foydalanish uchun \navval quyidagi kanallarga a'zo bo'ling`,
   en: `To fully use the bot, please subscribe to the following channels first`,
